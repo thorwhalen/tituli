@@ -64,7 +64,12 @@ class Box:
 
     def to_norm(self, width: float, height: float) -> NormBox:
         """The inverse of :meth:`from_norm`."""
-        return (self.x0 / width, self.y0 / height, self.width / width, self.height / height)
+        return (
+            self.x0 / width,
+            self.y0 / height,
+            self.width / width,
+            self.height / height,
+        )
 
     @property
     def width(self) -> float:
@@ -310,7 +315,9 @@ class Path:
         return cls.from_function(fn, samples=samples)
 
     @classmethod
-    def circle(cls, center: Point, radius: float, *, start_deg: float = -90.0) -> "Path":
+    def circle(
+        cls, center: Point, radius: float, *, start_deg: float = -90.0
+    ) -> "Path":
         """A full circle starting at the top by default, running clockwise."""
         return cls.arc(center, radius, start_deg, start_deg + 360.0)
 
@@ -437,7 +444,11 @@ def _svg_points(d: str) -> list[Point]:
         elif c == "S":
             x2, y2, x, y = nums(4)
             c2, end = rel((x2, y2)), rel((x, y))
-            c1 = (2 * cur[0] - last_ctrl[0], 2 * cur[1] - last_ctrl[1]) if last_ctrl else cur
+            c1 = (
+                (2 * cur[0] - last_ctrl[0], 2 * cur[1] - last_ctrl[1])
+                if last_ctrl
+                else cur
+            )
             add_curve([c1, c2, end])
             last_ctrl, cur = c2, end
         elif c == "Q":
@@ -448,7 +459,11 @@ def _svg_points(d: str) -> list[Point]:
         elif c == "T":
             x, y = nums(2)
             end = rel((x, y))
-            c1 = (2 * cur[0] - last_ctrl[0], 2 * cur[1] - last_ctrl[1]) if last_ctrl else cur
+            c1 = (
+                (2 * cur[0] - last_ctrl[0], 2 * cur[1] - last_ctrl[1])
+                if last_ctrl
+                else cur
+            )
             add_curve([c1, end])
             last_ctrl, cur = c1, end
         elif c == "A":

@@ -40,7 +40,16 @@ _FADE_SHARE = 2.5  # a fade never exceeds hold / this
 _REQUIRED_FILTERS = ("overlay", "fade", "crop", "format", "setpts")
 # YouTube rejects an `elst` edit list that `+faststart` alone leaves behind.
 _MOV_FLAGS = "+faststart+negative_cts_offsets"
-_ENCODE = ["-c:v", "libx264", "-pix_fmt", "yuv420p", "-movflags", _MOV_FLAGS, "-use_editlist", "0"]
+_ENCODE = [
+    "-c:v",
+    "libx264",
+    "-pix_fmt",
+    "yuv420p",
+    "-movflags",
+    _MOV_FLAGS,
+    "-use_editlist",
+    "0",
+]
 
 
 class FfmpegError(RuntimeError):
@@ -62,7 +71,12 @@ def ffmpeg_path() -> str:
 def available_filters(binary: str | None = None) -> frozenset[str]:
     """Names of the filters this ffmpeg build has."""
     binary = binary or ffmpeg_path()
-    out = subprocess.run([binary, "-hide_banner", "-filters"], capture_output=True, text=True, check=False).stdout
+    out = subprocess.run(
+        [binary, "-hide_banner", "-filters"],
+        capture_output=True,
+        text=True,
+        check=False,
+    ).stdout
     names = set()
     for line in out.splitlines():
         parts = line.split()
@@ -76,7 +90,9 @@ def require_filters(*names: str) -> None:
     have = available_filters()
     missing = [n for n in names if n not in have]
     if missing:
-        raise FfmpegError(f"this ffmpeg build lacks filter(s) {missing}; tituli needs {list(names)}")
+        raise FfmpegError(
+            f"this ffmpeg build lacks filter(s) {missing}; tituli needs {list(names)}"
+        )
 
 
 def _run(args: Sequence[str]) -> None:
@@ -117,10 +133,31 @@ def still(
         f"format=rgba,fade=t=in:st=0:d={fade_in:.3f},"
         f"fade=t=out:st={max(0.0, duration - fade_out):.3f}:d={fade_out:.3f},format=yuv420p"
     )
-    args = [ffmpeg_path(), "-y", "-loglevel", "error", "-loop", "1", "-framerate", str(fps), "-i", str(src)]
+    args = [
+        ffmpeg_path(),
+        "-y",
+        "-loglevel",
+        "error",
+        "-loop",
+        "1",
+        "-framerate",
+        str(fps),
+        "-i",
+        str(src),
+    ]
     if audio:
         args += ["-i", str(audio)]
-    args += ["-t", f"{duration:.3f}", "-vf", vf, *_ENCODE, "-crf", str(crf), "-preset", DEFAULT_PRESET]
+    args += [
+        "-t",
+        f"{duration:.3f}",
+        "-vf",
+        vf,
+        *_ENCODE,
+        "-crf",
+        str(crf),
+        "-preset",
+        DEFAULT_PRESET,
+    ]
     if audio:
         args += ["-c:a", "aac", "-shortest"]
     args += [str(dst)]
@@ -132,7 +169,9 @@ def still(
     return Path(dst)
 
 
-def _as_png(image: str | Path | Image.Image, near: str | Path) -> tuple[Path, Path | None]:
+def _as_png(
+    image: str | Path | Image.Image, near: str | Path
+) -> tuple[Path, Path | None]:
     if isinstance(image, Image.Image):
         tmp = Path(near).with_suffix(".tituli-tmp.png")
         img = image
@@ -185,7 +224,14 @@ def overlay(
 
     args = [ffmpeg_path(), "-y", "-loglevel", "error", "-i", str(video)]
     for p, o in zip(pngs, items):
-        args += ["-loop", "1", "-t", f"{max(_MIN_HOLD_S, o.duration):.3f}", "-i", str(p)]
+        args += [
+            "-loop",
+            "1",
+            "-t",
+            f"{max(_MIN_HOLD_S, o.duration):.3f}",
+            "-i",
+            str(p),
+        ]
     steps: list[str] = []
     current = "0:v"
     for i, o in enumerate(items):
@@ -204,10 +250,19 @@ def overlay(
         )
         current = nxt
     args += [
-        "-filter_complex", ";".join(steps),
-        "-map", f"[{current}]", "-map", "0:a?",
-        *_ENCODE, "-crf", str(crf), "-preset", preset,
-        "-c:a", "copy",
+        "-filter_complex",
+        ";".join(steps),
+        "-map",
+        f"[{current}]",
+        "-map",
+        "0:a?",
+        *_ENCODE,
+        "-crf",
+        str(crf),
+        "-preset",
+        preset,
+        "-c:a",
+        "copy",
         str(dst),
     ]
     _run(args)
@@ -246,15 +301,25 @@ def materialize(overlays: Sequence[TimedOverlay], *, frame) -> list[TimedOverlay
         elif isinstance(p, dict) and "text" in p:
             kind = p.get("kind", "caption")
             if kind == "lower_third":
-                lay = lower_third(p["text"], p.get("role", ""), frame=frame, anchor=o.slot)
+                lay = lower_third(
+                    p["text"], p.get("role", ""), frame=frame, anchor=o.slot
+                )
             elif kind == "note":
-                lay = note(p.get("lines", ()), headline=p["text"], frame=frame, anchor=o.slot)
+                lay = note(
+                    p.get("lines", ()), headline=p["text"], frame=frame, anchor=o.slot
+                )
             elif kind == "title":
-                lay = title_card(p["text"], p.get("subtitle", ""), frame=frame, anchor=o.slot)
+                lay = title_card(
+                    p["text"], p.get("subtitle", ""), frame=frame, anchor=o.slot
+                )
             else:
-                lay = caption(p["text"], p.get("attribution", ""), frame=frame, anchor=o.slot)
+                lay = caption(
+                    p["text"], p.get("attribution", ""), frame=frame, anchor=o.slot
+                )
         if lay is None:
-            unrenderable.append(f"#{i} [{o.start:.2f}, {o.end:.2f}] slot={o.slot!r} payload={p!r}")
+            unrenderable.append(
+                f"#{i} [{o.start:.2f}, {o.end:.2f}] slot={o.slot!r} payload={p!r}"
+            )
         else:
             out.append(o.with_layout(lay))
     if unrenderable:
@@ -290,10 +355,31 @@ def crawl(
     travel = max(1, ih - h)
     duration = travel / speed_px_s
     vf = f"crop={w}:{h}:0:'min(t*{speed_px_s:.4f},{travel})',format=yuv420p"
-    args = [ffmpeg_path(), "-y", "-loglevel", "error", "-loop", "1", "-framerate", str(fps), "-i", str(src)]
+    args = [
+        ffmpeg_path(),
+        "-y",
+        "-loglevel",
+        "error",
+        "-loop",
+        "1",
+        "-framerate",
+        str(fps),
+        "-i",
+        str(src),
+    ]
     if audio:
         args += ["-i", str(audio)]
-    args += ["-t", f"{duration:.3f}", "-vf", vf, *_ENCODE, "-crf", str(crf), "-preset", DEFAULT_PRESET]
+    args += [
+        "-t",
+        f"{duration:.3f}",
+        "-vf",
+        vf,
+        *_ENCODE,
+        "-crf",
+        str(crf),
+        "-preset",
+        DEFAULT_PRESET,
+    ]
     if audio:
         args += ["-c:a", "aac", "-shortest"]
     args += [str(dst)]
@@ -317,8 +403,20 @@ def frames_to_video(
     """Encode a lazy stream of RGB frames (the kinetic path: per-glyph reveals)."""
     w, h = _even(size[0]), _even(size[1])
     args = [
-        ffmpeg_path(), "-y", "-loglevel", "error",
-        "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{w}x{h}", "-r", str(fps), "-i", "-",
+        ffmpeg_path(),
+        "-y",
+        "-loglevel",
+        "error",
+        "-f",
+        "rawvideo",
+        "-pix_fmt",
+        "rgb24",
+        "-s",
+        f"{w}x{h}",
+        "-r",
+        str(fps),
+        "-i",
+        "-",
     ]
     if audio:
         args += ["-i", str(audio)]
@@ -346,9 +444,21 @@ def probe_size(video: str | Path) -> tuple[int, int]:
     """``(width, height)`` of the first video stream, via ffprobe."""
     ffprobe = shutil.which("ffprobe") or str(Path(ffmpeg_path()).with_name("ffprobe"))
     out = subprocess.run(
-        [ffprobe, "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=width,height",
-         "-of", "csv=p=0", str(video)],
-        capture_output=True, text=True, check=True,
+        [
+            ffprobe,
+            "-v",
+            "error",
+            "-select_streams",
+            "v:0",
+            "-show_entries",
+            "stream=width,height",
+            "-of",
+            "csv=p=0",
+            str(video),
+        ],
+        capture_output=True,
+        text=True,
+        check=True,
     ).stdout.strip()
     w, h = out.split(",")[:2]
     return int(w), int(h)
@@ -366,4 +476,3 @@ __all__ = [
     "frames_to_video",
     "probe_size",
 ]
-

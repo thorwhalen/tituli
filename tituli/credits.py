@@ -113,11 +113,15 @@ class Credits:
             for s in d.get("sections", ())
         )
         closing = d.get("closing", ())
-        closing = (closing,) if isinstance(closing, str) else tuple(str(c) for c in closing)
+        closing = (
+            (closing,) if isinstance(closing, str) else tuple(str(c) for c in closing)
+        )
         return cls(sections, str(d.get("title", "")), closing)
 
     @classmethod
-    def from_lines(cls, lines: Iterable[str], *, heading: str = "Credits", title: str = "") -> "Credits":
+    def from_lines(
+        cls, lines: Iterable[str], *, heading: str = "Credits", title: str = ""
+    ) -> "Credits":
         """The plain-list case (what ``braidio.video.credits_card`` takes)."""
         return cls((Section(heading, tuple(Entry(l) for l in lines)),), title)
 
@@ -141,7 +145,10 @@ class CreditsStyle:
     def inked(self) -> "CreditsStyle":
         c = parse_color(self.ink)
         return CreditsStyle(
-            *(s.with_(color=c) for s in (self.title, self.heading, self.role, self.name, self.line)),
+            *(
+                s.with_(color=c)
+                for s in (self.title, self.heading, self.role, self.name, self.line)
+            ),
             self.ink,
             self.background,
         )
@@ -152,7 +159,9 @@ class CreditsStyle:
 # ----------------------------------------------------------------------------
 
 
-def _flow(credits: Credits, style: CreditsStyle, frame: Frame) -> list[tuple[str, float, Layout]]:
+def _flow(
+    credits: Credits, style: CreditsStyle, frame: Frame
+) -> list[tuple[str, float, Layout]]:
     """Each item as ``(kind, height, layout-at-origin)``, in reading order."""
     st = style.inked()
     fh = frame.height
@@ -164,22 +173,38 @@ def _flow(credits: Credits, style: CreditsStyle, frame: Frame) -> list[tuple[str
         items.append((kind, height, lay))
 
     if credits.title:
-        lay = block(credits.title, st.title.with_(align="center"), frame, max_width=col_w)
+        lay = block(
+            credits.title, st.title.with_(align="center"), frame, max_width=col_w
+        )
         add("title", lay, lay.bbox().height + name_em * _TITLE_GAP_BELOW)
     for si, sec in enumerate(credits.sections):
         if sec.heading:
             gap_above = name_em * (_HEADING_GAP_ABOVE if items else 0.0)
-            lay = block(sec.heading, st.heading.with_(align="center"), frame, max_width=col_w, y=gap_above)
-            add("heading", lay, gap_above + lay.bbox().height + name_em * _HEADING_GAP_BELOW)
+            lay = block(
+                sec.heading,
+                st.heading.with_(align="center"),
+                frame,
+                max_width=col_w,
+                y=gap_above,
+            )
+            add(
+                "heading",
+                lay,
+                gap_above + lay.bbox().height + name_em * _HEADING_GAP_BELOW,
+            )
         kind = sec.resolved_kind
         for e in sec.entries:
             if kind == "pairs":
                 add("pair", _pair(e, st, frame, col_w), name_em * _PAIR_LEADING)
             elif kind == "prose":
-                lay = block(e.name, st.line.with_(align="center"), frame, max_width=col_w)
+                lay = block(
+                    e.name, st.line.with_(align="center"), frame, max_width=col_w
+                )
                 add("prose", lay, lay.bbox().height + name_em * 0.6)
             else:
-                lay = block(e.name, st.name.with_(align="center"), frame, max_width=col_w)
+                lay = block(
+                    e.name, st.name.with_(align="center"), frame, max_width=col_w
+                )
                 add("line", lay, name_em * _LINE_LEADING)
     for i, line in enumerate(credits.closing):
         gap = name_em * (_CLOSING_GAP_ABOVE if i == 0 else 0.0)
@@ -195,7 +220,9 @@ def _pair(e: Entry, st: CreditsStyle, frame: Frame, col_w: float) -> Layout:
     role_w = col_w * _ROLE_COLUMN
     name_w = col_w - role_w - gutter
     role = block(e.role, st.role.with_(align="right"), frame, max_width=role_w)
-    name = block(e.name, st.name.with_(align="left"), frame, max_width=name_w, x=role_w + gutter)
+    name = block(
+        e.name, st.name.with_(align="left"), frame, max_width=name_w, x=role_w + gutter
+    )
     # align baselines: block() puts the first baseline at ascent + leading slack
     if role.runs and name.runs:
         dy = name.runs[0].y - role.runs[0].y
@@ -203,7 +230,9 @@ def _pair(e: Entry, st: CreditsStyle, frame: Frame, col_w: float) -> Layout:
     return role + name
 
 
-def _stack_items(items: Sequence[tuple[str, float, Layout]], x: float, y: float) -> Layout:
+def _stack_items(
+    items: Sequence[tuple[str, float, Layout]], x: float, y: float
+) -> Layout:
     out = Layout()
     for _, h, lay in items:
         out = out + lay.translated(x, y)
@@ -211,7 +240,9 @@ def _stack_items(items: Sequence[tuple[str, float, Layout]], x: float, y: float)
     return out
 
 
-def credits_crawl(credits: Credits, *, frame: Frame, style: CreditsStyle = CreditsStyle()) -> tuple[Layout, int]:
+def credits_crawl(
+    credits: Credits, *, frame: Frame, style: CreditsStyle = CreditsStyle()
+) -> tuple[Layout, int]:
     """One tall layout and its total height in pixels (for :func:`tituli.video.crawl`).
 
     The layout starts one frame-height down and ends one frame-height before
@@ -265,7 +296,9 @@ def credits_cards(
         first_kind, first_h, first_lay = page[0]
         if first_kind == "heading":
             bb = first_lay.bbox()
-            page = [("heading", first_h - (bb.y0), first_lay.translated(0, -bb.y0))] + list(page[1:])
+            page = [
+                ("heading", first_h - (bb.y0), first_lay.translated(0, -bb.y0))
+            ] + list(page[1:])
             height = sum(h for _, h, _ in page)
             y = frame.safe.y0 + (frame.safe.height - height) / 2
         out.append(_stack_items(page, x, y))
@@ -288,4 +321,3 @@ __all__ = [
     "DEFAULT_CRAWL_SPEED",
     "DEFAULT_CARD_HOLD_S",
 ]
-

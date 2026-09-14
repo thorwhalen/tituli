@@ -84,9 +84,15 @@ def decide_ink(frame: Frame, box: Box, *, preferred: RGBA | None = None) -> InkD
     """
     stats = frame.luminance_stats(box)
     if stats is None:
-        return InkDecision(WHITE, SCRIM_DARK, None, "background unknown: white on dark scrim")
+        return InkDecision(
+            WHITE, SCRIM_DARK, None, "background unknown: white on dark scrim"
+        )
     lum, std = stats
-    if preferred is not None and contrast_from_luminance(preferred, lum) >= WCAG_NORMAL_MIN and std < _BUSY_STD:
+    if (
+        preferred is not None
+        and contrast_from_luminance(preferred, lum) >= WCAG_NORMAL_MIN
+        and std < _BUSY_STD
+    ):
         return InkDecision(preferred, None, lum, "preferred ink has enough contrast")
     ink = ink_for(luminance=lum)
     ok = contrast_from_luminance(ink, lum) >= WCAG_NORMAL_MIN
@@ -97,11 +103,15 @@ def decide_ink(frame: Frame, box: Box, *, preferred: RGBA | None = None) -> InkD
     return InkDecision(ink, scrim, lum, f"{why}: scrim added")
 
 
-def _scrim_plate(block_box: Box, frame: Frame, scrim: RGBA, *, em: float, anchor: str) -> Plate:
+def _scrim_plate(
+    block_box: Box, frame: Frame, scrim: RGBA, *, em: float, anchor: str
+) -> Plate:
     """A 2-D corner (or edge) falloff cut to the block, bleeding away from it."""
     pad = em * _SCRIM_PAD_EM
     bleed = em * _SCRIM_BLEED_EM
-    core = Box(block_box.x0 - pad, block_box.y0 - pad, block_box.x1 + pad, block_box.y1 + pad)
+    core = Box(
+        block_box.x0 - pad, block_box.y0 - pad, block_box.x1 + pad, block_box.y1 + pad
+    )
     horizontal = "left" in anchor or "right" in anchor
     vertical = "top" in anchor or "bottom" in anchor
     # The plate runs from the frame edge the block hugs, through the core, and
@@ -127,7 +137,14 @@ def _scrim_plate(block_box: Box, frame: Frame, scrim: RGBA, *, em: float, anchor
     return Plate(b, scrim, "box", radius=em * 0.3)
 
 
-def truncate(text: str, style: TextStyle, frame_height: float, *, max_width: float, max_lines: int) -> str:
+def truncate(
+    text: str,
+    style: TextStyle,
+    frame_height: float,
+    *,
+    max_width: float,
+    max_lines: int,
+) -> str:
     """Wrap and hard-truncate with an ellipsis at ``max_lines`` lines.
 
     For text whose length you do not control (a licence template blob pasted
@@ -144,7 +161,13 @@ def truncate(text: str, style: TextStyle, frame_height: float, *, max_width: flo
     return "\n".join(kept)
 
 
-def _stack(parts: Sequence[tuple[str, TextStyle]], frame: Frame, *, max_width: float, align: str | None = None) -> Layout:
+def _stack(
+    parts: Sequence[tuple[str, TextStyle]],
+    frame: Frame,
+    *,
+    max_width: float,
+    align: str | None = None,
+) -> Layout:
     """Lay out several (text, style) blocks top-to-bottom with style-sized gaps."""
     y = 0.0
     out = Layout()
@@ -154,7 +177,10 @@ def _stack(parts: Sequence[tuple[str, TextStyle]], frame: Frame, *, max_width: f
         st = style.with_(align=align) if align else style
         lay = block(text, st, frame, max_width=max_width, y=y)
         out = out + lay
-        y += len(text.split("\n")) * lay.meta["line_height"] + st.face(frame.height).size * _GAP_EM
+        y += (
+            len(text.split("\n")) * lay.meta["line_height"]
+            + st.face(frame.height).size * _GAP_EM
+        )
     return out
 
 
@@ -180,14 +206,28 @@ def title_card(
     """
     safe = frame.safe
     max_w = safe.width * _TITLE_MAX_WIDTH
-    tstyle = fit_size(title, title_style, frame.height, max_width=max_w, max_height=safe.height * 0.6)
+    tstyle = fit_size(
+        title, title_style, frame.height, max_width=max_w, max_height=safe.height * 0.6
+    )
     parts = [(kicker, kicker_style), (title, tstyle), (subtitle, subtitle_style)]
-    align = "center" if anchor in ("top", "center", "bottom") else ("left" if "left" in anchor else "right")
+    align = (
+        "center"
+        if anchor in ("top", "center", "bottom")
+        else ("left" if "left" in anchor else "right")
+    )
     lay = _stack(parts, frame, max_width=max_w, align=align)
     bb = lay.bbox()
     where, box = frame.place((bb.width, bb.height), anchor=anchor)
     lay = lay.moved_to(box)
-    return _finish(lay, frame, where, ink=ink, scrim=scrim, em=tstyle.face(frame.height).size, preferred=parse_color(title_style.color))
+    return _finish(
+        lay,
+        frame,
+        where,
+        ink=ink,
+        scrim=scrim,
+        em=tstyle.face(frame.height).size,
+        preferred=parse_color(title_style.color),
+    )
 
 
 def caption(
@@ -215,19 +255,48 @@ def caption(
     safe = frame.safe
     max_w = safe.width * max_width
     body = truncate(text, style, frame.height, max_width=max_w, max_lines=max_lines)
-    credit = truncate(attribution, attribution_style, frame.height, max_width=max_w, max_lines=1) if attribution else ""
+    credit = (
+        truncate(
+            attribution, attribution_style, frame.height, max_width=max_w, max_lines=1
+        )
+        if attribution
+        else ""
+    )
     # Try the layout at each candidate anchor's alignment; alignment follows the side.
-    lay = _stack([(body, style), (credit, attribution_style)], frame, max_width=max_w, align="left")
+    lay = _stack(
+        [(body, style), (credit, attribution_style)],
+        frame,
+        max_width=max_w,
+        align="left",
+    )
     bb = lay.bbox()
     where, box = frame.place((bb.width, bb.height), anchor=anchor)
     if "right" in where:
-        lay = _stack([(body, style), (credit, attribution_style)], frame, max_width=max_w, align="right")
+        lay = _stack(
+            [(body, style), (credit, attribution_style)],
+            frame,
+            max_width=max_w,
+            align="right",
+        )
     elif where in ("top", "center", "bottom"):
-        lay = _stack([(body, style), (credit, attribution_style)], frame, max_width=max_w, align="center")
+        lay = _stack(
+            [(body, style), (credit, attribution_style)],
+            frame,
+            max_width=max_w,
+            align="center",
+        )
     bb = lay.bbox()
     lay = lay.moved_to(box)
     em = style.face(frame.height).size
-    out = _finish(lay, frame, where, ink=ink, scrim=scrim, em=em, preferred=parse_color(style.color))
+    out = _finish(
+        lay,
+        frame,
+        where,
+        ink=ink,
+        scrim=scrim,
+        em=em,
+        preferred=parse_color(style.color),
+    )
     if accent:
         out = _with_accent_rule(out, em, where)
     return out
@@ -251,13 +320,30 @@ def lower_third(
     """
     max_w = frame.safe.width * _LOWER_THIRD_MAX_WIDTH
     name_t = truncate(name, name_style, frame.height, max_width=max_w, max_lines=1)
-    role_t = truncate(role, role_style, frame.height, max_width=max_w, max_lines=1) if role else ""
-    lay = _stack([(name_t, name_style), (role_t, role_style)], frame, max_width=max_w, align="left")
+    role_t = (
+        truncate(role, role_style, frame.height, max_width=max_w, max_lines=1)
+        if role
+        else ""
+    )
+    lay = _stack(
+        [(name_t, name_style), (role_t, role_style)],
+        frame,
+        max_width=max_w,
+        align="left",
+    )
     bb = lay.bbox()
     where, box = frame.place((bb.width, bb.height), anchor=anchor)
     lay = lay.moved_to(box)
     em = name_style.face(frame.height).size
-    out = _finish(lay, frame, where, ink=ink, scrim=scrim, em=em, preferred=parse_color(name_style.color))
+    out = _finish(
+        lay,
+        frame,
+        where,
+        ink=ink,
+        scrim=scrim,
+        em=em,
+        preferred=parse_color(name_style.color),
+    )
     return _with_accent_rule(out, em, where)
 
 
@@ -285,8 +371,17 @@ def note(
     if isinstance(lines, str):
         lines = [l for l in lines.split("\n") if l.strip()]
     max_w = frame.safe.width * max_width
-    body = [truncate(l, line_style, frame.height, max_width=max_w, max_lines=_NOTE_MAX_LINES) for l in lines]
-    head = truncate(headline, headline_style, frame.height, max_width=max_w, max_lines=2) if headline else ""
+    body = [
+        truncate(
+            l, line_style, frame.height, max_width=max_w, max_lines=_NOTE_MAX_LINES
+        )
+        for l in lines
+    ]
+    head = (
+        truncate(headline, headline_style, frame.height, max_width=max_w, max_lines=2)
+        if headline
+        else ""
+    )
     parts = [(head, headline_style)] + [(b, line_style) for b in body]
     align = "left"
     lay = _stack(parts, frame, max_width=max_w, align=align)
@@ -297,7 +392,15 @@ def note(
         lay = _stack(parts, frame, max_width=max_w, align=align)
     lay = lay.moved_to(box)
     em = (headline_style if head else line_style).face(frame.height).size
-    out = _finish(lay, frame, where, ink=ink, scrim=scrim, em=em, preferred=parse_color(line_style.color))
+    out = _finish(
+        lay,
+        frame,
+        where,
+        ink=ink,
+        scrim=scrim,
+        em=em,
+        preferred=parse_color(line_style.color),
+    )
     return _with_accent_rule(out, em, where) if accent else out
 
 
@@ -330,9 +433,12 @@ def _finish(
     decision = decide_ink(frame, bb, preferred=preferred)
     chosen = ink if ink is not None else decision.ink
     runs = tuple(
-        Run(**{**r.__dict__, "color": with_alpha(chosen, r.color[3] / 255)}) for r in lay.runs
+        Run(**{**r.__dict__, "color": with_alpha(chosen, r.color[3] / 255)})
+        for r in lay.runs
     )
-    lay = Layout(runs, lay.plates, {**lay.meta, "ink": decision.reason, "anchor": anchor})
+    lay = Layout(
+        runs, lay.plates, {**lay.meta, "ink": decision.reason, "anchor": anchor}
+    )
     want_scrim = decision.scrim is not None if scrim is None else scrim
     if want_scrim:
         color = decision.scrim or (SCRIM_DARK if chosen == WHITE else SCRIM_LIGHT)
@@ -347,12 +453,22 @@ def intertitle(text: str, *, frame: Frame, style: TextStyle | None = None) -> La
 
     st = style or INTERTITLE
     safe = frame.safe
-    st = fit_size(text, st, frame.height, max_width=safe.width * 0.7, max_height=safe.height * 0.7)
+    st = fit_size(
+        text, st, frame.height, max_width=safe.width * 0.7, max_height=safe.height * 0.7
+    )
     lay = block(text, st, frame, max_width=safe.width * 0.7)
     bb = lay.bbox()
     _, box = frame.place((bb.width, bb.height), anchor="center")
     lay = lay.moved_to(box)
-    return _finish(lay, frame, "center", ink=None, scrim=None, em=st.face(frame.height).size, preferred=parse_color(st.color))
+    return _finish(
+        lay,
+        frame,
+        "center",
+        ink=None,
+        scrim=None,
+        em=st.face(frame.height).size,
+        preferred=parse_color(st.color),
+    )
 
 
 __all__ = [

@@ -60,13 +60,24 @@ def resolve_shape(shape: "str | Path", box: Box) -> Path:
     if name == "arc":
         return Path.arc((cx, cy + r * 0.6), r * 1.1, *_ARC_SWEEP).fit(box)
     if name == "wave":
-        return Path.wave((box.x0, cy), (box.x1, cy), amplitude=box.height * _WAVE_AMPLITUDE, cycles=1.0)
+        return Path.wave(
+            (box.x0, cy),
+            (box.x1, cy),
+            amplitude=box.height * _WAVE_AMPLITUDE,
+            cycles=1.0,
+        )
     if name == "diagonal":
         return Path.line((box.x0, box.y0), (box.x1, box.y1))
     if name == "s-curve":
-        return Path.bezier((box.x0, box.y1), (box.x0 + box.width * 0.9, box.y0 + box.height * 0.9),
-                           (box.x1 - box.width * 0.9, box.y0 + box.height * 0.1), (box.x1, box.y0))
-    raise ValueError(f"unknown shape {shape!r}; use a preset name, an SVG path string, or a Path")
+        return Path.bezier(
+            (box.x0, box.y1),
+            (box.x0 + box.width * 0.9, box.y0 + box.height * 0.9),
+            (box.x1 - box.width * 0.9, box.y0 + box.height * 0.1),
+            (box.x1, box.y0),
+        )
+    raise ValueError(
+        f"unknown shape {shape!r}; use a preset name, an SVG path string, or a Path"
+    )
 
 
 def on_path(
@@ -85,14 +96,18 @@ def on_path(
     With ``fit_text`` the type is shrunk until the whole string fits the path
     length (never clipped); the resulting size is in ``meta["size"]``.
     """
-    box = box or frame.safe.inset(frame.safe.width * _SHAPE_INSET, frame.safe.height * _SHAPE_INSET)
+    box = box or frame.safe.inset(
+        frame.safe.width * _SHAPE_INSET, frame.safe.height * _SHAPE_INSET
+    )
     path = resolve_shape(shape, box)
     st = style
     lay = along_path(text, path, st, frame, upright=upright, align=align)
     while fit_text and lay.meta.get("overflow", 0) > 0 and st.size > 0.008:
         st = st.with_(size=st.size * 0.92)
         lay = along_path(text, path, st, frame, upright=upright, align=align)
-    return Layout(lay.runs, lay.plates, {**lay.meta, "size": st.size, "path_length": path.length})
+    return Layout(
+        lay.runs, lay.plates, {**lay.meta, "size": st.size, "path_length": path.length}
+    )
 
 
 def rain(
@@ -114,7 +129,15 @@ def rain(
     if isinstance(lines, str):
         lines = [l for l in lines.split("\n") if l.strip()]
     box = box or frame.safe
-    return glyph_columns(list(lines), style, frame, box=box, slants=slants, head_offsets=head_offsets, size_ratio=size_ratio)
+    return glyph_columns(
+        list(lines),
+        style,
+        frame,
+        box=box,
+        slants=slants,
+        head_offsets=head_offsets,
+        size_ratio=size_ratio,
+    )
 
 
 def in_shape(
@@ -131,4 +154,11 @@ def in_shape(
     return fill_shape(text, mask, style, frame, box=box, repeat=repeat)
 
 
-__all__ = ["on_path", "rain", "in_shape", "resolve_shape", "IL_PLEUT_SLANTS", "IL_PLEUT_HEAD_OFFSETS"]
+__all__ = [
+    "on_path",
+    "rain",
+    "in_shape",
+    "resolve_shape",
+    "IL_PLEUT_SLANTS",
+    "IL_PLEUT_HEAD_OFFSETS",
+]

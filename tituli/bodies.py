@@ -28,21 +28,39 @@ def _model():
 
         model_config = {"frozen": True, "extra": "forbid"}
 
-        text: str = Field(..., description="The caption as displayed (after wrapping/truncation).")
-        attribution: str = Field("", description="The small credit line under the caption, if any.")
-        kind: str = Field("caption", description="Free string: 'caption', 'lower_third', 'title', 'intertitle', ...")
-        anchor: str = Field("", description="Grid position the block was placed at ('top-left', ...).")
+        text: str = Field(
+            ..., description="The caption as displayed (after wrapping/truncation)."
+        )
+        attribution: str = Field(
+            "", description="The small credit line under the caption, if any."
+        )
+        kind: str = Field(
+            "caption",
+            description="Free string: 'caption', 'lower_third', 'title', 'intertitle', ...",
+        )
+        anchor: str = Field(
+            "", description="Grid position the block was placed at ('top-left', ...)."
+        )
         box: tuple[float, float, float, float] | None = Field(
             None, description="Normalised (x, y, w, h) of the text block in the frame."
         )
         ink: str | None = Field(None, description="Ink colour as #rrggbb, if recorded.")
-        scrim: bool | None = Field(None, description="Whether a scrim was drawn under the text.")
-        reason: str | None = Field(None, description="The ink/scrim decision the frame's knowledge led to.")
-        style: dict[str, Any] | None = Field(None, description="The TextStyle fields used, for re-rendering.")
-        unlabelled: bool = Field(
-            False, description="True when the still was deliberately shown without a label (an explicit choice, not an omission)."
+        scrim: bool | None = Field(
+            None, description="Whether a scrim was drawn under the text."
         )
-        overlay_asset_id: str | None = Field(None, description="asset_id of the rendered transparent PNG, if stored.")
+        reason: str | None = Field(
+            None, description="The ink/scrim decision the frame's knowledge led to."
+        )
+        style: dict[str, Any] | None = Field(
+            None, description="The TextStyle fields used, for re-rendering."
+        )
+        unlabelled: bool = Field(
+            False,
+            description="True when the still was deliberately shown without a label (an explicit choice, not an omission).",
+        )
+        overlay_asset_id: str | None = Field(
+            None, description="asset_id of the rendered transparent PNG, if stored."
+        )
 
     return TextOverlayBodyV1
 
@@ -59,7 +77,15 @@ def register() -> str:
     return TEXT_OVERLAY_V1
 
 
-def body_for(layout, frame, *, text: str, attribution: str = "", kind: str = "caption", unlabelled: bool = False) -> dict:
+def body_for(
+    layout,
+    frame,
+    *,
+    text: str,
+    attribution: str = "",
+    kind: str = "caption",
+    unlabelled: bool = False,
+) -> dict:
     """The body dict for a rendered layout — plain data, no lacing needed.
 
     >>> from tituli.frame import Frame
@@ -81,7 +107,8 @@ def body_for(layout, frame, *, text: str, attribution: str = "", kind: str = "ca
         "anchor": str(layout.meta.get("anchor", "")),
         "box": tuple(round(v, 4) for v in bb.to_norm(frame.width, frame.height)),
         "ink": ink,
-        "scrim": any(p.kind != "box" or p.color[3] < 255 for p in layout.plates) or None,
+        "scrim": any(p.kind != "box" or p.color[3] < 255 for p in layout.plates)
+        or None,
         "reason": layout.meta.get("ink"),
         "style": None,
         "unlabelled": unlabelled,

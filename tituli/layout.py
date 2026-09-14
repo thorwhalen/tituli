@@ -32,8 +32,13 @@ from tituli.style import TextStyle
 
 Unit = Literal["line", "word", "glyph"]
 PlateKind = Literal[
-    "box", "gradient-bottom", "gradient-top",
-    "corner-top-left", "corner-top-right", "corner-bottom-left", "corner-bottom-right",
+    "box",
+    "gradient-bottom",
+    "gradient-top",
+    "corner-top-left",
+    "corner-top-right",
+    "corner-bottom-left",
+    "corner-bottom-right",
 ]
 
 _WORD_SEP = " "
@@ -63,7 +68,12 @@ class Run:
 
     def bbox(self) -> Box:
         """Axis-aligned bounds (ignores rotation — fine for placement)."""
-        return Box(self.x, self.y - self.face.ascent, self.x + self.width, self.y + self.face.descent)
+        return Box(
+            self.x,
+            self.y - self.face.ascent,
+            self.x + self.width,
+            self.y + self.face.descent,
+        )
 
     def translated(self, dx: float, dy: float) -> "Run":
         return replace(self, x=self.x + dx, y=self.y + dy)
@@ -116,14 +126,20 @@ class Layout:
         return self.translated(box.x0 - bb.x0, box.y0 - bb.y0)
 
     def __add__(self, other: "Layout") -> "Layout":
-        return Layout(self.runs + other.runs, self.plates + other.plates, {**self.meta, **other.meta})
+        return Layout(
+            self.runs + other.runs,
+            self.plates + other.plates,
+            {**self.meta, **other.meta},
+        )
 
     def with_plates(self, *plates: Plate) -> "Layout":
         return Layout(self.runs, self.plates + tuple(plates), dict(self.meta))
 
     def with_timing(self, t_in: float, t_full: float) -> "Layout":
         """Give every run the same reveal envelope."""
-        return replace(self, runs=tuple(replace(r, t_in=t_in, t_full=t_full) for r in self.runs))
+        return replace(
+            self, runs=tuple(replace(r, t_in=t_in, t_full=t_full) for r in self.runs)
+        )
 
     def staggered(self, *, start: float = 0.0, step: float, ramp: float) -> "Layout":
         """Reveal runs one after another: run ``i`` starts at ``start + i*step``."""
@@ -158,7 +174,9 @@ def measure(text: str, style: TextStyle, frame_height: float) -> float:
     return face.length(text) + _tracking_px(style, face) * max(0, len(text) - 1)
 
 
-def wrap(text: str, style: TextStyle, frame_height: float, *, max_width: float) -> list[str]:
+def wrap(
+    text: str, style: TextStyle, frame_height: float, *, max_width: float
+) -> list[str]:
     """Greedy word wrap on measured widths. Explicit newlines are honoured.
 
     >>> from tituli.style import CAPTION
@@ -233,7 +251,17 @@ def _glyph_runs(
     cx = x
     for i, ch in enumerate(text):
         runs.append(
-            Run(ch, cx, y, face, color, opacity=opacity, unit="glyph", index=start_index + i, tags=tags)
+            Run(
+                ch,
+                cx,
+                y,
+                face,
+                color,
+                opacity=opacity,
+                unit="glyph",
+                index=start_index + i,
+                tags=tags,
+            )
         )
         cx += face.length(ch) + tracking
     return runs
@@ -260,9 +288,15 @@ def block(
     """
     fh = frame.height if isinstance(frame, Frame) else float(frame)
     face = style.face(fh)
-    rgba = with_alpha(parse_color(color if color is not None else style.color), style.opacity)
+    rgba = with_alpha(
+        parse_color(color if color is not None else style.color), style.opacity
+    )
     if isinstance(text, str):
-        lines = wrap(text, style, fh, max_width=max_width) if max_width else text.split("\n")
+        lines = (
+            wrap(text, style, fh, max_width=max_width)
+            if max_width
+            else text.split("\n")
+        )
     else:
         lines = list(text)
     lines = [style.apply_case(l) for l in lines]
@@ -285,17 +319,40 @@ def block(
             baseline += line_h
             continue
         if per_glyph:
-            gr = _glyph_runs(line, lx, baseline, face, rgba, tracking=tracking, opacity=1.0, tags=tags, start_index=idx)
+            gr = _glyph_runs(
+                line,
+                lx,
+                baseline,
+                face,
+                rgba,
+                tracking=tracking,
+                opacity=1.0,
+                tags=tags,
+                start_index=idx,
+            )
             runs.extend(gr)
             idx += len(gr)
         elif unit == "word":
             cx = lx
             for word in line.split(_WORD_SEP):
-                runs.append(Run(word, cx, baseline, face, rgba, unit="word", index=idx, tags=tags))
+                runs.append(
+                    Run(
+                        word,
+                        cx,
+                        baseline,
+                        face,
+                        rgba,
+                        unit="word",
+                        index=idx,
+                        tags=tags,
+                    )
+                )
                 cx += face.length(word + _WORD_SEP)
                 idx += 1
         else:
-            runs.append(Run(line, lx, baseline, face, rgba, unit="line", index=i, tags=tags))
+            runs.append(
+                Run(line, lx, baseline, face, rgba, unit="line", index=i, tags=tags)
+            )
         baseline += line_h
     return Layout(tuple(runs), meta={"line_height": line_h, "block_width": box_w})
 
@@ -326,7 +383,9 @@ def along_path(
     """
     fh = frame.height if isinstance(frame, Frame) else float(frame)
     face = style.face(fh)
-    rgba = with_alpha(parse_color(color if color is not None else style.color), style.opacity)
+    rgba = with_alpha(
+        parse_color(color if color is not None else style.color), style.opacity
+    )
     text = style.apply_case(text)
     tracking = _tracking_px(style, face)
     advances = [face.length(ch) + tracking for ch in text]
@@ -366,7 +425,9 @@ def along_path(
             px += -math.sin(a) * offset
             py += math.cos(a) * offset
         if ch != _WORD_SEP:
-            runs.append(Run(ch, px, py, face, rgba, angle=ang, unit="glyph", index=i, tags=tags))
+            runs.append(
+                Run(ch, px, py, face, rgba, angle=ang, unit="glyph", index=i, tags=tags)
+            )
         s += adv
     overflow = 0.0 if closed else max(0.0, s - tracking - path.length)
     if closed and total > path.length:
@@ -424,7 +485,9 @@ def glyph_columns(
     px_size = max(8, round(pitch * size_ratio))
     sized = style.with_(size=px_size / fh)
     face = sized.face(fh)
-    rgba = with_alpha(parse_color(color if color is not None else style.color), style.opacity)
+    rgba = with_alpha(
+        parse_color(color if color is not None else style.color), style.opacity
+    )
     u0, v0 = (min(us) if us else 0.0), (min(vs) if vs else 0.0)
     runs: list[Run] = []
     idx = 0
@@ -432,7 +495,18 @@ def glyph_columns(
         for u, v, ch in col:
             x = box.x0 + (u - u0) * pitch + (pitch - face.length(ch)) / 2
             y = box.y0 + (v - v0) * pitch + face.ascent
-            runs.append(Run(ch, x, y, face, rgba, unit="glyph", index=idx, tags=tags + (f"streak:{k}",)))
+            runs.append(
+                Run(
+                    ch,
+                    x,
+                    y,
+                    face,
+                    rgba,
+                    unit="glyph",
+                    index=idx,
+                    tags=tags + (f"streak:{k}",),
+                )
+            )
             idx += 1
     return Layout(tuple(runs), meta={"pitch": pitch, "streaks": n})
 
@@ -463,7 +537,9 @@ def fill_shape(
 
     fh = frame.height if isinstance(frame, Frame) else float(frame)
     face = style.face(fh)
-    rgba = with_alpha(parse_color(color if color is not None else style.color), style.opacity)
+    rgba = with_alpha(
+        parse_color(color if color is not None else style.color), style.opacity
+    )
     words = style.apply_case(text).split()
     if not words:
         return Layout()
@@ -522,7 +598,9 @@ def fill_shape(
             cx = box.x0 + x0 + (avail - used) / 2
             baseline = box.y0 + y + face.ascent + (line_h - face.line_height) / 2
             for w in chunk:
-                runs.append(Run(w, cx, baseline, face, rgba, unit="word", index=idx, tags=tags))
+                runs.append(
+                    Run(w, cx, baseline, face, rgba, unit="word", index=idx, tags=tags)
+                )
                 cx += face.length(w) + space
                 idx += 1
             if not repeat and wi >= len(words):

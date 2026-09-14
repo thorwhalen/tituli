@@ -99,7 +99,9 @@ def _rotated_tile(run: Run, color: RGBA) -> tuple[Image.Image, tuple[float, floa
     h = face.line_height + 2 * m
     tile = Image.new("RGBA", (max(1, w), max(1, h)), (0, 0, 0, 0))
     ox, oy = float(m), float(m + face.ascent)
-    ImageDraw.Draw(tile).text((ox, oy), run.text, font=face.pil, fill=color, anchor="ls")
+    ImageDraw.Draw(tile).text(
+        (ox, oy), run.text, font=face.pil, fill=color, anchor="ls"
+    )
     # Pillow rotates counter-clockwise; our angle is clockwise on screen.
     rotated = tile.rotate(-run.angle, resample=_RESAMPLE, expand=True, center=(ox, oy))
     # Where did (ox, oy) go? With expand=True Pillow rotates about `center`
@@ -122,7 +124,9 @@ def _rotated_tile(run: Run, color: RGBA) -> tuple[Image.Image, tuple[float, floa
 # ----------------------------------------------------------------------------
 
 
-def _ramp(length: int, *, reverse: bool = False, solid: float = 0.0, power: float = 1.0) -> Image.Image:
+def _ramp(
+    length: int, *, reverse: bool = False, solid: float = 0.0, power: float = 1.0
+) -> Image.Image:
     """A 1-px-wide 'L' column: 255 at the start, easing to 0 by the end."""
     vals = []
     for i in range(_GRADIENT_STEPS):
@@ -145,7 +149,11 @@ def _plate_alpha(plate: Plate, w: int, h: int) -> Image.Image:
         return _ramp(h, solid=sy, power=_CORNER_POWER).resize((w, h))
     if plate.kind.startswith("corner-"):  # product of a vertical and a horizontal ramp
         v = _ramp(h, solid=sy, power=_CORNER_POWER).resize((w, h))
-        hz = _ramp(w, solid=sx, power=_CORNER_POWER).rotate(90, expand=True).resize((w, h))
+        hz = (
+            _ramp(w, solid=sx, power=_CORNER_POWER)
+            .rotate(90, expand=True)
+            .resize((w, h))
+        )
         alpha = ImageChops.multiply(v, hz)  # strongest at the top-left
         if "right" in plate.kind:
             alpha = alpha.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
@@ -157,7 +165,9 @@ def _plate_alpha(plate: Plate, w: int, h: int) -> Image.Image:
 
 def draw_plate(canvas: Image.Image, plate: Plate) -> None:
     """Composite one plate (scrim, box or rule) onto the canvas."""
-    x0, y0, x1, y1 = plate.box.intersection(Box(0, 0, canvas.width, canvas.height)).rounded()
+    x0, y0, x1, y1 = plate.box.intersection(
+        Box(0, 0, canvas.width, canvas.height)
+    ).rounded()
     w, h = max(0, x1 - x0), max(0, y1 - y0)
     if w == 0 or h == 0:
         return
@@ -166,7 +176,9 @@ def draw_plate(canvas: Image.Image, plate: Plate) -> None:
     alpha = _plate_alpha(plate, w, h)
     if plate.kind == "box" and plate.radius > 0:
         mask = Image.new("L", (w, h), 0)
-        ImageDraw.Draw(mask).rounded_rectangle((0, 0, w - 1, h - 1), radius=plate.radius, fill=_ALPHA_MAX)
+        ImageDraw.Draw(mask).rounded_rectangle(
+            (0, 0, w - 1, h - 1), radius=plate.radius, fill=_ALPHA_MAX
+        )
         alpha = ImageChops.multiply(alpha, mask)
     alpha = alpha.point(lambda v: v * a // _ALPHA_MAX)
     layer.putalpha(alpha)

@@ -30,11 +30,19 @@ def _size(size: str | Sequence[int] | None) -> tuple[int, int]:
     return int(w), int(h)
 
 
-def _frame(background: str | None, size: tuple[int, int], *, avoid: str | None, delivery: str | None) -> Frame:
+def _frame(
+    background: str | None,
+    size: tuple[int, int],
+    *,
+    avoid: str | None,
+    delivery: str | None,
+) -> Frame:
     """Build a frame from a colour, an image path, or nothing."""
     if background and Path(background).is_file():
         avoid_fn = _avoid(avoid)
-        return Frame.from_image(background, size=size, avoid=avoid_fn, delivery=delivery)
+        return Frame.from_image(
+            background, size=size, avoid=avoid_fn, delivery=delivery
+        )
     frame = Frame.blank(size, color=background or None)
     return frame.with_delivery(delivery)
 
@@ -47,7 +55,9 @@ def _avoid(spec: str | None):
         try:
             from burns import salient_box
         except ImportError as e:
-            raise ImportError("avoid='saliency' needs `pip install tituli[saliency]`") from e
+            raise ImportError(
+                "avoid='saliency' needs `pip install tituli[saliency]`"
+            ) from e
         return salient_box
     parts = [float(p) for p in spec.split(",")]
     if len(parts) != 4:
@@ -66,7 +76,12 @@ def _save(img, out: str | Path) -> Path:
 
 def _emit(out: Path, layout, **extra: Any) -> dict:
     bb = layout.bbox()
-    return {"out": str(out), "bbox": [round(bb.x0), round(bb.y0), round(bb.x1), round(bb.y1)], **layout.meta, **extra}
+    return {
+        "out": str(out),
+        "bbox": [round(bb.x0), round(bb.y0), round(bb.x1), round(bb.y1)],
+        **layout.meta,
+        **extra,
+    }
 
 
 def title_card(
@@ -200,7 +215,13 @@ def credits(
         if out_p.suffix.lower() == ".png":
             return _emit(_save(img, out_p), lay, height=total)
         _crawl(img, out_p, size=sz, speed_px_s=px_s, audio=audio)
-        return _emit(out_p, lay, height=total, duration=round((total - sz[1]) / px_s, 2), lines=cr.line_count)
+        return _emit(
+            out_p,
+            lay,
+            height=total,
+            duration=round((total - sz[1]) / px_s, 2),
+            lines=cr.line_count,
+        )
     if mode == "cards":
         cards = credits_cards(cr, frame=frame, style=style)
         imgs = [render(c, frame) for c in cards]
@@ -212,12 +233,29 @@ def credits(
 
             def gen():
                 for c in cards:
-                    for f in _frames(c.with_timing(0.0, 0.4), frame, duration=hold_s, fps=DEFAULT_FPS):
+                    for f in _frames(
+                        c.with_timing(0.0, 0.4), frame, duration=hold_s, fps=DEFAULT_FPS
+                    ):
                         yield f
 
             frames_to_video(gen(), out_p, size=sz, audio=audio)
-            return {"out": str(out_p), "cards": len(cards), "duration": round(hold_s * len(cards), 2), "lines": cr.line_count}
-        outs = [str(_save(im, out_p.with_name(f"{out_p.stem}_{i + 1:02d}{out_p.suffix or '.png'}"))) for i, im in enumerate(imgs)]
+            return {
+                "out": str(out_p),
+                "cards": len(cards),
+                "duration": round(hold_s * len(cards), 2),
+                "lines": cr.line_count,
+            }
+        outs = [
+            str(
+                _save(
+                    im,
+                    out_p.with_name(
+                        f"{out_p.stem}_{i + 1:02d}{out_p.suffix or '.png'}"
+                    ),
+                )
+            )
+            for i, im in enumerate(imgs)
+        ]
         return {"out": outs, "cards": len(cards), "lines": cr.line_count}
     raise ValueError("mode must be 'crawl' or 'cards'")
 
@@ -258,7 +296,9 @@ def calligram(
         n = max(1, len(lay.runs))
         step = reveal * 0.8 / n
         timed = lay.staggered(step=step, ramp=max(0.15, step * 3))
-        frames_to_video(_frames(timed, frame, duration=reveal, fps=DEFAULT_FPS), out, size=sz)
+        frames_to_video(
+            _frames(timed, frame, duration=reveal, fps=DEFAULT_FPS), out, size=sz
+        )
         return _emit(Path(out), lay, glyphs=len(lay.runs), duration=reveal)
     return _emit(_save(render(lay, frame), out), lay, glyphs=len(lay.runs))
 
@@ -291,12 +331,30 @@ def overlay_video(
     for it in items:
         kind = it.get("kind", "caption")
         if kind == "lower_third":
-            lay = _lt(it["text"], it.get("role", ""), frame=frame, anchor=it.get("anchor", "bottom-left"))
+            lay = _lt(
+                it["text"],
+                it.get("role", ""),
+                frame=frame,
+                anchor=it.get("anchor", "bottom-left"),
+            )
             weight = 2
         else:
-            lay = _caption(it["text"], it.get("attribution", ""), frame=frame, anchor=it.get("anchor", "top-left"))
+            lay = _caption(
+                it["text"],
+                it.get("attribution", ""),
+                frame=frame,
+                anchor=it.get("anchor", "top-left"),
+            )
             weight = 1
-        timed.append(TimedOverlay(lay, float(it["start"]), float(it["end"]), slot=lay.meta.get("anchor", "top-left"), weight=weight))
+        timed.append(
+            TimedOverlay(
+                lay,
+                float(it["start"]),
+                float(it["end"]),
+                slot=lay.meta.get("anchor", "top-left"),
+                weight=weight,
+            )
+        )
     kept = resolve(timed)
     _overlay(video, kept, out, size=size)
     return {"out": out, "overlays": len(kept), "dropped": len(timed) - len(kept)}
@@ -310,4 +368,12 @@ def fonts(query: str = "") -> dict:
     return {"count": len(fams), "families": fams}
 
 
-_dispatch_funcs = [title_card, caption, lower_third, credits, calligram, overlay_video, fonts]
+_dispatch_funcs = [
+    title_card,
+    caption,
+    lower_third,
+    credits,
+    calligram,
+    overlay_video,
+    fonts,
+]

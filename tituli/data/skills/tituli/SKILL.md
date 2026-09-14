@@ -16,11 +16,16 @@ Every call returns a `Layout`; `render(layout, frame)` gives an image; `tituli.v
 
 ```python
 from tituli import Frame
-Frame.blank((1920, 1080))                       # knows only its size -> white on a dark scrim
-Frame.blank((1920, 1080), color="#101014")      # solid colour -> ink by contrast, no scrim
-Frame.from_image("still.jpg", delivery="youtube")               # samples pixels; keeps the subtitle band clear
-Frame.from_image("still.jpg", avoid=burns.salient_box)          # ...and keeps off the subject
-Frame.over(["f01.jpg", "f02.jpg", "f03.jpg"], avoid=burns.salient_box)   # the frames under a camera move; worst instant wins
+
+Frame.blank((1920, 1080))  # knows only its size -> white on a dark scrim
+Frame.blank((1920, 1080), color="#101014")  # solid colour -> ink by contrast, no scrim
+Frame.from_image(
+    "still.jpg", delivery="youtube"
+)  # samples pixels; keeps the subtitle band clear
+Frame.from_image("still.jpg", avoid=burns.salient_box)  # ...and keeps off the subject
+Frame.over(
+    ["f01.jpg", "f02.jpg", "f03.jpg"], avoid=burns.salient_box
+)  # the frames under a camera move; worst instant wins
 ```
 
 ## Recipes
@@ -28,17 +33,27 @@ Frame.over(["f01.jpg", "f02.jpg", "f03.jpg"], avoid=burns.salient_box)   # the f
 **Title card** (PNG, or MP4 with a duration):
 ```python
 from tituli import Frame, title_card, render
+
 f = Frame.blank((1920, 1080), color="#101014")
-render(title_card("The Apple", "a concrete poem", kicker="Episode 3", frame=f), f).save("title.png")
+render(title_card("The Apple", "a concrete poem", kicker="Episode 3", frame=f), f).save(
+    "title.png"
+)
 # video: tituli.video.still(image, "title.mp4", duration=4)
 ```
 
 **Caption + tiny attribution on a still** — text is wrapped and truncated for you; attribution is small on purpose:
 ```python
 from tituli import Frame, caption, render
-f = Frame.from_image("still.jpg", delivery="youtube")          # add avoid=burns.salient_box if burns is installed
-lay = caption("Angelica Schuyler Church", "John Trumbull, 1785 · public domain", frame=f)
-render(lay, f).save("captioned.png")             # or render_overlay(lay, f.size) for a transparent PNG
+
+f = Frame.from_image(
+    "still.jpg", delivery="youtube"
+)  # add avoid=burns.salient_box if burns is installed
+lay = caption(
+    "Angelica Schuyler Church", "John Trumbull, 1785 · public domain", frame=f
+)
+render(lay, f).save(
+    "captioned.png"
+)  # or render_overlay(lay, f.size) for a transparent PNG
 ```
 
 **Lower third / context note**: `lower_third("Eliza Hamilton", "née Schuyler", frame=f)`; `note(["What Hamilton is", "Who Chernow is"], headline="Before we go on", frame=f)`.
@@ -46,13 +61,23 @@ render(lay, f).save("captioned.png")             # or render_overlay(lay, f.size
 **Credits** — structured, never a wall of filenames, never truncated:
 ```python
 from tituli import Credits, credits_cards, credits_crawl, credits_frame, render, Frame
-cr = Credits.from_dict({"title": "The Apple",
-    "sections": [{"heading": "Voices", "entries": [["Narrator", "T. Whalen"]]},
-                 {"heading": "Images", "entries": ["Still Life — Cézanne — public domain"]}],
-    "closing": ["Made with tituli"]})
+
+cr = Credits.from_dict(
+    {
+        "title": "The Apple",
+        "sections": [
+            {"heading": "Voices", "entries": [["Narrator", "T. Whalen"]]},
+            {"heading": "Images", "entries": ["Still Life — Cézanne — public domain"]},
+        ],
+        "closing": ["Made with tituli"],
+    }
+)
 f = credits_frame((1920, 1080))
-for i, card in enumerate(credits_cards(cr, frame=f)): render(card, f).save(f"credits_{i}.png")
-lay, total = credits_crawl(cr, frame=f)           # then tituli.video.crawl(render(lay, Frame.blank((1920, total), color=f.color)), "credits.mp4", size=(1920,1080), speed_px_s=97)
+for i, card in enumerate(credits_cards(cr, frame=f)):
+    render(card, f).save(f"credits_{i}.png")
+lay, total = credits_crawl(
+    cr, frame=f
+)  # then tituli.video.crawl(render(lay, Frame.blank((1920, total), color=f.color)), "credits.mp4", size=(1920,1080), speed_px_s=97)
 ```
 `Credits.from_lines(lines)` takes a plain list (braidio's `credits_card` shape).
 

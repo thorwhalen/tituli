@@ -28,7 +28,15 @@ Align = Literal["left", "center", "right"]
 Case = Literal["as-is", "upper", "lower", "title"]
 
 # Named weights so callers never write a magic number.
-THIN, LIGHT, REGULAR, MEDIUM, SEMIBOLD, BOLD, BLACK_WEIGHT = 100, 300, 400, 500, 600, 700, 900
+THIN, LIGHT, REGULAR, MEDIUM, SEMIBOLD, BOLD, BLACK_WEIGHT = (
+    100,
+    300,
+    400,
+    500,
+    600,
+    700,
+    900,
+)
 
 _DEFAULT_LEADING = 1.2
 _MIN_FONT_PX = 8
@@ -95,13 +103,23 @@ INTERTITLE = TextStyle(
 
 CAPTION = TextStyle(size=0.04, weight=SEMIBOLD, leading=1.25, align="left")
 NOTE_HEADLINE = TextStyle(size=0.055, weight=BOLD, leading=1.15, align="left")
-NOTE_LINE = TextStyle(size=0.03, weight=REGULAR, leading=1.4, align="left", opacity=0.92)
-ATTRIBUTION = TextStyle(size=0.02, weight=REGULAR, tracking=0.03, align="left", opacity=0.85)
+NOTE_LINE = TextStyle(
+    size=0.03, weight=REGULAR, leading=1.4, align="left", opacity=0.92
+)
+ATTRIBUTION = TextStyle(
+    size=0.02, weight=REGULAR, tracking=0.03, align="left", opacity=0.85
+)
 LOWER_THIRD_NAME = TextStyle(size=0.042, weight=BOLD, align="left")
-LOWER_THIRD_ROLE = TextStyle(size=0.026, weight=REGULAR, tracking=0.04, align="left", opacity=0.9)
+LOWER_THIRD_ROLE = TextStyle(
+    size=0.026, weight=REGULAR, tracking=0.04, align="left", opacity=0.9
+)
 
-CREDITS_HEADING = TextStyle(size=0.024, weight=MEDIUM, tracking=0.22, case="upper", opacity=0.75)
-CREDITS_ROLE = TextStyle(size=0.026, weight=REGULAR, tracking=0.03, align="right", opacity=0.8)
+CREDITS_HEADING = TextStyle(
+    size=0.024, weight=MEDIUM, tracking=0.22, case="upper", opacity=0.75
+)
+CREDITS_ROLE = TextStyle(
+    size=0.026, weight=REGULAR, tracking=0.03, align="right", opacity=0.8
+)
 CREDITS_NAME = TextStyle(size=0.032, weight=SEMIBOLD, align="left")
 CREDITS_TITLE = TextStyle(size=0.06, weight=BOLD, tracking=-0.005)
 CREDITS_LINE = TextStyle(size=0.03, weight=REGULAR, leading=1.4)

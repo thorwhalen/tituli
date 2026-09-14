@@ -115,12 +115,16 @@ def ink_for(
     dark: RGB = NEAR_BLACK,
 ) -> RGB:
     """Pick the ink (light or dark) with more contrast against ``luminance``."""
-    if contrast_from_luminance(light, luminance) >= contrast_from_luminance(dark, luminance):
+    if contrast_from_luminance(light, luminance) >= contrast_from_luminance(
+        dark, luminance
+    ):
         return light
     return dark
 
 
-def needs_scrim(ink: Color, luminance: float, *, minimum: float = WCAG_NORMAL_MIN) -> bool:
+def needs_scrim(
+    ink: Color, luminance: float, *, minimum: float = WCAG_NORMAL_MIN
+) -> bool:
     """Whether ``ink`` over that background falls short of ``minimum`` contrast.
 
     >>> needs_scrim((255, 255, 255), luminance=0.5)

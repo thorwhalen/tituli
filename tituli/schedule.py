@@ -104,7 +104,16 @@ class TimedOverlay:
         return self.start < other.end and other.start < self.end
 
     def with_layout(self, layout: Layout) -> "TimedOverlay":
-        return TimedOverlay(layout, self.start, self.end, self.slot, self.weight, self.fade, self.payload, dict(self.meta))
+        return TimedOverlay(
+            layout,
+            self.start,
+            self.end,
+            self.slot,
+            self.weight,
+            self.fade,
+            self.payload,
+            dict(self.meta),
+        )
 
 
 def schedule_labels(
@@ -146,7 +155,9 @@ def schedule_labels(
         if previous is not None and span.start - previous < repeat_gap_s:
             continue
         end = min(span.start + hold_s, span.end)
-        candidate = TimedOverlay(None, span.start, end, slot=slot, weight=weight, payload=label)
+        candidate = TimedOverlay(
+            None, span.start, end, slot=slot, weight=weight, payload=label
+        )
         candidate = _yield_to(candidate, heavier)
         if candidate is None or candidate.duration < min_readable_s:
             continue  # the heavier overlay owns this moment; try again next appearance
@@ -170,10 +181,14 @@ def _yield_to(o: TimedOverlay, heavier: Iterable[TimedOverlay]) -> TimedOverlay 
             end = min(end, h.start)
     if end == o.end:
         return o
-    return TimedOverlay(o.layout, o.start, end, o.slot, o.weight, o.fade, o.payload, dict(o.meta))
+    return TimedOverlay(
+        o.layout, o.start, end, o.slot, o.weight, o.fade, o.payload, dict(o.meta)
+    )
 
 
-def resolve(overlays: Iterable[TimedOverlay], *, min_readable_s: float = MIN_READABLE_S) -> list[TimedOverlay]:
+def resolve(
+    overlays: Iterable[TimedOverlay], *, min_readable_s: float = MIN_READABLE_S
+) -> list[TimedOverlay]:
     """Enforce one overlay per slot at a time: the heavier wins, the lighter yields.
 
     A lighter overlay is truncated to the time before the heavier one starts

@@ -52,7 +52,12 @@ SERIF_STACK: tuple[str, ...] = (
     "Times New Roman",
 )
 DISPLAY_STACK: tuple[str, ...] = ("Futura", "Avenir Next", "Gill Sans") + SANS_STACK
-MONO_STACK: tuple[str, ...] = ("Menlo", "DejaVu Sans Mono", "Liberation Mono", "Courier")
+MONO_STACK: tuple[str, ...] = (
+    "Menlo",
+    "DejaVu Sans Mono",
+    "Liberation Mono",
+    "Courier",
+)
 
 FALLBACK_FAMILY = "Aileron"  # what Pillow's embedded ``load_default`` reports
 
@@ -179,7 +184,9 @@ def font_dirs() -> list[Path]:
             Path("/usr/local/share/fonts"),
             Path("/usr/share/fonts"),
         ]
-    extra = [Path(p) for p in os.environ.get("TITULI_FONT_DIRS", "").split(os.pathsep) if p]
+    extra = [
+        Path(p) for p in os.environ.get("TITULI_FONT_DIRS", "").split(os.pathsep) if p
+    ]
     return [d for d in extra + candidates if d.is_dir()]
 
 
@@ -256,15 +263,22 @@ def find_font(
         if name.lower().endswith(_FONT_SUFFIXES) and Path(name).is_file():
             faces = tuple(_faces_in(Path(name)))
             if faces:
-                return _best_style(faces, weight=weight, italic=italic, condensed=condensed)
+                return _best_style(
+                    faces, weight=weight, italic=italic, condensed=condensed
+                )
         if name in idx:
-            return _best_style(idx[name], weight=weight, italic=italic, condensed=condensed)
+            return _best_style(
+                idx[name], weight=weight, italic=italic, condensed=condensed
+            )
     # case-insensitive second pass
     lower = {k.lower(): k for k in idx}
     for name in names:
         if name.lower() in lower:
             return _best_style(
-                idx[lower[name.lower()]], weight=weight, italic=italic, condensed=condensed
+                idx[lower[name.lower()]],
+                weight=weight,
+                italic=italic,
+                condensed=condensed,
             )
     return None
 

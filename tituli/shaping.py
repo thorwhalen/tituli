@@ -28,7 +28,9 @@ def _require():
         import freetype  # noqa: F401
         import uharfbuzz  # noqa: F401
     except ImportError as e:  # pragma: no cover - depends on the extra
-        raise ImportError("the HarfBuzz engine needs `pip install tituli[shaping]`") from e
+        raise ImportError(
+            "the HarfBuzz engine needs `pip install tituli[shaping]`"
+        ) from e
 
 
 @lru_cache(maxsize=64)
@@ -51,7 +53,9 @@ def _ft_face(path: str, index: int, size: int):
     return face
 
 
-def shape(text: str, path: str, index: int, size: int, *, features: dict | None = None) -> list[tuple[int, float, float, float, float]]:
+def shape(
+    text: str, path: str, index: int, size: int, *, features: dict | None = None
+) -> list[tuple[int, float, float, float, float]]:
     """``[(glyph_id, x_advance, y_advance, x_offset, y_offset), ...]`` in pixels."""
     import uharfbuzz as hb
 
@@ -62,7 +66,15 @@ def shape(text: str, path: str, index: int, size: int, *, features: dict | None 
     hb.shape(font, buf, features or {"kern": True, "liga": True})
     out = []
     for info, pos in zip(buf.glyph_infos, buf.glyph_positions):
-        out.append((info.codepoint, pos.x_advance / _HB_SCALE, pos.y_advance / _HB_SCALE, pos.x_offset / _HB_SCALE, pos.y_offset / _HB_SCALE))
+        out.append(
+            (
+                info.codepoint,
+                pos.x_advance / _HB_SCALE,
+                pos.y_advance / _HB_SCALE,
+                pos.x_offset / _HB_SCALE,
+                pos.y_offset / _HB_SCALE,
+            )
+        )
     return out
 
 
@@ -90,8 +102,10 @@ class HarfBuzzEngine:
         ang = math.radians(-run.angle)  # FreeType's y points up
         cos, sin = math.cos(ang), math.sin(ang)
         matrix = freetype.Matrix(
-            int(cos * _FT_MATRIX_ONE), int(-sin * _FT_MATRIX_ONE),
-            int(sin * _FT_MATRIX_ONE), int(cos * _FT_MATRIX_ONE),
+            int(cos * _FT_MATRIX_ONE),
+            int(-sin * _FT_MATRIX_ONE),
+            int(sin * _FT_MATRIX_ONE),
+            int(cos * _FT_MATRIX_ONE),
         )
         pen_x, pen_y = 0.0, 0.0  # along the (rotated) baseline, in unrotated px
         for gid, xa, ya, xo, yo in shape(run.text, face.path, face.index, face.size):
@@ -103,7 +117,9 @@ class HarfBuzzEngine:
                 sa = math.radians(run.angle)
                 sx = run.x + (pen_x + xo) * math.cos(sa) - (pen_y + yo) * math.sin(sa)
                 sy = run.y + (pen_x + xo) * math.sin(sa) + (pen_y + yo) * math.cos(sa)
-                tile = Image.frombytes("L", (bmp.width, bmp.rows), bytes(bmp.buffer), "raw", "L", bmp.pitch)
+                tile = Image.frombytes(
+                    "L", (bmp.width, bmp.rows), bytes(bmp.buffer), "raw", "L", bmp.pitch
+                )
                 if alpha < 1:
                     tile = tile.point(lambda v: round(v * alpha))
                 layer = Image.new("RGBA", tile.size, (r, g, b, 0))

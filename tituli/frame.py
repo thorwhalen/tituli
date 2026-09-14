@@ -92,14 +92,19 @@ def reserved_zones(delivery: str | None) -> tuple[NormBox, ...]:
     try:
         return DELIVERY_RESERVED[delivery]
     except KeyError:
-        raise ValueError(f"unknown delivery target {delivery!r}; choose from {sorted(DELIVERY_RESERVED)}") from None
+        raise ValueError(
+            f"unknown delivery target {delivery!r}; choose from {sorted(DELIVERY_RESERVED)}"
+        ) from None
 
 
 def _as_images(image: Any) -> list[Image.Image]:
     items = [image] if isinstance(image, (Image.Image, str, Path)) else list(image)
     if not items:
         raise ValueError("Frame.from_image needs at least one image")
-    return [(i if isinstance(i, Image.Image) else Image.open(i)).convert("RGB") for i in items]
+    return [
+        (i if isinstance(i, Image.Image) else Image.open(i)).convert("RGB")
+        for i in items
+    ]
 
 
 def _patch_stats(img: Image.Image, box: Box) -> tuple[float, float] | None:
@@ -178,9 +183,12 @@ class Frame:
             boxes = _as_boxes(avoid)
         px_boxes = tuple(Box.from_norm(b, first.width, first.height) for b in boxes)
         reserved = tuple(
-            Box.from_norm(b, first.width, first.height) for b in reserved_zones(delivery)
+            Box.from_norm(b, first.width, first.height)
+            for b in reserved_zones(delivery)
         )
-        return cls(first.width, first.height, None, first, px_boxes, reserved, tuple(imgs))
+        return cls(
+            first.width, first.height, None, first, px_boxes, reserved, tuple(imgs)
+        )
 
     @classmethod
     def over(
@@ -203,8 +211,18 @@ class Frame:
 
     def with_delivery(self, delivery: str | None) -> "Frame":
         """Same frame, placement keeping clear of that target's reserved zones."""
-        reserved = tuple(Box.from_norm(b, self.width, self.height) for b in reserved_zones(delivery))
-        return Frame(self.width, self.height, self.color, self.image, self.avoid, reserved, self.samples)
+        reserved = tuple(
+            Box.from_norm(b, self.width, self.height) for b in reserved_zones(delivery)
+        )
+        return Frame(
+            self.width,
+            self.height,
+            self.color,
+            self.image,
+            self.avoid,
+            reserved,
+            self.samples,
+        )
 
     # -- knowledge queries -------------------------------------------------------
 
@@ -232,7 +250,15 @@ class Frame:
             raise ValueError("a callable avoid= needs a Frame with an image")
         boxes = _as_boxes(avoid(img) if callable(avoid) else avoid)
         extra = tuple(Box.from_norm(b, self.width, self.height) for b in boxes)
-        return Frame(self.width, self.height, self.color, img, self.avoid + extra, self.reserved, self.samples)
+        return Frame(
+            self.width,
+            self.height,
+            self.color,
+            img,
+            self.avoid + extra,
+            self.reserved,
+            self.samples,
+        )
 
     def luminance_under(self, box: Box) -> float | None:
         """Mean relative luminance of the pixels under ``box``; None if unknown."""
@@ -290,14 +316,24 @@ class Frame:
             order = tuple(anchor)
         unknown = [a for a in order if a not in ANCHORS]
         if unknown:
-            raise ValueError(f"unknown anchor(s) {unknown}; choose from {sorted(ANCHORS)}")
+            raise ValueError(
+                f"unknown anchor(s) {unknown}; choose from {sorted(ANCHORS)}"
+            )
         candidates = [(a, anchor_box(region, size, a)) for a in order]
-        clear = [c for c in candidates if not any(c[1].overlap_fraction(r) > 0 for r in self.reserved)]
+        clear = [
+            c
+            for c in candidates
+            if not any(c[1].overlap_fraction(r) > 0 for r in self.reserved)
+        ]
         if clear:
             candidates = clear
         best = min(
             enumerate(candidates),
-            key=lambda ic: (round(self.overlap(ic[1][1]), 2), -self._distance_from_subject(ic[1][1]), ic[0]),
+            key=lambda ic: (
+                round(self.overlap(ic[1][1]), 2),
+                -self._distance_from_subject(ic[1][1]),
+                ic[0],
+            ),
         )
         return best[1]
 
@@ -307,7 +343,14 @@ class Frame:
             return 0.0
         cx, cy = box.center
         diag = (self.width**2 + self.height**2) ** 0.5
-        return round(min(((cx - a.center[0]) ** 2 + (cy - a.center[1]) ** 2) ** 0.5 for a in self.avoid) / diag, 2)
+        return round(
+            min(
+                ((cx - a.center[0]) ** 2 + (cy - a.center[1]) ** 2) ** 0.5
+                for a in self.avoid
+            )
+            / diag,
+            2,
+        )
 
 
 def cover_fit(img: Image.Image, size: Size) -> Image.Image:
@@ -318,7 +361,9 @@ def cover_fit(img: Image.Image, size: Size) -> Image.Image:
     """
     w, h = size
     scale = max(w / img.width, h / img.height)
-    resized = img.resize((max(1, round(img.width * scale)), max(1, round(img.height * scale))))
+    resized = img.resize(
+        (max(1, round(img.width * scale)), max(1, round(img.height * scale)))
+    )
     x0 = (resized.width - w) // 2
     y0 = (resized.height - h) // 2
     return resized.crop((x0, y0, x0 + w, y0 + h))

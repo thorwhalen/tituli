@@ -10,10 +10,16 @@ pip install tituli            # Pillow only; ffmpeg on PATH for video output
 from tituli import Frame, title_card, caption, render
 
 frame = Frame.blank((1920, 1080), color="#101014")
-render(title_card("Il pleut", "Apollinaire, 1918", kicker="Episode 3", frame=frame), frame).save("title.png")
+render(
+    title_card("Il pleut", "Apollinaire, 1918", kicker="Episode 3", frame=frame), frame
+).save("title.png")
 
-frame = Frame.from_image("still.jpg", delivery="youtube")      # add avoid=burns.salient_box to keep off the subject
-render(caption("Eliza Hamilton", "Ralph Earl, 1787 · public domain", frame=frame), frame).save("captioned.png")
+frame = Frame.from_image(
+    "still.jpg", delivery="youtube"
+)  # add avoid=burns.salient_box to keep off the subject
+render(
+    caption("Eliza Hamilton", "Ralph Earl, 1787 · public domain", frame=frame), frame
+).save("captioned.png")
 ```
 
 Or from the shell (`pip install tituli[cli]`):
