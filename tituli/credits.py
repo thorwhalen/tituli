@@ -38,8 +38,9 @@ from tituli.style import (
 # Typographic rhythm, in em of the name face.
 _HEADING_GAP_ABOVE = 2.2
 _HEADING_GAP_BELOW = 0.9
-_PAIR_LEADING = 1.55
-_LINE_LEADING = 1.45
+_ROW_GAP = 0.35  # space between rows beyond the measured text height, in em
+_BALANCE_ROUNDS = 12  # attempts at an even fill before falling back to greedy
+_BALANCE_STEP = 1.08  # target growth per attempt
 _GUTTER_EM = 1.0  # space between the role column and the name column
 _ROLE_COLUMN = 0.42  # fraction of the column width given to roles
 _TITLE_GAP_BELOW = 2.0
@@ -104,6 +105,14 @@ class Credits:
 
     @classmethod
     def from_dict(cls, d: dict[str, Any]) -> "Credits":
+        """Build from ``{"title", "sections": [{"heading", "entries", "kind"}], "closing"}``.
+
+        The caller owns making the text presentable: tituli sets whatever it is
+        given, so a raw manifest — camera filenames as roles, ``"Unknown
+        authorUnknown author"`` from a concatenated field — comes out as a
+        designed card of raw manifest strings. Map titles, artists and
+        licences into readable roles and names first.
+        """
         sections = tuple(
             Section(
                 heading=str(s.get("heading", "")),
@@ -122,7 +131,13 @@ class Credits:
     def from_lines(
         cls, lines: Iterable[str], *, heading: str = "Credits", title: str = ""
     ) -> "Credits":
-        """The plain-list case (what ``braidio.video.credits_card`` takes)."""
+        """The plain-list case (what ``braidio.video.credits_card`` takes).
+
+        Each line is set as prose, verbatim. Lines built from a fetch manifest
+        (``"<file> — <author> — <licence>"``) read as a terminal dump however
+        well they are typeset; prefer :meth:`from_dict` with ``{"role", "name"}``
+        entries ("Portrait of Eliza Hamilton", "Ralph Earl, 1787 · public domain").
+        """
         return cls((Section(heading, tuple(Entry(l) for l in lines)),), title)
 
     @property
@@ -172,6 +187,14 @@ def _flow(
     def add(kind: str, lay: Layout, height: float) -> None:
         items.append((kind, height, lay))
 
+    def rows_height(lay: Layout) -> float:
+        """Measured height of a possibly wrapped row: lines x line height + gap.
+
+        Advancing by one line height regardless of wrapping is how a long role
+        once ran into the row beneath it — measure first, then advance.
+        """
+        return _text_height(lay) + name_em * _ROW_GAP
+
     if credits.title:
         lay = block(
             credits.title, st.title.with_(align="center"), frame, max_width=col_w
@@ -195,22 +218,32 @@ def _flow(
         kind = sec.resolved_kind
         for e in sec.entries:
             if kind == "pairs":
-                add("pair", _pair(e, st, frame, col_w), name_em * _PAIR_LEADING)
+                lay = _pair(e, st, frame, col_w)
+                add("pair", lay, rows_height(lay))
             elif kind == "prose":
                 lay = block(
                     e.name, st.line.with_(align="center"), frame, max_width=col_w
                 )
-                add("prose", lay, lay.bbox().height + name_em * 0.6)
+                add("prose", lay, rows_height(lay))
             else:
                 lay = block(
                     e.name, st.name.with_(align="center"), frame, max_width=col_w
                 )
-                add("line", lay, name_em * _LINE_LEADING)
+                add("line", lay, rows_height(lay))
     for i, line in enumerate(credits.closing):
         gap = name_em * (_CLOSING_GAP_ABOVE if i == 0 else 0.0)
         lay = block(line, st.line.with_(align="center"), frame, max_width=col_w, y=gap)
         add("closing", lay, gap + lay.bbox().height + name_em * 0.4)
     return items
+
+
+def _text_height(lay: Layout) -> float:
+    """Height of a block's lines as laid out: distinct baselines x line height."""
+    if not lay.runs:
+        return 0.0
+    baselines = sorted({round(r.y, 3) for r in lay.runs})
+    line_h = lay.meta.get("line_height") or lay.runs[0].face.line_height
+    return (baselines[-1] - baselines[0]) + line_h
 
 
 def _pair(e: Entry, st: CreditsStyle, frame: Frame, col_w: float) -> Layout:
@@ -227,7 +260,11 @@ def _pair(e: Entry, st: CreditsStyle, frame: Frame, col_w: float) -> Layout:
     if role.runs and name.runs:
         dy = name.runs[0].y - role.runs[0].y
         role = role.translated(0, dy)
-    return role + name
+    out = role + name
+    out.meta["line_height"] = max(
+        role.meta.get("line_height", 0), name.meta.get("line_height", 0)
+    )
+    return out
 
 
 def _stack_items(
@@ -256,6 +293,30 @@ def credits_crawl(
     return lay, int(round(total))
 
 
+def _paginate(
+    items: Sequence[tuple[str, float, Layout]],
+    limit: float,
+    *,
+    target: float | None = None,
+) -> list[list[tuple[str, float, Layout]]]:
+    """Greedy fill to ``target`` (default: the limit); never past ``limit``.
+
+    A heading is never orphaned at the bottom of a card.
+    """
+    fill = limit if target is None else min(limit, target)
+    pages: list[list[tuple[str, float, Layout]]] = [[]]
+    used = 0.0
+    for i, item in enumerate(items):
+        kind, h, _ = item
+        nxt_h = items[i + 1][1] if kind == "heading" and i + 1 < len(items) else 0.0
+        if pages[-1] and used + h + nxt_h > fill:
+            pages.append([])
+            used = 0.0
+        pages[-1].append(item)
+        used += h
+    return pages
+
+
 def credits_cards(
     credits: Credits,
     *,
@@ -271,16 +332,18 @@ def credits_cards(
     """
     items = _flow(credits, style, frame)
     limit = frame.safe.height * _CARD_FILL
-    pages: list[list[tuple[str, float, Layout]]] = [[]]
-    used = 0.0
-    for i, item in enumerate(items):
-        kind, h, _ = item
-        nxt_h = items[i + 1][1] if kind == "heading" and i + 1 < len(items) else 0.0
-        if pages[-1] and used + h + nxt_h > limit:
-            pages.append([])
-            used = 0.0
-        pages[-1].append(item)
-        used += h
+    pages = _paginate(items, limit)
+    # Balance: a greedy fill leaves the last card nearly empty. Re-page to the
+    # smallest even share per card that still fits the same number of cards.
+    if len(pages) > 1:
+        n = len(pages)
+        target = sum(h for _, h, _ in items) / n
+        for _ in range(_BALANCE_ROUNDS):
+            balanced = _paginate(items, limit, target=target)
+            if len(balanced) <= n:
+                pages = balanced
+                break
+            target *= _BALANCE_STEP
     if max_cards is not None and len(pages) > max_cards:
         raise ValueError(
             f"credits: {credits.line_count} lines need {len(pages)} cards at this size but "

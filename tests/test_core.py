@@ -127,7 +127,9 @@ def test_wrap_respects_measured_width():
 
 
 def test_fit_size_shrinks_until_it_fits():
-    st = fit_size("Unshrinkable", TITLE, 1080, max_width=300)  # one word, wider than the box
+    st = fit_size(
+        "Unshrinkable", TITLE, 1080, max_width=300
+    )  # one word, wider than the box
     assert st.size < TITLE.size
     assert measure("Unshrinkable", st, 1080) <= 300
 
@@ -153,16 +155,25 @@ def test_along_path_rotates_to_tangent_and_reports_overflow():
     lay = along_path("hi", p, TextStyle(size=0.05), 1080)
     assert all(math.isclose(r.angle, 90.0) for r in lay.runs)
     short = Path.line((0, 0), (5, 0))
-    assert along_path("overflowing text", short, TextStyle(size=0.05), 1080).meta["overflow"] > 0
+    assert (
+        along_path("overflowing text", short, TextStyle(size=0.05), 1080).meta[
+            "overflow"
+        ]
+        > 0
+    )
 
 
 def test_along_path_upright_keeps_angle_zero():
-    lay = along_path("hi", Path.circle((100, 100), 50), TextStyle(size=0.05), 1080, upright=True)
+    lay = along_path(
+        "hi", Path.circle((100, 100), 50), TextStyle(size=0.05), 1080, upright=True
+    )
     assert all(r.angle == 0.0 for r in lay.runs)
 
 
 def test_layout_timing_helpers():
-    lay = block("a b c", TextStyle(size=0.05), 1080, unit="word").staggered(step=0.5, ramp=0.2)
+    lay = block("a b c", TextStyle(size=0.05), 1080, unit="word").staggered(
+        step=0.5, ramp=0.2
+    )
     assert [r.t_in for r in lay.runs] == [0.0, 0.5, 1.0]
     assert lay.duration_hint == pytest.approx(1.2)
 
@@ -176,7 +187,9 @@ def test_rung_a_knows_nothing():
 
 
 def test_rung_b_solid_colour():
-    assert Frame.blank((100, 100), color="#000").luminance_under(Box(0, 0, 10, 10)) == 0.0
+    assert (
+        Frame.blank((100, 100), color="#000").luminance_under(Box(0, 0, 10, 10)) == 0.0
+    )
 
 
 def test_rung_c_samples_pixels():
@@ -199,7 +212,9 @@ def test_rung_d_avoid_accepts_boxes_and_callables():
     img = Image.new("RGB", (100, 100), (200, 200, 200))
     f1 = Frame.from_image(img, avoid=[(0.0, 0.0, 0.5, 1.0)])
     f2 = Frame.from_image(img, avoid=lambda im: (0.0, 0.0, 0.5, 1.0))
-    f3 = Frame.from_image(img, avoid=lambda im: [(0.0, 0.0, 0.5, 1.0), (0.6, 0.6, 0.1, 0.1)])
+    f3 = Frame.from_image(
+        img, avoid=lambda im: [(0.0, 0.0, 0.5, 1.0), (0.6, 0.6, 0.1, 0.1)]
+    )
     assert f1.avoid == f2.avoid and len(f3.avoid) == 2
     assert f1.overlap(Box(0, 0, 50, 100)) == 1.0
     assert f1.overlap(Box(60, 0, 100, 100)) == 0.0
@@ -207,7 +222,9 @@ def test_rung_d_avoid_accepts_boxes_and_callables():
 
 def test_place_avoids_the_subject():
     img = Image.new("RGB", (1000, 1000))
-    f = Frame.from_image(img, avoid=[(0.0, 0.0, 0.5, 1.0)])  # subject fills the left half
+    f = Frame.from_image(
+        img, avoid=[(0.0, 0.0, 0.5, 1.0)]
+    )  # subject fills the left half
     where, box = f.place((200, 100), anchor="auto")
     assert "right" in where and box.x0 >= 500
 

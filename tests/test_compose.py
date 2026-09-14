@@ -65,7 +65,12 @@ def test_busy_picture_gets_a_scrim_even_if_mean_is_fine():
 
 def test_title_card_parts_and_fit():
     f = Frame.blank((1920, 1080), color="#101014")
-    lay = title_card("An Extraordinarily Long Title That Must Shrink To Fit The Frame", "sub", kicker="ep 1", frame=f)
+    lay = title_card(
+        "An Extraordinarily Long Title That Must Shrink To Fit The Frame",
+        "sub",
+        kicker="ep 1",
+        frame=f,
+    )
     kicker = "".join(r.text for r in lay.runs if r.unit == "glyph" and r.face.size < 30)
     assert kicker == "EP 1" and "sub" in "".join(r.text for r in lay.runs)
     assert lay.bbox().x0 >= f.safe.x0 and lay.bbox().x1 <= f.safe.x1
@@ -85,7 +90,9 @@ def test_title_card_over_picture_avoids_subject_and_scrims_if_needed():
 
 def test_caption_truncates_uncontrolled_text():
     f = Frame.blank((1920, 1080))
-    blob = "This is an artist field that some template filled with far too many words " * 6
+    blob = (
+        "This is an artist field that some template filled with far too many words " * 6
+    )
     lay = caption(blob, "credit", frame=f, max_lines=2)
     body = [r.text for r in lay.runs if r.face.size == CAPTION.px(1080)]
     assert len(body) == 2 and body[-1].endswith("…")
@@ -105,7 +112,12 @@ def test_caption_respects_youtube_reserved_zone():
 
 def test_caption_layout_precedes_scrim():
     f = Frame.blank((1920, 1080))
-    lay = caption("Three lines of caption text that wrap around a fair bit here", "src", frame=f, max_lines=3)
+    lay = caption(
+        "Three lines of caption text that wrap around a fair bit here",
+        "src",
+        frame=f,
+        max_lines=3,
+    )
     scrim = [p for p in lay.plates if p.kind != "box"][0]
     bb = lay.bbox()
     assert scrim.box.y0 <= bb.y0 and scrim.box.y1 >= bb.y1  # cut to the measured block
@@ -115,7 +127,9 @@ def test_attribution_is_small_and_present():
     f = Frame.blank((1920, 1080), color="#000")
     lay = caption("Caption", "Tiny credit", frame=f)
     sizes = sorted({r.face.size for r in lay.runs})
-    assert sizes[0] < sizes[-1] / 1.6  # the credit line is much smaller than the caption
+    assert (
+        sizes[0] < sizes[-1] / 1.6
+    )  # the credit line is much smaller than the caption
 
 
 def test_lower_third_and_intertitle_render():
@@ -132,8 +146,17 @@ def _roll(n_images: int = 40) -> Credits:
         {
             "title": "A Film",
             "sections": [
-                {"heading": "Cast", "entries": [["Narrator", "Someone"], ["Reader", "Someone Else"]]},
-                {"heading": "Images", "entries": [f"Picture {i} — Artist Number {i} — CC BY-SA 4.0 (Wikimedia Commons)" for i in range(n_images)]},
+                {
+                    "heading": "Cast",
+                    "entries": [["Narrator", "Someone"], ["Reader", "Someone Else"]],
+                },
+                {
+                    "heading": "Images",
+                    "entries": [
+                        f"Picture {i} — Artist Number {i} — CC BY-SA 4.0 (Wikimedia Commons)"
+                        for i in range(n_images)
+                    ],
+                },
             ],
             "closing": ["Made with tituli"],
         }
@@ -145,7 +168,10 @@ def test_credits_from_dict_and_lines():
     assert c.title == "A Film" and c.sections[0].resolved_kind == "pairs"
     assert c.sections[1].resolved_kind == "prose"
     assert Credits.from_lines(["a", "b"]).line_count == 2
-    assert Entry.of(("Role", "Name")).role == "Role" and Entry.of({"name": "N"}).name == "N"
+    assert (
+        Entry.of(("Role", "Name")).role == "Role"
+        and Entry.of({"name": "N"}).name == "N"
+    )
 
 
 def test_credits_cards_paginate_never_truncate():
@@ -184,7 +210,15 @@ def test_credits_style_is_one_ramp():
 
 def test_on_path_presets_and_fit():
     f = Frame.blank((800, 800), color="#fff")
-    for shape in ("line", "circle", "arc", "wave", "diagonal", "s-curve", "M0 0 L 100 0 L 100 100"):
+    for shape in (
+        "line",
+        "circle",
+        "arc",
+        "wave",
+        "diagonal",
+        "s-curve",
+        "M0 0 L 100 0 L 100 100",
+    ):
         lay = on_path("a short text", shape=shape, frame=f)
         assert lay.runs and lay.meta["overflow"] == 0
     long = on_path("word " * 200, shape="line", frame=f)
@@ -223,9 +257,18 @@ def test_suppressed_label_is_not_recorded_as_shown():
 
 
 def test_repeat_gap_and_first_appearance():
-    panels = [Span(0, 6, "a"), Span(6, 12, "a"), Span(200, 206, "a"), Span(206, 210, "b")]
+    panels = [
+        Span(0, 6, "a"),
+        Span(6, 12, "a"),
+        Span(200, 206, "a"),
+        Span(206, 210, "b"),
+    ]
     out = schedule_labels(panels, lambda p: Label(p.key.upper()))
-    assert [(o.payload.text, o.start) for o in out] == [("A", 0), ("A", 200), ("B", 206)]
+    assert [(o.payload.text, o.start) for o in out] == [
+        ("A", 0),
+        ("A", 200),
+        ("B", 206),
+    ]
 
 
 def test_none_label_is_refused_and_unlabelled_is_explicit():
@@ -253,7 +296,15 @@ def test_note_block_headline_and_equal_lines():
     from tituli import note
 
     f = Frame.blank((1920, 1080)).with_delivery("youtube")
-    lay = note(["Hamilton is a 2015 musical.", "Ron Chernow wrote the biography.", "Philip died at 19."], headline="Before we go on", frame=f)
+    lay = note(
+        [
+            "Hamilton is a 2015 musical.",
+            "Ron Chernow wrote the biography.",
+            "Philip died at 19.",
+        ],
+        headline="Before we go on",
+        frame=f,
+    )
     texts = [r.text for r in lay.runs]
     assert texts[0] == "Before we go on" and len(texts) == 4
     sizes = {r.face.size for r in lay.runs[1:]}
@@ -267,7 +318,9 @@ def test_resolve_truncates_before_dropping():
     kept = resolve([light, card])
     cut = [o for o in kept if o.weight == 1][0]
     assert cut.start == 18.0 and cut.end == 21.0
-    brief = TimedOverlay(None, 20.0, 22.6, slot="top-left", weight=1)  # only 1s would remain
+    brief = TimedOverlay(
+        None, 20.0, 22.6, slot="top-left", weight=1
+    )  # only 1s would remain
     assert all(o.weight == 2 for o in resolve([brief, card]))
 
 
@@ -278,7 +331,9 @@ def test_scheduled_labels_and_cards_all_reach_the_film(tmp_path):
     f = Frame.blank((640, 360)).with_delivery("youtube")
     cards = [TimedOverlay(caption("card", frame=f), 0, 3, slot="top-left", weight=2)]
     spans = [Span(0, 6, "eliza"), Span(6, 12, "eliza"), Span(12, 18, "map")]
-    labels = schedule_labels(spans, lambda s: Label(s.key.title(), "src"), suppressed_by=cards)
+    labels = schedule_labels(
+        spans, lambda s: Label(s.key.title(), "src"), suppressed_by=cards
+    )
     done = materialize(resolve([*cards, *labels]), frame=f)
     assert len(done) == 1 + len(labels) and all(o.layout is not None for o in done)
     assert {o.payload.text for o in done if o.payload} == {"Eliza", "Map"}
@@ -291,9 +346,97 @@ def test_scheduled_and_hand_built_labels_yield_identically():
     card = TimedOverlay(None, 21.0, 25.0, slot="top-left", weight=2)
     hand = TimedOverlay(None, 18.0, 22.6, slot="top-left", weight=1, payload=Label("x"))
     via_resolve = [o for o in resolve([hand, card]) if o.weight == 1]
-    via_schedule = schedule_labels([Span(18.0, 22.6, "x")], lambda s: Label("x"), suppressed_by=[card], hold_s=10)
-    assert [(o.start, o.end) for o in via_resolve] == [(o.start, o.end) for o in via_schedule] == [(18.0, 21.0)]
+    via_schedule = schedule_labels(
+        [Span(18.0, 22.6, "x")], lambda s: Label("x"), suppressed_by=[card], hold_s=10
+    )
+    assert (
+        [(o.start, o.end) for o in via_resolve]
+        == [(o.start, o.end) for o in via_schedule]
+        == [(18.0, 21.0)]
+    )
     # and both drop it when what remains is unreadable
     late = TimedOverlay(None, 20.0, 22.6, slot="top-left", weight=1, payload=Label("x"))
     assert [o for o in resolve([late, card]) if o.weight == 1] == []
-    assert schedule_labels([Span(20.0, 22.6, "x")], lambda s: Label("x"), suppressed_by=[card], hold_s=10) == []
+    assert (
+        schedule_labels(
+            [Span(20.0, 22.6, "x")],
+            lambda s: Label("x"),
+            suppressed_by=[card],
+            hold_s=10,
+        )
+        == []
+    )
+
+
+def _rows_of(card):
+    """Group a card's runs into rows by their first baseline, in reading order."""
+    from tituli.geometry import Box
+
+    rows: dict[float, Box] = {}
+    for r in card.runs:
+        key = round(r.y, 1)
+        rows[key] = rows[key].union(r.bbox()) if key in rows else r.bbox()
+    return [rows[k] for k in sorted(rows)]
+
+
+def test_credits_wrapped_roles_do_not_collide():
+    """A role that wraps to two lines must advance the row by its measured height."""
+    long_roles = [
+        (
+            "2019.08.08 National Theater and Concert Hall, Taipei — evening performance",
+            "Photographer One",
+        ),
+        (
+            "Audio-Technica turntable playing a coloured vinyl record in a living room",
+            "Photographer Two",
+        ),
+        ("Short role", "Photographer Three"),
+        (
+            "Blue (2011-11-29 by Ian T. McFarland) — a long descriptive title from Commons",
+            "Photographer Four",
+        ),
+    ] * 3
+    cr = Credits.from_dict(
+        {
+            "title": "Images",
+            "sections": [
+                {
+                    "heading": "Commons",
+                    "entries": [{"role": r, "name": n} for r, n in long_roles],
+                }
+            ],
+        }
+    )
+    f = credits_frame((1920, 1080))
+    for card in credits_cards(cr, frame=f):
+        # every run's box must be disjoint from every run's box on another baseline
+        runs = list(card.runs)
+        for a in runs:
+            for b in runs:
+                if abs(a.y - b.y) > 1 and a.bbox().intersection(b.bbox()).area > 0:
+                    # boxes on different baselines overlap: the row advance was too small
+                    assert a.bbox().x1 <= b.bbox().x0 or b.bbox().x1 <= a.bbox().x0, (
+                        a.text,
+                        b.text,
+                    )
+
+
+def test_credits_cards_are_balanced():
+    rows = [(f"Role number {i} of this roll", f"Name {i}") for i in range(20)]
+    cr = Credits.from_dict(
+        {
+            "title": "Images",
+            "sections": [
+                {
+                    "heading": "Commons",
+                    "entries": [{"role": r, "name": n} for r, n in rows],
+                }
+            ],
+            "closing": "…",
+        }
+    )
+    f = credits_frame((1920, 1080))
+    cards = credits_cards(cr, frame=f)
+    assert len(cards) >= 2
+    heights = [c.bbox().height for c in cards]
+    assert max(heights) - min(heights) < f.safe.height * 0.3
