@@ -1,0 +1,4 @@
+tituli.color
+============
+.. automodule:: tituli.color
+   :members:

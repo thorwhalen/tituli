@@ -1,0 +1,394 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tituli.render &mdash; tituli 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            tituli
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli.html">tituli</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/__main__.html">tituli.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/bodies.html">tituli.bodies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/calligram.html">tituli.calligram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/color.html">tituli.color</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/compose.html">tituli.compose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/credits.html">tituli.credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/fonts.html">tituli.fonts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/frame.html">tituli.frame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/geometry.html">tituli.geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/layout.html">tituli.layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/render.html">tituli.render</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/schedule.html">tituli.schedule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/shaping.html">tituli.shaping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/style.html">tituli.style</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/tools.html">tituli.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/video.html">tituli.video</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tituli</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tituli.render</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tituli.render</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Rasterise a :class:`~tituli.layout.Layout` with Pillow.</span>
+
+<span class="sd">The default engine is Pillow alone: un-rotated runs go straight through</span>
+<span class="sd">``ImageDraw.text`` (FreeType under the hood); rotated runs are drawn into a tile</span>
+<span class="sd">and rotated about their baseline origin with bicubic resampling. That is what</span>
+<span class="sd">lets a calligram exist with no dependency beyond Pillow. The optional</span>
+<span class="sd">:mod:`tituli.shaping` tier swaps in HarfBuzz shaping + FreeType outline transforms</span>
+<span class="sd">for scripts and ligatures Pillow's basic layout cannot do — it is the ``engine=``</span>
+<span class="sd">seam of :func:`render`.</span>
+
+<span class="sd">Output is always a full-frame image: an **RGBA overlay** when the frame has no</span>
+<span class="sd">background (compose it onto video later — never into the stills, or a camera</span>
+<span class="sd">move would drag the lettering along with the picture), or an **RGB composite**</span>
+<span class="sd">when the frame carries a colour or a picture.</span>
+
+<span class="sd">&gt;&gt;&gt; from tituli.frame import Frame</span>
+<span class="sd">&gt;&gt;&gt; from tituli.layout import block</span>
+<span class="sd">&gt;&gt;&gt; from tituli.style import TITLE</span>
+<span class="sd">&gt;&gt;&gt; img = render(block("Hi", TITLE, 1080), Frame.blank((640, 360)))</span>
+<span class="sd">&gt;&gt;&gt; img.mode, img.size</span>
+<span class="sd">('RGBA', (640, 360))</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Protocol</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageChops</span><span class="p">,</span> <span class="n">ImageDraw</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">tituli.color</span><span class="w"> </span><span class="kn">import</span> <span class="n">RGBA</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tituli.frame</span><span class="w"> </span><span class="kn">import</span> <span class="n">Frame</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tituli.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Box</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tituli.layout</span><span class="w"> </span><span class="kn">import</span> <span class="n">Layout</span><span class="p">,</span> <span class="n">Plate</span><span class="p">,</span> <span class="n">Run</span>
+
+<span class="n">_TILE_MARGIN_EM</span> <span class="o">=</span> <span class="mf">0.35</span>  <span class="c1"># extra room around a rotated glyph tile, in em</span>
+<span class="n">_RESAMPLE</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">Resampling</span><span class="o">.</span><span class="n">BICUBIC</span>
+<span class="n">_ALPHA_MAX</span> <span class="o">=</span> <span class="mi">255</span>
+<span class="n">_GRADIENT_STEPS</span> <span class="o">=</span> <span class="mi">256</span>
+<span class="n">_CORNER_POWER</span> <span class="o">=</span> <span class="mf">2.2</span>  <span class="c1"># ease of a scrim's falloff (higher = holds longer, drops faster)</span>
+
+
+<div class="viewcode-block" id="Engine">
+<a class="viewcode-back" href="../../module_docs/tituli/render.html#tituli.Engine">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Engine</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Draws one run onto an RGBA canvas at a given opacity."""</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">draw_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">canvas</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">run</span><span class="p">:</span> <span class="n">Run</span><span class="p">,</span> <span class="n">opacity</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span> <span class="o">...</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_envelope</span><span class="p">(</span><span class="n">run</span><span class="p">:</span> <span class="n">Run</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Reveal factor of a run at time ``t`` (1 when untimed or t is None)."""</span>
+    <span class="k">if</span> <span class="n">t</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">run</span><span class="o">.</span><span class="n">t_in</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">1.0</span>
+    <span class="k">if</span> <span class="n">t</span> <span class="o">&lt;</span> <span class="n">run</span><span class="o">.</span><span class="n">t_in</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+    <span class="n">full</span> <span class="o">=</span> <span class="n">run</span><span class="o">.</span><span class="n">t_full</span> <span class="k">if</span> <span class="n">run</span><span class="o">.</span><span class="n">t_full</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">run</span><span class="o">.</span><span class="n">t_in</span>
+    <span class="k">if</span> <span class="n">t</span> <span class="o">&gt;=</span> <span class="n">full</span> <span class="ow">or</span> <span class="n">full</span> <span class="o">&lt;=</span> <span class="n">run</span><span class="o">.</span><span class="n">t_in</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">1.0</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">t</span> <span class="o">-</span> <span class="n">run</span><span class="o">.</span><span class="n">t_in</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">full</span> <span class="o">-</span> <span class="n">run</span><span class="o">.</span><span class="n">t_in</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="PillowEngine">
+<a class="viewcode-back" href="../../module_docs/tituli/render.html#tituli.PillowEngine">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PillowEngine</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The zero-extra-dependency engine."""</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">draw_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">canvas</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">run</span><span class="p">:</span> <span class="n">Run</span><span class="p">,</span> <span class="n">opacity</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">_scaled_alpha</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="n">run</span><span class="o">.</span><span class="n">opacity</span> <span class="o">*</span> <span class="n">opacity</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">color</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">run</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">font</span> <span class="o">=</span> <span class="n">run</span><span class="o">.</span><span class="n">face</span><span class="o">.</span><span class="n">pil</span>
+        <span class="k">if</span> <span class="n">run</span><span class="o">.</span><span class="n">angle</span> <span class="o">==</span> <span class="mf">0.0</span> <span class="ow">and</span> <span class="n">run</span><span class="o">.</span><span class="n">tracking</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="n">draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">canvas</span><span class="p">)</span>
+            <span class="n">draw</span><span class="o">.</span><span class="n">text</span><span class="p">((</span><span class="n">run</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">run</span><span class="o">.</span><span class="n">y</span><span class="p">),</span> <span class="n">run</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="s2">"ls"</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">run</span><span class="o">.</span><span class="n">angle</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>  <span class="c1"># tracked glyph run drawn per glyph</span>
+            <span class="n">draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">canvas</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">run</span><span class="o">.</span><span class="n">x</span>
+            <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">run</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+                <span class="n">draw</span><span class="o">.</span><span class="n">text</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">run</span><span class="o">.</span><span class="n">y</span><span class="p">),</span> <span class="n">ch</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="s2">"ls"</span><span class="p">)</span>
+                <span class="n">x</span> <span class="o">+=</span> <span class="n">run</span><span class="o">.</span><span class="n">face</span><span class="o">.</span><span class="n">length</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span> <span class="o">+</span> <span class="n">run</span><span class="o">.</span><span class="n">tracking</span>
+            <span class="k">return</span>
+        <span class="n">tile</span><span class="p">,</span> <span class="n">origin</span> <span class="o">=</span> <span class="n">_rotated_tile</span><span class="p">(</span><span class="n">run</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span>
+        <span class="n">px</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="n">py</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">canvas</span><span class="o">.</span><span class="n">alpha_composite</span><span class="p">(</span><span class="n">tile</span><span class="p">,</span> <span class="p">(</span><span class="n">px</span><span class="p">,</span> <span class="n">py</span><span class="p">))</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_scaled_alpha</span><span class="p">(</span><span class="n">color</span><span class="p">:</span> <span class="n">RGBA</span><span class="p">,</span> <span class="n">factor</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RGBA</span><span class="p">:</span>
+    <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">color</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">_ALPHA_MAX</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="n">factor</span><span class="p">))))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_rotated_tile</span><span class="p">(</span><span class="n">run</span><span class="p">:</span> <span class="n">Run</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="n">RGBA</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">"""Draw the run upright in a tile, rotate about its baseline origin.</span>
+
+<span class="sd">    Returns the tile and where the run's origin landed inside it.</span>
+<span class="sd">    """</span>
+    <span class="n">face</span> <span class="o">=</span> <span class="n">run</span><span class="o">.</span><span class="n">face</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">face</span><span class="o">.</span><span class="n">size</span> <span class="o">*</span> <span class="n">_TILE_MARGIN_EM</span><span class="p">))</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">width</span><span class="p">))</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">m</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">face</span><span class="o">.</span><span class="n">line_height</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">m</span>
+    <span class="n">tile</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">"RGBA"</span><span class="p">,</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">w</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">h</span><span class="p">)),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="n">ox</span><span class="p">,</span> <span class="n">oy</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">m</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="n">face</span><span class="o">.</span><span class="n">ascent</span><span class="p">)</span>
+    <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">tile</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">((</span><span class="n">ox</span><span class="p">,</span> <span class="n">oy</span><span class="p">),</span> <span class="n">run</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">face</span><span class="o">.</span><span class="n">pil</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="s2">"ls"</span><span class="p">)</span>
+    <span class="c1"># Pillow rotates counter-clockwise; our angle is clockwise on screen.</span>
+    <span class="n">rotated</span> <span class="o">=</span> <span class="n">tile</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="o">-</span><span class="n">run</span><span class="o">.</span><span class="n">angle</span><span class="p">,</span> <span class="n">resample</span><span class="o">=</span><span class="n">_RESAMPLE</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="n">ox</span><span class="p">,</span> <span class="n">oy</span><span class="p">))</span>
+    <span class="c1"># Where did (ox, oy) go? With expand=True Pillow rotates about `center`</span>
+    <span class="c1"># then shifts so the rotated bounds start at (0, 0).</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span>
+    <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">rot</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+        <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">ox</span><span class="p">,</span> <span class="n">y</span> <span class="o">-</span> <span class="n">oy</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">ox</span> <span class="o">+</span> <span class="n">dx</span> <span class="o">*</span> <span class="n">cos</span> <span class="o">-</span> <span class="n">dy</span> <span class="o">*</span> <span class="n">sin</span><span class="p">,</span> <span class="n">oy</span> <span class="o">+</span> <span class="n">dx</span> <span class="o">*</span> <span class="n">sin</span> <span class="o">+</span> <span class="n">dy</span> <span class="o">*</span> <span class="n">cos</span><span class="p">)</span>
+
+    <span class="n">corners</span> <span class="o">=</span> <span class="p">[</span><span class="n">rot</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">rot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">rot</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">h</span><span class="p">),</span> <span class="n">rot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)]</span>
+    <span class="n">min_x</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">corners</span><span class="p">)</span>
+    <span class="n">min_y</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">corners</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">rotated</span><span class="p">,</span> <span class="p">(</span><span class="n">ox</span> <span class="o">-</span> <span class="n">min_x</span><span class="p">,</span> <span class="n">oy</span> <span class="o">-</span> <span class="n">min_y</span><span class="p">)</span>
+
+
+<span class="c1"># ----------------------------------------------------------------------------</span>
+<span class="c1"># Plates</span>
+<span class="c1"># ----------------------------------------------------------------------------</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_ramp</span><span class="p">(</span><span class="n">length</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">reverse</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">solid</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">power</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""A 1-px-wide 'L' column: 255 at the start, easing to 0 by the end."""</span>
+    <span class="n">vals</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">_GRADIENT_STEPS</span><span class="p">):</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">i</span> <span class="o">/</span> <span class="p">(</span><span class="n">_GRADIENT_STEPS</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="k">if</span> <span class="n">t</span> <span class="o">&lt;=</span> <span class="n">solid</span> <span class="k">else</span> <span class="p">(</span><span class="n">t</span> <span class="o">-</span> <span class="n">solid</span><span class="p">)</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="mf">1e-9</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">solid</span><span class="p">)</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">u</span><span class="p">)</span> <span class="o">**</span> <span class="n">power</span>
+        <span class="n">vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">_ALPHA_MAX</span> <span class="o">*</span> <span class="n">v</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">reverse</span><span class="p">:</span>
+        <span class="n">vals</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+    <span class="n">strip</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">"L"</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">_GRADIENT_STEPS</span><span class="p">))</span>
+    <span class="n">strip</span><span class="o">.</span><span class="n">putdata</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">strip</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">length</span><span class="p">)),</span> <span class="n">Image</span><span class="o">.</span><span class="n">Resampling</span><span class="o">.</span><span class="n">BILINEAR</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_plate_alpha</span><span class="p">(</span><span class="n">plate</span><span class="p">:</span> <span class="n">Plate</span><span class="p">,</span> <span class="n">w</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">h</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+    <span class="n">sx</span><span class="p">,</span> <span class="n">sy</span> <span class="o">=</span> <span class="n">plate</span><span class="o">.</span><span class="n">solid</span>
+    <span class="k">if</span> <span class="n">plate</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="s2">"gradient-bottom"</span><span class="p">:</span>  <span class="c1"># dark at the bottom, clear at the top</span>
+        <span class="k">return</span> <span class="n">_ramp</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">solid</span><span class="o">=</span><span class="n">sy</span><span class="p">,</span> <span class="n">power</span><span class="o">=</span><span class="n">_CORNER_POWER</span><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">plate</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="s2">"gradient-top"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_ramp</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">solid</span><span class="o">=</span><span class="n">sy</span><span class="p">,</span> <span class="n">power</span><span class="o">=</span><span class="n">_CORNER_POWER</span><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">plate</span><span class="o">.</span><span class="n">kind</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"corner-"</span><span class="p">):</span>  <span class="c1"># product of a vertical and a horizontal ramp</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">_ramp</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">solid</span><span class="o">=</span><span class="n">sy</span><span class="p">,</span> <span class="n">power</span><span class="o">=</span><span class="n">_CORNER_POWER</span><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">))</span>
+        <span class="n">hz</span> <span class="o">=</span> <span class="n">_ramp</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">solid</span><span class="o">=</span><span class="n">sx</span><span class="p">,</span> <span class="n">power</span><span class="o">=</span><span class="n">_CORNER_POWER</span><span class="p">)</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="mi">90</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">))</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="n">ImageChops</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">hz</span><span class="p">)</span>  <span class="c1"># strongest at the top-left</span>
+        <span class="k">if</span> <span class="s2">"right"</span> <span class="ow">in</span> <span class="n">plate</span><span class="o">.</span><span class="n">kind</span><span class="p">:</span>
+            <span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">Transpose</span><span class="o">.</span><span class="n">FLIP_LEFT_RIGHT</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">"bottom"</span> <span class="ow">in</span> <span class="n">plate</span><span class="o">.</span><span class="n">kind</span><span class="p">:</span>
+            <span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">Transpose</span><span class="o">.</span><span class="n">FLIP_TOP_BOTTOM</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">alpha</span>
+    <span class="k">return</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">"L"</span><span class="p">,</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">),</span> <span class="n">_ALPHA_MAX</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="draw_plate">
+<a class="viewcode-back" href="../../module_docs/tituli/render.html#tituli.draw_plate">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">draw_plate</span><span class="p">(</span><span class="n">canvas</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">plate</span><span class="p">:</span> <span class="n">Plate</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Composite one plate (scrim, box or rule) onto the canvas."""</span>
+    <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">plate</span><span class="o">.</span><span class="n">box</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">Box</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">canvas</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">canvas</span><span class="o">.</span><span class="n">height</span><span class="p">))</span><span class="o">.</span><span class="n">rounded</span><span class="p">()</span>
+    <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">y1</span> <span class="o">-</span> <span class="n">y0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">w</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">h</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">plate</span><span class="o">.</span><span class="n">color</span>
+    <span class="n">layer</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">"RGBA"</span><span class="p">,</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">),</span> <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="n">_plate_alpha</span><span class="p">(</span><span class="n">plate</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">plate</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="s2">"box"</span> <span class="ow">and</span> <span class="n">plate</span><span class="o">.</span><span class="n">radius</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">"L"</span><span class="p">,</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span><span class="o">.</span><span class="n">rounded_rectangle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">w</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">h</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="n">radius</span><span class="o">=</span><span class="n">plate</span><span class="o">.</span><span class="n">radius</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">_ALPHA_MAX</span><span class="p">)</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="n">ImageChops</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span><span class="o">.</span><span class="n">point</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="o">*</span> <span class="n">a</span> <span class="o">//</span> <span class="n">_ALPHA_MAX</span><span class="p">)</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">putalpha</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span>
+    <span class="n">canvas</span><span class="o">.</span><span class="n">alpha_composite</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">))</span></div>
+
+
+
+<span class="c1"># ----------------------------------------------------------------------------</span>
+<span class="c1"># Entry points</span>
+<span class="c1"># ----------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="render_overlay">
+<a class="viewcode-back" href="../../module_docs/tituli/render.html#tituli.render_overlay">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">render_overlay</span><span class="p">(</span>
+    <span class="n">layout</span><span class="p">:</span> <span class="n">Layout</span><span class="p">,</span>
+    <span class="n">size</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">t</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">engine</span><span class="p">:</span> <span class="n">Engine</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The layout on a transparent canvas of ``size`` (RGBA)."""</span>
+    <span class="n">engine</span> <span class="o">=</span> <span class="n">engine</span> <span class="ow">or</span> <span class="n">PillowEngine</span><span class="p">()</span>
+    <span class="n">canvas</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">"RGBA"</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">plate</span> <span class="ow">in</span> <span class="n">layout</span><span class="o">.</span><span class="n">plates</span><span class="p">:</span>
+        <span class="n">draw_plate</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="n">plate</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="n">layout</span><span class="o">.</span><span class="n">runs</span><span class="p">:</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">_envelope</span><span class="p">(</span><span class="n">run</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">f</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">draw_run</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="n">run</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">canvas</span></div>
+
+
+
+<div class="viewcode-block" id="render">
+<a class="viewcode-back" href="../../module_docs/tituli/render.html#tituli.render">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">render</span><span class="p">(</span>
+    <span class="n">layout</span><span class="p">:</span> <span class="n">Layout</span><span class="p">,</span>
+    <span class="n">frame</span><span class="p">:</span> <span class="n">Frame</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">t</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">engine</span><span class="p">:</span> <span class="n">Engine</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Render onto the frame: RGBA overlay if it has no background, else RGB.</span>
+
+<span class="sd">    ``engine`` is the rasteriser seam (default Pillow; see :mod:`tituli.shaping`).</span>
+<span class="sd">    """</span>
+    <span class="n">overlay</span> <span class="o">=</span> <span class="n">render_overlay</span><span class="p">(</span><span class="n">layout</span><span class="p">,</span> <span class="n">frame</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">frame</span><span class="o">.</span><span class="n">image</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">base</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">"RGBA"</span><span class="p">)</span>
+        <span class="n">base</span><span class="o">.</span><span class="n">alpha_composite</span><span class="p">(</span><span class="n">overlay</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">base</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">"RGB"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">frame</span><span class="o">.</span><span class="n">color</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">base</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">"RGBA"</span><span class="p">,</span> <span class="n">frame</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">frame</span><span class="o">.</span><span class="n">color</span><span class="p">)</span>
+        <span class="n">base</span><span class="o">.</span><span class="n">alpha_composite</span><span class="p">(</span><span class="n">overlay</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">base</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">"RGB"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">overlay</span></div>
+
+
+
+<div class="viewcode-block" id="frames">
+<a class="viewcode-back" href="../../module_docs/tituli/render.html#tituli.frames">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">frames</span><span class="p">(</span>
+    <span class="n">layout</span><span class="p">:</span> <span class="n">Layout</span><span class="p">,</span>
+    <span class="n">frame</span><span class="p">:</span> <span class="n">Frame</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">duration</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">fps</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">30.0</span><span class="p">,</span>
+    <span class="n">engine</span><span class="p">:</span> <span class="n">Engine</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">hold_after</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Yield one image per video frame, honouring the runs' reveal envelopes.</span>
+
+<span class="sd">    ``duration`` is the whole clip; the last reveal completes at</span>
+<span class="sd">    ``layout.duration_hint`` and the layout then holds. Frames are rendered</span>
+<span class="sd">    lazily so a long clip never sits in memory at once.</span>
+<span class="sd">    """</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">duration</span> <span class="o">*</span> <span class="n">fps</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="n">render</span><span class="p">(</span><span class="n">layout</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="n">i</span> <span class="o">/</span> <span class="n">fps</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="make_engine">
+<a class="viewcode-back" href="../../module_docs/tituli/render.html#tituli.make_engine">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_engine</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"pillow"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Engine</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Resolve an engine by name: ``"pillow"`` (default) or ``"harfbuzz"``."""</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"pillow"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">PillowEngine</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"harfbuzz"</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">tituli.shaping</span><span class="w"> </span><span class="kn">import</span> <span class="n">HarfBuzzEngine</span>
+
+        <span class="k">return</span> <span class="n">HarfBuzzEngine</span><span class="p">()</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"unknown engine </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">; choose 'pillow' or 'harfbuzz'"</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

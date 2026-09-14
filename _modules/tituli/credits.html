@@ -1,0 +1,437 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tituli.credits &mdash; tituli 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            tituli
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli.html">tituli</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/__main__.html">tituli.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/bodies.html">tituli.bodies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/calligram.html">tituli.calligram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/color.html">tituli.color</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/compose.html">tituli.compose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/credits.html">tituli.credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/fonts.html">tituli.fonts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/frame.html">tituli.frame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/geometry.html">tituli.geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/layout.html">tituli.layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/render.html">tituli.render</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/schedule.html">tituli.schedule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/shaping.html">tituli.shaping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/style.html">tituli.style</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/tools.html">tituli.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/video.html">tituli.video</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tituli</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tituli.credits</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tituli.credits</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Credits: structured data in, designed cards or a crawl out.</span>
+
+<span class="sd">The data model is the point. A credits roll is not a list of filenames; it is</span>
+<span class="sd">*sections* of *entries*, each entry a role and a name (or just a name, or a</span>
+<span class="sd">line of licence prose). Given that structure the layout can do what a title</span>
+<span class="sd">designer does: tracked small-caps section headings, role/name pairs on a</span>
+<span class="sd">shared gutter, a single column that reads top to bottom, generous leading, and</span>
+<span class="sd">a **never-truncate** rule — attributions are a licence surface, so content that</span>
+<span class="sd">does not fit paginates onto more cards or raises when the caller capped the</span>
+<span class="sd">count; it is never silently dropped.</span>
+
+<span class="sd">&gt;&gt;&gt; c = Credits.from_dict({</span>
+<span class="sd">...     "title": "The Apple",</span>
+<span class="sd">...     "sections": [{"heading": "Voices", "entries": [["Narrator", "A. Reader"]]},</span>
+<span class="sd">...                  {"heading": "Images", "entries": ["Still Life — Cézanne — public domain"]}],</span>
+<span class="sd">... })</span>
+<span class="sd">&gt;&gt;&gt; len(c.sections), c.sections[0].entries[0].role</span>
+<span class="sd">(2, 'Narrator')</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Sequence</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">tituli.color</span><span class="w"> </span><span class="kn">import</span> <span class="n">CREDITS_BLACK</span><span class="p">,</span> <span class="n">WHITE</span><span class="p">,</span> <span class="n">parse_color</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tituli.frame</span><span class="w"> </span><span class="kn">import</span> <span class="n">Frame</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tituli.layout</span><span class="w"> </span><span class="kn">import</span> <span class="n">Layout</span><span class="p">,</span> <span class="n">block</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tituli.style</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">CREDITS_HEADING</span><span class="p">,</span>
+    <span class="n">CREDITS_LINE</span><span class="p">,</span>
+    <span class="n">CREDITS_NAME</span><span class="p">,</span>
+    <span class="n">CREDITS_ROLE</span><span class="p">,</span>
+    <span class="n">CREDITS_TITLE</span><span class="p">,</span>
+    <span class="n">TextStyle</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Typographic rhythm, in em of the name face.</span>
+<span class="n">_HEADING_GAP_ABOVE</span> <span class="o">=</span> <span class="mf">2.2</span>
+<span class="n">_HEADING_GAP_BELOW</span> <span class="o">=</span> <span class="mf">0.9</span>
+<span class="n">_PAIR_LEADING</span> <span class="o">=</span> <span class="mf">1.55</span>
+<span class="n">_LINE_LEADING</span> <span class="o">=</span> <span class="mf">1.45</span>
+<span class="n">_GUTTER_EM</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># space between the role column and the name column</span>
+<span class="n">_ROLE_COLUMN</span> <span class="o">=</span> <span class="mf">0.42</span>  <span class="c1"># fraction of the column width given to roles</span>
+<span class="n">_TITLE_GAP_BELOW</span> <span class="o">=</span> <span class="mf">2.0</span>
+<span class="n">_CLOSING_GAP_ABOVE</span> <span class="o">=</span> <span class="mf">2.5</span>
+<span class="n">_COLUMN_WIDTH</span> <span class="o">=</span> <span class="mf">0.7</span>  <span class="c1"># fraction of the safe width the credits occupy</span>
+<span class="n">_CARD_FILL</span> <span class="o">=</span> <span class="mf">0.86</span>  <span class="c1"># fraction of the safe height a card may fill</span>
+<span class="n">_CRAWL_LEAD_FRAMES</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># blank frame-heights before the first line</span>
+<span class="n">_CRAWL_TAIL_FRAMES</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">DEFAULT_CRAWL_SPEED</span> <span class="o">=</span> <span class="mf">0.09</span>  <span class="c1"># frame heights per second (≈ 97 px/s at 1080p)</span>
+<span class="n">DEFAULT_CARD_HOLD_S</span> <span class="o">=</span> <span class="mf">3.5</span>
+
+
+<div class="viewcode-block" id="Entry">
+<a class="viewcode-back" href="../../module_docs/tituli/credits.html#tituli.Entry">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Entry</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""One credit line: ``role`` + ``name``, a bare ``name``, or prose."""</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">role</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">of</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Entry"</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">Entry</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">item</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"name"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)),</span> <span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"role"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)))</span>
+        <span class="n">role</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="n">item</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">role</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="Section">
+<a class="viewcode-back" href="../../module_docs/tituli/credits.html#tituli.Section">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Section</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""A heading over a run of entries. ``kind`` picks the treatment:</span>
+
+<span class="sd">    ``"pairs"`` role/name on a gutter (cast, crew); ``"list"`` centred names;</span>
+<span class="sd">    ``"prose"`` wrapped small text (licences, thanks).</span>
+<span class="sd">    """</span>
+
+    <span class="n">heading</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>
+    <span class="n">entries</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Entry</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">kind</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"auto"</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">resolved_kind</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kind</span> <span class="o">!=</span> <span class="s2">"auto"</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">kind</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">role</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">"pairs"</span>
+        <span class="n">longest</span> <span class="o">=</span> <span class="nb">max</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="p">),</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">"prose"</span> <span class="k">if</span> <span class="n">longest</span> <span class="o">&gt;</span> <span class="mi">48</span> <span class="k">else</span> <span class="s2">"list"</span></div>
+
+
+
+<div class="viewcode-block" id="Credits">
+<a class="viewcode-back" href="../../module_docs/tituli/credits.html#tituli.Credits">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Credits</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The whole roll."""</span>
+
+    <span class="n">sections</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Section</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>
+    <span class="n">closing</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">meta</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">,</span> <span class="n">compare</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="s2">"Credits"</span><span class="p">:</span>
+        <span class="n">sections</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+            <span class="n">Section</span><span class="p">(</span>
+                <span class="n">heading</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"heading"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)),</span>
+                <span class="n">entries</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">Entry</span><span class="o">.</span><span class="n">of</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"entries"</span><span class="p">,</span> <span class="p">())),</span>
+                <span class="n">kind</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"kind"</span><span class="p">,</span> <span class="s2">"auto"</span><span class="p">)),</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"sections"</span><span class="p">,</span> <span class="p">())</span>
+        <span class="p">)</span>
+        <span class="n">closing</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"closing"</span><span class="p">,</span> <span class="p">())</span>
+        <span class="n">closing</span> <span class="o">=</span> <span class="p">(</span><span class="n">closing</span><span class="p">,)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">closing</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">closing</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">sections</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"title"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)),</span> <span class="n">closing</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Credits.from_lines">
+<a class="viewcode-back" href="../../module_docs/tituli/credits.html#tituli.Credits.from_lines">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_lines</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">lines</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">heading</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"Credits"</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Credits"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""The plain-list case (what ``braidio.video.credits_card`` takes)."""</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">((</span><span class="n">Section</span><span class="p">(</span><span class="n">heading</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">Entry</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">)),),</span> <span class="n">title</span><span class="p">)</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">line_count</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">entries</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">closing</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="CreditsStyle">
+<a class="viewcode-back" href="../../module_docs/tituli/credits.html#tituli.CreditsStyle">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CreditsStyle</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The type ramp for a roll. One object so a film is one design."""</span>
+
+    <span class="n">title</span><span class="p">:</span> <span class="n">TextStyle</span> <span class="o">=</span> <span class="n">CREDITS_TITLE</span>
+    <span class="n">heading</span><span class="p">:</span> <span class="n">TextStyle</span> <span class="o">=</span> <span class="n">CREDITS_HEADING</span>
+    <span class="n">role</span><span class="p">:</span> <span class="n">TextStyle</span> <span class="o">=</span> <span class="n">CREDITS_ROLE</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">TextStyle</span> <span class="o">=</span> <span class="n">CREDITS_NAME</span>
+    <span class="n">line</span><span class="p">:</span> <span class="n">TextStyle</span> <span class="o">=</span> <span class="n">CREDITS_LINE</span>
+    <span class="n">ink</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="n">WHITE</span>
+    <span class="n">background</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="n">CREDITS_BLACK</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">inked</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"CreditsStyle"</span><span class="p">:</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">parse_color</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ink</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">CreditsStyle</span><span class="p">(</span>
+            <span class="o">*</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">with_</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">heading</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">role</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">line</span><span class="p">)),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ink</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">background</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+
+<span class="c1"># ----------------------------------------------------------------------------</span>
+<span class="c1"># Flow layout: a sequence of "items" with heights, then pagination</span>
+<span class="c1"># ----------------------------------------------------------------------------</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_flow</span><span class="p">(</span><span class="n">credits</span><span class="p">:</span> <span class="n">Credits</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="n">CreditsStyle</span><span class="p">,</span> <span class="n">frame</span><span class="p">:</span> <span class="n">Frame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">Layout</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">"""Each item as ``(kind, height, layout-at-origin)``, in reading order."""</span>
+    <span class="n">st</span> <span class="o">=</span> <span class="n">style</span><span class="o">.</span><span class="n">inked</span><span class="p">()</span>
+    <span class="n">fh</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">height</span>
+    <span class="n">col_w</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">safe</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="n">_COLUMN_WIDTH</span>
+    <span class="n">name_em</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">face</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">items</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">Layout</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="n">kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">lay</span><span class="p">:</span> <span class="n">Layout</span><span class="p">,</span> <span class="n">height</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">kind</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">lay</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">credits</span><span class="o">.</span><span class="n">title</span><span class="p">:</span>
+        <span class="n">lay</span> <span class="o">=</span> <span class="n">block</span><span class="p">(</span><span class="n">credits</span><span class="o">.</span><span class="n">title</span><span class="p">,</span> <span class="n">st</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">with_</span><span class="p">(</span><span class="n">align</span><span class="o">=</span><span class="s2">"center"</span><span class="p">),</span> <span class="n">frame</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="n">col_w</span><span class="p">)</span>
+        <span class="n">add</span><span class="p">(</span><span class="s2">"title"</span><span class="p">,</span> <span class="n">lay</span><span class="p">,</span> <span class="n">lay</span><span class="o">.</span><span class="n">bbox</span><span class="p">()</span><span class="o">.</span><span class="n">height</span> <span class="o">+</span> <span class="n">name_em</span> <span class="o">*</span> <span class="n">_TITLE_GAP_BELOW</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">si</span><span class="p">,</span> <span class="n">sec</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">credits</span><span class="o">.</span><span class="n">sections</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">sec</span><span class="o">.</span><span class="n">heading</span><span class="p">:</span>
+            <span class="n">gap_above</span> <span class="o">=</span> <span class="n">name_em</span> <span class="o">*</span> <span class="p">(</span><span class="n">_HEADING_GAP_ABOVE</span> <span class="k">if</span> <span class="n">items</span> <span class="k">else</span> <span class="mf">0.0</span><span class="p">)</span>
+            <span class="n">lay</span> <span class="o">=</span> <span class="n">block</span><span class="p">(</span><span class="n">sec</span><span class="o">.</span><span class="n">heading</span><span class="p">,</span> <span class="n">st</span><span class="o">.</span><span class="n">heading</span><span class="o">.</span><span class="n">with_</span><span class="p">(</span><span class="n">align</span><span class="o">=</span><span class="s2">"center"</span><span class="p">),</span> <span class="n">frame</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="n">col_w</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">gap_above</span><span class="p">)</span>
+            <span class="n">add</span><span class="p">(</span><span class="s2">"heading"</span><span class="p">,</span> <span class="n">lay</span><span class="p">,</span> <span class="n">gap_above</span> <span class="o">+</span> <span class="n">lay</span><span class="o">.</span><span class="n">bbox</span><span class="p">()</span><span class="o">.</span><span class="n">height</span> <span class="o">+</span> <span class="n">name_em</span> <span class="o">*</span> <span class="n">_HEADING_GAP_BELOW</span><span class="p">)</span>
+        <span class="n">kind</span> <span class="o">=</span> <span class="n">sec</span><span class="o">.</span><span class="n">resolved_kind</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">sec</span><span class="o">.</span><span class="n">entries</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">"pairs"</span><span class="p">:</span>
+                <span class="n">add</span><span class="p">(</span><span class="s2">"pair"</span><span class="p">,</span> <span class="n">_pair</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">st</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">col_w</span><span class="p">),</span> <span class="n">name_em</span> <span class="o">*</span> <span class="n">_PAIR_LEADING</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">"prose"</span><span class="p">:</span>
+                <span class="n">lay</span> <span class="o">=</span> <span class="n">block</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">st</span><span class="o">.</span><span class="n">line</span><span class="o">.</span><span class="n">with_</span><span class="p">(</span><span class="n">align</span><span class="o">=</span><span class="s2">"center"</span><span class="p">),</span> <span class="n">frame</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="n">col_w</span><span class="p">)</span>
+                <span class="n">add</span><span class="p">(</span><span class="s2">"prose"</span><span class="p">,</span> <span class="n">lay</span><span class="p">,</span> <span class="n">lay</span><span class="o">.</span><span class="n">bbox</span><span class="p">()</span><span class="o">.</span><span class="n">height</span> <span class="o">+</span> <span class="n">name_em</span> <span class="o">*</span> <span class="mf">0.6</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">lay</span> <span class="o">=</span> <span class="n">block</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">st</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">with_</span><span class="p">(</span><span class="n">align</span><span class="o">=</span><span class="s2">"center"</span><span class="p">),</span> <span class="n">frame</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="n">col_w</span><span class="p">)</span>
+                <span class="n">add</span><span class="p">(</span><span class="s2">"line"</span><span class="p">,</span> <span class="n">lay</span><span class="p">,</span> <span class="n">name_em</span> <span class="o">*</span> <span class="n">_LINE_LEADING</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">credits</span><span class="o">.</span><span class="n">closing</span><span class="p">):</span>
+        <span class="n">gap</span> <span class="o">=</span> <span class="n">name_em</span> <span class="o">*</span> <span class="p">(</span><span class="n">_CLOSING_GAP_ABOVE</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="n">lay</span> <span class="o">=</span> <span class="n">block</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">st</span><span class="o">.</span><span class="n">line</span><span class="o">.</span><span class="n">with_</span><span class="p">(</span><span class="n">align</span><span class="o">=</span><span class="s2">"center"</span><span class="p">),</span> <span class="n">frame</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="n">col_w</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">gap</span><span class="p">)</span>
+        <span class="n">add</span><span class="p">(</span><span class="s2">"closing"</span><span class="p">,</span> <span class="n">lay</span><span class="p">,</span> <span class="n">gap</span> <span class="o">+</span> <span class="n">lay</span><span class="o">.</span><span class="n">bbox</span><span class="p">()</span><span class="o">.</span><span class="n">height</span> <span class="o">+</span> <span class="n">name_em</span> <span class="o">*</span> <span class="mf">0.4</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">items</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_pair</span><span class="p">(</span><span class="n">e</span><span class="p">:</span> <span class="n">Entry</span><span class="p">,</span> <span class="n">st</span><span class="p">:</span> <span class="n">CreditsStyle</span><span class="p">,</span> <span class="n">frame</span><span class="p">:</span> <span class="n">Frame</span><span class="p">,</span> <span class="n">col_w</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Layout</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Role right-aligned into the left column, name left-aligned after the gutter."""</span>
+    <span class="n">fh</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">height</span>
+    <span class="n">gutter</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">face</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span><span class="o">.</span><span class="n">size</span> <span class="o">*</span> <span class="n">_GUTTER_EM</span>
+    <span class="n">role_w</span> <span class="o">=</span> <span class="n">col_w</span> <span class="o">*</span> <span class="n">_ROLE_COLUMN</span>
+    <span class="n">name_w</span> <span class="o">=</span> <span class="n">col_w</span> <span class="o">-</span> <span class="n">role_w</span> <span class="o">-</span> <span class="n">gutter</span>
+    <span class="n">role</span> <span class="o">=</span> <span class="n">block</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">role</span><span class="p">,</span> <span class="n">st</span><span class="o">.</span><span class="n">role</span><span class="o">.</span><span class="n">with_</span><span class="p">(</span><span class="n">align</span><span class="o">=</span><span class="s2">"right"</span><span class="p">),</span> <span class="n">frame</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="n">role_w</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">block</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">st</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">with_</span><span class="p">(</span><span class="n">align</span><span class="o">=</span><span class="s2">"left"</span><span class="p">),</span> <span class="n">frame</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="n">name_w</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">role_w</span> <span class="o">+</span> <span class="n">gutter</span><span class="p">)</span>
+    <span class="c1"># align baselines: block() puts the first baseline at ascent + leading slack</span>
+    <span class="k">if</span> <span class="n">role</span><span class="o">.</span><span class="n">runs</span> <span class="ow">and</span> <span class="n">name</span><span class="o">.</span><span class="n">runs</span><span class="p">:</span>
+        <span class="n">dy</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">runs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">role</span><span class="o">.</span><span class="n">runs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y</span>
+        <span class="n">role</span> <span class="o">=</span> <span class="n">role</span><span class="o">.</span><span class="n">translated</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dy</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">role</span> <span class="o">+</span> <span class="n">name</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_stack_items</span><span class="p">(</span><span class="n">items</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">Layout</span><span class="p">]],</span> <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Layout</span><span class="p">:</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">Layout</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">lay</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">out</span> <span class="o">+</span> <span class="n">lay</span><span class="o">.</span><span class="n">translated</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">+=</span> <span class="n">h</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+
+<div class="viewcode-block" id="credits_crawl">
+<a class="viewcode-back" href="../../module_docs/tituli/credits.html#tituli.credits_crawl">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">credits_crawl</span><span class="p">(</span><span class="n">credits</span><span class="p">:</span> <span class="n">Credits</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">frame</span><span class="p">:</span> <span class="n">Frame</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="n">CreditsStyle</span> <span class="o">=</span> <span class="n">CreditsStyle</span><span class="p">())</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Layout</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""One tall layout and its total height in pixels (for :func:`tituli.video.crawl`).</span>
+
+<span class="sd">    The layout starts one frame-height down and ends one frame-height before</span>
+<span class="sd">    its bottom, so the crawl enters from an empty frame and leaves to one.</span>
+<span class="sd">    """</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="n">_flow</span><span class="p">(</span><span class="n">credits</span><span class="p">,</span> <span class="n">style</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">safe</span><span class="o">.</span><span class="n">x0</span> <span class="o">+</span> <span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">safe</span><span class="o">.</span><span class="n">width</span> <span class="o">-</span> <span class="n">frame</span><span class="o">.</span><span class="n">safe</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="n">_COLUMN_WIDTH</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">lead</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="n">_CRAWL_LEAD_FRAMES</span>
+    <span class="n">lay</span> <span class="o">=</span> <span class="n">_stack_items</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">lead</span><span class="p">)</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="n">lead</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="n">h</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">items</span><span class="p">)</span> <span class="o">+</span> <span class="n">frame</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="n">_CRAWL_TAIL_FRAMES</span>
+    <span class="k">return</span> <span class="n">lay</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">total</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="credits_cards">
+<a class="viewcode-back" href="../../module_docs/tituli/credits.html#tituli.credits_cards">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">credits_cards</span><span class="p">(</span>
+    <span class="n">credits</span><span class="p">:</span> <span class="n">Credits</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">frame</span><span class="p">:</span> <span class="n">Frame</span><span class="p">,</span>
+    <span class="n">style</span><span class="p">:</span> <span class="n">CreditsStyle</span> <span class="o">=</span> <span class="n">CreditsStyle</span><span class="p">(),</span>
+    <span class="n">max_cards</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Layout</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Paginate the roll into cards that each fit the safe area, centred.</span>
+
+<span class="sd">    A heading is never orphaned at the bottom of a card. Raises when</span>
+<span class="sd">    ``max_cards`` would force truncation — losing an attribution silently is a</span>
+<span class="sd">    licence failure invisible to the person responsible for it.</span>
+<span class="sd">    """</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="n">_flow</span><span class="p">(</span><span class="n">credits</span><span class="p">,</span> <span class="n">style</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
+    <span class="n">limit</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">safe</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="n">_CARD_FILL</span>
+    <span class="n">pages</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">Layout</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[[]]</span>
+    <span class="n">used</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
+        <span class="n">kind</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">item</span>
+        <span class="n">nxt_h</span> <span class="o">=</span> <span class="n">items</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">"heading"</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)</span> <span class="k">else</span> <span class="mf">0.0</span>
+        <span class="k">if</span> <span class="n">pages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">used</span> <span class="o">+</span> <span class="n">h</span> <span class="o">+</span> <span class="n">nxt_h</span> <span class="o">&gt;</span> <span class="n">limit</span><span class="p">:</span>
+            <span class="n">pages</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+            <span class="n">used</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">pages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">used</span> <span class="o">+=</span> <span class="n">h</span>
+    <span class="k">if</span> <span class="n">max_cards</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">pages</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_cards</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"credits: </span><span class="si">{</span><span class="n">credits</span><span class="o">.</span><span class="n">line_count</span><span class="si">}</span><span class="s2"> lines need </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">pages</span><span class="p">)</span><span class="si">}</span><span class="s2"> cards at this size but "</span>
+            <span class="sa">f</span><span class="s2">"max_cards=</span><span class="si">{</span><span class="n">max_cards</span><span class="si">}</span><span class="s2">. Use more cards, a crawl, or a smaller CreditsStyle — "</span>
+            <span class="sa">f</span><span class="s2">"tituli never truncates a credit."</span>
+        <span class="p">)</span>
+    <span class="n">out</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Layout</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">safe</span><span class="o">.</span><span class="n">x0</span> <span class="o">+</span> <span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">safe</span><span class="o">.</span><span class="n">width</span> <span class="o">-</span> <span class="n">frame</span><span class="o">.</span><span class="n">safe</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="n">_COLUMN_WIDTH</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">pages</span><span class="p">:</span>
+        <span class="n">height</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">h</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">page</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">safe</span><span class="o">.</span><span class="n">y0</span> <span class="o">+</span> <span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">safe</span><span class="o">.</span><span class="n">height</span> <span class="o">-</span> <span class="n">height</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="c1"># strip the leading gap on a page's first heading so pages sit centred</span>
+        <span class="n">first_kind</span><span class="p">,</span> <span class="n">first_h</span><span class="p">,</span> <span class="n">first_lay</span> <span class="o">=</span> <span class="n">page</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">first_kind</span> <span class="o">==</span> <span class="s2">"heading"</span><span class="p">:</span>
+            <span class="n">bb</span> <span class="o">=</span> <span class="n">first_lay</span><span class="o">.</span><span class="n">bbox</span><span class="p">()</span>
+            <span class="n">page</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">"heading"</span><span class="p">,</span> <span class="n">first_h</span> <span class="o">-</span> <span class="p">(</span><span class="n">bb</span><span class="o">.</span><span class="n">y0</span><span class="p">),</span> <span class="n">first_lay</span><span class="o">.</span><span class="n">translated</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">bb</span><span class="o">.</span><span class="n">y0</span><span class="p">))]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">page</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+            <span class="n">height</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">h</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">page</span><span class="p">)</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">safe</span><span class="o">.</span><span class="n">y0</span> <span class="o">+</span> <span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">safe</span><span class="o">.</span><span class="n">height</span> <span class="o">-</span> <span class="n">height</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_stack_items</span><span class="p">(</span><span class="n">page</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+
+<div class="viewcode-block" id="credits_frame">
+<a class="viewcode-back" href="../../module_docs/tituli/credits.html#tituli.credits_frame">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">credits_frame</span><span class="p">(</span><span class="n">size</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">style</span><span class="p">:</span> <span class="n">CreditsStyle</span> <span class="o">=</span> <span class="n">CreditsStyle</span><span class="p">())</span> <span class="o">-&gt;</span> <span class="n">Frame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The canonical credits frame: near-black, so ink defaults to white."""</span>
+    <span class="k">return</span> <span class="n">Frame</span><span class="o">.</span><span class="n">blank</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">style</span><span class="o">.</span><span class="n">background</span><span class="p">)</span></div>
+
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"Entry"</span><span class="p">,</span>
+    <span class="s2">"Section"</span><span class="p">,</span>
+    <span class="s2">"Credits"</span><span class="p">,</span>
+    <span class="s2">"CreditsStyle"</span><span class="p">,</span>
+    <span class="s2">"credits_crawl"</span><span class="p">,</span>
+    <span class="s2">"credits_cards"</span><span class="p">,</span>
+    <span class="s2">"credits_frame"</span><span class="p">,</span>
+    <span class="s2">"DEFAULT_CRAWL_SPEED"</span><span class="p">,</span>
+    <span class="s2">"DEFAULT_CARD_HOLD_S"</span><span class="p">,</span>
+<span class="p">]</span>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

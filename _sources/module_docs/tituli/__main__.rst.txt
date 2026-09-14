@@ -1,0 +1,4 @@
+tituli.__main__
+===============
+.. automodule:: tituli.__main__
+   :members:

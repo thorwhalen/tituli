@@ -1,0 +1,521 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tituli.video &mdash; tituli 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            tituli
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli.html">tituli</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/__main__.html">tituli.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/bodies.html">tituli.bodies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/calligram.html">tituli.calligram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/color.html">tituli.color</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/compose.html">tituli.compose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/credits.html">tituli.credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/fonts.html">tituli.fonts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/frame.html">tituli.frame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/geometry.html">tituli.geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/layout.html">tituli.layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/render.html">tituli.render</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/schedule.html">tituli.schedule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/shaping.html">tituli.shaping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/style.html">tituli.style</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/tools.html">tituli.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/video.html">tituli.video</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tituli</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tituli.video</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tituli.video</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Video output through ffmpeg: stills to clips, overlays onto footage, crawls.</span>
+
+<span class="sd">Everything here composites **rendered PNGs**; ffmpeg never draws text. That is</span>
+<span class="sd">deliberate twice over: the system ffmpeg on a developer Mac commonly lacks</span>
+<span class="sd">``drawtext``/``libass`` (this one does), and typographically ``drawtext`` is</span>
+<span class="sd">crude. What ffmpeg is good at — ``overlay``, ``fade``, ``crop``, encoding — is</span>
+<span class="sd">all it is asked to do, and :func:`require_filters` fails loudly if even that</span>
+<span class="sd">is missing rather than emitting a text-free video.</span>
+
+<span class="sd">The overlay chain follows the shape verified in production on a found-image</span>
+<span class="sd">film: each PNG is a looped input **with its own duration** (a shorter input</span>
+<span class="sd">silently vanishes under ``eof_action=pass``), faded on its own clock, shifted</span>
+<span class="sd">with ``setpts``, gated with ``enable=between(t, …)``, and the audio is</span>
+<span class="sd">stream-copied so the finished mix is never re-encoded.</span>
+
+<span class="sd">Never burn text into stills that a camera move will pan and zoom — composite</span>
+<span class="sd">onto the finished motion video, which is what :func:`overlay` does.</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">lru_cache</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Sequence</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">tituli.schedule</span><span class="w"> </span><span class="kn">import</span> <span class="n">TimedOverlay</span>
+
+<span class="n">FFMPEG_ENV_VAR</span> <span class="o">=</span> <span class="s2">"TITULI_FFMPEG"</span>
+<span class="n">DEFAULT_FPS</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">DEFAULT_CRF</span> <span class="o">=</span> <span class="mi">18</span>
+<span class="n">DEFAULT_PRESET</span> <span class="o">=</span> <span class="s2">"medium"</span>
+<span class="n">DEFAULT_FADE_S</span> <span class="o">=</span> <span class="mf">0.4</span>
+<span class="n">_MIN_HOLD_S</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">_FADE_SHARE</span> <span class="o">=</span> <span class="mf">2.5</span>  <span class="c1"># a fade never exceeds hold / this</span>
+<span class="n">_REQUIRED_FILTERS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"overlay"</span><span class="p">,</span> <span class="s2">"fade"</span><span class="p">,</span> <span class="s2">"crop"</span><span class="p">,</span> <span class="s2">"format"</span><span class="p">,</span> <span class="s2">"setpts"</span><span class="p">)</span>
+<span class="c1"># YouTube rejects an `elst` edit list that `+faststart` alone leaves behind.</span>
+<span class="n">_MOV_FLAGS</span> <span class="o">=</span> <span class="s2">"+faststart+negative_cts_offsets"</span>
+<span class="n">_ENCODE</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"-c:v"</span><span class="p">,</span> <span class="s2">"libx264"</span><span class="p">,</span> <span class="s2">"-pix_fmt"</span><span class="p">,</span> <span class="s2">"yuv420p"</span><span class="p">,</span> <span class="s2">"-movflags"</span><span class="p">,</span> <span class="n">_MOV_FLAGS</span><span class="p">,</span> <span class="s2">"-use_editlist"</span><span class="p">,</span> <span class="s2">"0"</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="FfmpegError">
+<a class="viewcode-back" href="../../module_docs/tituli/video.html#tituli.video.FfmpegError">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FfmpegError</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""ffmpeg is missing, or lacks a filter tituli needs."""</span></div>
+
+
+
+<div class="viewcode-block" id="ffmpeg_path">
+<a class="viewcode-back" href="../../module_docs/tituli/video.html#tituli.video.ffmpeg_path">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ffmpeg_path</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The ffmpeg binary: ``$TITULI_FFMPEG`` or the first on PATH."""</span>
+    <span class="n">cand</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">FFMPEG_ENV_VAR</span><span class="p">)</span> <span class="ow">or</span> <span class="n">shutil</span><span class="o">.</span><span class="n">which</span><span class="p">(</span><span class="s2">"ffmpeg"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">cand</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">FfmpegError</span><span class="p">(</span>
+            <span class="s2">"ffmpeg not found. Install it (https://ffmpeg.org, `brew install ffmpeg`, "</span>
+            <span class="sa">f</span><span class="s2">"`apt install ffmpeg`) or set $</span><span class="si">{</span><span class="n">FFMPEG_ENV_VAR</span><span class="si">}</span><span class="s2"> to the binary."</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">cand</span></div>
+
+
+
+<div class="viewcode-block" id="available_filters">
+<a class="viewcode-back" href="../../module_docs/tituli/video.html#tituli.video.available_filters">[docs]</a>
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">available_filters</span><span class="p">(</span><span class="n">binary</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">frozenset</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Names of the filters this ffmpeg build has."""</span>
+    <span class="n">binary</span> <span class="o">=</span> <span class="n">binary</span> <span class="ow">or</span> <span class="n">ffmpeg_path</span><span class="p">()</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">binary</span><span class="p">,</span> <span class="s2">"-hide_banner"</span><span class="p">,</span> <span class="s2">"-filters"</span><span class="p">],</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">stdout</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">out</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="n">c</span> <span class="ow">in</span> <span class="s2">"TSC."</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">names</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">return</span> <span class="nb">frozenset</span><span class="p">(</span><span class="n">names</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="require_filters">
+<a class="viewcode-back" href="../../module_docs/tituli/video.html#tituli.video.require_filters">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">require_filters</span><span class="p">(</span><span class="o">*</span><span class="n">names</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Raise :class:`FfmpegError` naming any missing filter."""</span>
+    <span class="n">have</span> <span class="o">=</span> <span class="n">available_filters</span><span class="p">()</span>
+    <span class="n">missing</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">names</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">have</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">missing</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">FfmpegError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"this ffmpeg build lacks filter(s) </span><span class="si">{</span><span class="n">missing</span><span class="si">}</span><span class="s2">; tituli needs </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">names</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_run</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">),</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">FfmpegError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"ffmpeg failed (</span><span class="si">{</span><span class="n">proc</span><span class="o">.</span><span class="n">returncode</span><span class="si">}</span><span class="s2">):</span><span class="se">\n</span><span class="si">{</span><span class="n">proc</span><span class="o">.</span><span class="n">stderr</span><span class="p">[</span><span class="o">-</span><span class="mi">2000</span><span class="p">:]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_even</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">n</span> <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_size_args</span><span class="p">(</span><span class="n">size</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">_even</span><span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">_even</span><span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">[</span><span class="s2">"-vf"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"scale=</span><span class="si">{</span><span class="n">w</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">h</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="still">
+<a class="viewcode-back" href="../../module_docs/tituli/video.html#tituli.video.still">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">still</span><span class="p">(</span>
+    <span class="n">image</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span>
+    <span class="n">dst</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">duration</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">fps</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">DEFAULT_FPS</span><span class="p">,</span>
+    <span class="n">fade_in</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">DEFAULT_FADE_S</span><span class="p">,</span>
+    <span class="n">fade_out</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">DEFAULT_FADE_S</span><span class="p">,</span>
+    <span class="n">audio</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">crf</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_CRF</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""A still held for ``duration`` seconds with fades — a title or credits card.</span>
+
+<span class="sd">    Transparent PNGs are flattened onto black.</span>
+<span class="sd">    """</span>
+    <span class="n">require_filters</span><span class="p">(</span><span class="s2">"fade"</span><span class="p">,</span> <span class="s2">"format"</span><span class="p">)</span>
+    <span class="n">src</span><span class="p">,</span> <span class="n">tmp</span> <span class="o">=</span> <span class="n">_as_png</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span>
+    <span class="n">fade_in</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">fade_in</span><span class="p">,</span> <span class="n">duration</span> <span class="o">/</span> <span class="n">_FADE_SHARE</span><span class="p">)</span>
+    <span class="n">fade_out</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">fade_out</span><span class="p">,</span> <span class="n">duration</span> <span class="o">/</span> <span class="n">_FADE_SHARE</span><span class="p">)</span>
+    <span class="n">vf</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"format=rgba,fade=t=in:st=0:d=</span><span class="si">{</span><span class="n">fade_in</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">,"</span>
+        <span class="sa">f</span><span class="s2">"fade=t=out:st=</span><span class="si">{</span><span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="n">duration</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">fade_out</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">:d=</span><span class="si">{</span><span class="n">fade_out</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">,format=yuv420p"</span>
+    <span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">ffmpeg_path</span><span class="p">(),</span> <span class="s2">"-y"</span><span class="p">,</span> <span class="s2">"-loglevel"</span><span class="p">,</span> <span class="s2">"error"</span><span class="p">,</span> <span class="s2">"-loop"</span><span class="p">,</span> <span class="s2">"1"</span><span class="p">,</span> <span class="s2">"-framerate"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">fps</span><span class="p">),</span> <span class="s2">"-i"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">src</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="n">audio</span><span class="p">:</span>
+        <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"-i"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">audio</span><span class="p">)]</span>
+    <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"-t"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">duration</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"-vf"</span><span class="p">,</span> <span class="n">vf</span><span class="p">,</span> <span class="o">*</span><span class="n">_ENCODE</span><span class="p">,</span> <span class="s2">"-crf"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">crf</span><span class="p">),</span> <span class="s2">"-preset"</span><span class="p">,</span> <span class="n">DEFAULT_PRESET</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">audio</span><span class="p">:</span>
+        <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"-c:a"</span><span class="p">,</span> <span class="s2">"aac"</span><span class="p">,</span> <span class="s2">"-shortest"</span><span class="p">]</span>
+    <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">dst</span><span class="p">)]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">_run</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">tmp</span><span class="p">:</span>
+            <span class="n">tmp</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">missing_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_as_png</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">near</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">):</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">near</span><span class="p">)</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">".tituli-tmp.png"</span><span class="p">)</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">image</span>
+        <span class="k">if</span> <span class="n">img</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">"RGBA"</span><span class="p">:</span>
+            <span class="n">flat</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">"RGB"</span><span class="p">,</span> <span class="n">img</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="n">flat</span><span class="o">.</span><span class="n">paste</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">img</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">3</span><span class="p">])</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">flat</span>
+        <span class="n">img</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tmp</span><span class="p">,</span> <span class="n">tmp</span>
+    <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="n">image</span><span class="p">),</span> <span class="kc">None</span>
+
+
+<div class="viewcode-block" id="overlay">
+<a class="viewcode-back" href="../../module_docs/tituli/video.html#tituli.video.overlay">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">overlay</span><span class="p">(</span>
+    <span class="n">video</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span>
+    <span class="n">overlays</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">TimedOverlay</span><span class="p">],</span>
+    <span class="n">dst</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">size</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">frame</span><span class="p">:</span> <span class="s2">"Frame | None"</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">delivery</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="s2">"youtube"</span><span class="p">,</span>
+    <span class="n">workdir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">crf</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_CRF</span><span class="p">,</span>
+    <span class="n">preset</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DEFAULT_PRESET</span><span class="p">,</span>
+    <span class="n">engine</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Composite timed overlays onto ``video`` in one ffmpeg pass; audio copied.</span>
+
+<span class="sd">    Every overlay is rendered: one with a ``layout`` as it is; one with only a</span>
+<span class="sd">    ``payload`` (a :class:`~tituli.schedule.Label` from ``schedule_labels``, or</span>
+<span class="sd">    a dict with ``text``/``attribution``/``kind``) is laid out here against</span>
+<span class="sd">    ``frame`` (default: a blank frame of the video's size with ``delivery``'s</span>
+<span class="sd">    reserved zones) at its ``slot``. Anything that cannot be rendered makes</span>
+<span class="sd">    the call **raise, naming it** — nothing is ever silently left off the film.</span>
+<span class="sd">    """</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">tituli.render</span><span class="w"> </span><span class="kn">import</span> <span class="n">render_overlay</span>
+
+    <span class="n">require_filters</span><span class="p">(</span><span class="o">*</span><span class="n">_REQUIRED_FILTERS</span><span class="p">)</span>
+    <span class="n">video</span><span class="p">,</span> <span class="n">dst</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">video</span><span class="p">),</span> <span class="n">Path</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">overlays</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"overlay() needs at least one TimedOverlay"</span><span class="p">)</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">size</span> <span class="ow">or</span> <span class="n">probe_size</span><span class="p">(</span><span class="n">video</span><span class="p">)</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="n">materialize</span><span class="p">(</span><span class="n">overlays</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span> <span class="ow">or</span> <span class="n">_blank_frame</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">delivery</span><span class="p">))</span>
+    <span class="n">workdir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">workdir</span><span class="p">)</span> <span class="k">if</span> <span class="n">workdir</span> <span class="k">else</span> <span class="n">dst</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"_</span><span class="si">{</span><span class="n">dst</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s2">_overlays"</span>
+    <span class="n">workdir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">pngs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">workdir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"ov</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s2">03d</span><span class="si">}</span><span class="s2">.png"</span>
+        <span class="n">render_overlay</span><span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">layout</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        <span class="n">pngs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">ffmpeg_path</span><span class="p">(),</span> <span class="s2">"-y"</span><span class="p">,</span> <span class="s2">"-loglevel"</span><span class="p">,</span> <span class="s2">"error"</span><span class="p">,</span> <span class="s2">"-i"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">video</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pngs</span><span class="p">,</span> <span class="n">items</span><span class="p">):</span>
+        <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"-loop"</span><span class="p">,</span> <span class="s2">"1"</span><span class="p">,</span> <span class="s2">"-t"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">max</span><span class="p">(</span><span class="n">_MIN_HOLD_S</span><span class="p">,</span><span class="w"> </span><span class="n">o</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"-i"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="p">)]</span>
+    <span class="n">steps</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">current</span> <span class="o">=</span> <span class="s2">"0:v"</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
+        <span class="n">hold</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">_MIN_HOLD_S</span><span class="p">,</span> <span class="n">o</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span>
+        <span class="n">fade</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">fade</span><span class="p">,</span> <span class="n">hold</span> <span class="o">/</span> <span class="n">_FADE_SHARE</span><span class="p">)</span>
+        <span class="n">steps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"[</span><span class="si">{</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">:v]format=rgba,"</span>
+            <span class="sa">f</span><span class="s2">"fade=t=in:st=0:d=</span><span class="si">{</span><span class="n">fade</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">:alpha=1,"</span>
+            <span class="sa">f</span><span class="s2">"fade=t=out:st=</span><span class="si">{</span><span class="n">hold</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">fade</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">:d=</span><span class="si">{</span><span class="n">fade</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">:alpha=1,"</span>
+            <span class="sa">f</span><span class="s2">"setpts=PTS+</span><span class="si">{</span><span class="n">o</span><span class="o">.</span><span class="n">start</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">/TB[ov</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">]"</span>
+        <span class="p">)</span>
+        <span class="n">nxt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"v</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">"</span>
+        <span class="n">steps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"[</span><span class="si">{</span><span class="n">current</span><span class="si">}</span><span class="s2">][ov</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">]overlay=0:0:eof_action=pass:"</span>
+            <span class="sa">f</span><span class="s2">"enable='between(t,</span><span class="si">{</span><span class="n">o</span><span class="o">.</span><span class="n">start</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">o</span><span class="o">.</span><span class="n">end</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">)'[</span><span class="si">{</span><span class="n">nxt</span><span class="si">}</span><span class="s2">]"</span>
+        <span class="p">)</span>
+        <span class="n">current</span> <span class="o">=</span> <span class="n">nxt</span>
+    <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span>
+        <span class="s2">"-filter_complex"</span><span class="p">,</span> <span class="s2">";"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">steps</span><span class="p">),</span>
+        <span class="s2">"-map"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"[</span><span class="si">{</span><span class="n">current</span><span class="si">}</span><span class="s2">]"</span><span class="p">,</span> <span class="s2">"-map"</span><span class="p">,</span> <span class="s2">"0:a?"</span><span class="p">,</span>
+        <span class="o">*</span><span class="n">_ENCODE</span><span class="p">,</span> <span class="s2">"-crf"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">crf</span><span class="p">),</span> <span class="s2">"-preset"</span><span class="p">,</span> <span class="n">preset</span><span class="p">,</span>
+        <span class="s2">"-c:a"</span><span class="p">,</span> <span class="s2">"copy"</span><span class="p">,</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">dst</span><span class="p">),</span>
+    <span class="p">]</span>
+    <span class="n">_run</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dst</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_blank_frame</span><span class="p">(</span><span class="n">size</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">delivery</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">tituli.frame</span><span class="w"> </span><span class="kn">import</span> <span class="n">Frame</span>
+
+    <span class="k">return</span> <span class="n">Frame</span><span class="o">.</span><span class="n">blank</span><span class="p">(</span><span class="n">size</span><span class="p">)</span><span class="o">.</span><span class="n">with_delivery</span><span class="p">(</span><span class="n">delivery</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="materialize">
+<a class="viewcode-back" href="../../module_docs/tituli/video.html#tituli.video.materialize">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">materialize</span><span class="p">(</span><span class="n">overlays</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">TimedOverlay</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">TimedOverlay</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Give every overlay a layout, rendering payloads; raise naming any that can't be.</span>
+
+<span class="sd">    &gt;&gt;&gt; from tituli.frame import Frame</span>
+<span class="sd">    &gt;&gt;&gt; from tituli.schedule import Label, TimedOverlay</span>
+<span class="sd">    &gt;&gt;&gt; f = Frame.blank((640, 360))</span>
+<span class="sd">    &gt;&gt;&gt; done = materialize([TimedOverlay(None, 0, 2, payload=Label("Eliza", "Earl, 1787"))], frame=f)</span>
+<span class="sd">    &gt;&gt;&gt; done[0].layout is not None</span>
+<span class="sd">    True</span>
+<span class="sd">    """</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">tituli.compose</span><span class="w"> </span><span class="kn">import</span> <span class="n">caption</span><span class="p">,</span> <span class="n">lower_third</span><span class="p">,</span> <span class="n">note</span><span class="p">,</span> <span class="n">title_card</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">tituli.schedule</span><span class="w"> </span><span class="kn">import</span> <span class="n">Label</span>
+
+    <span class="n">out</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">TimedOverlay</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">unrenderable</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">overlays</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">o</span><span class="o">.</span><span class="n">layout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">o</span><span class="o">.</span><span class="n">payload</span>
+        <span class="n">lay</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">Label</span><span class="p">):</span>
+            <span class="n">lay</span> <span class="o">=</span> <span class="n">caption</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">attribution</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="n">o</span><span class="o">.</span><span class="n">slot</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">"text"</span> <span class="ow">in</span> <span class="n">p</span><span class="p">:</span>
+            <span class="n">kind</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"kind"</span><span class="p">,</span> <span class="s2">"caption"</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">"lower_third"</span><span class="p">:</span>
+                <span class="n">lay</span> <span class="o">=</span> <span class="n">lower_third</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="s2">"text"</span><span class="p">],</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"role"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="n">o</span><span class="o">.</span><span class="n">slot</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">"note"</span><span class="p">:</span>
+                <span class="n">lay</span> <span class="o">=</span> <span class="n">note</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"lines"</span><span class="p">,</span> <span class="p">()),</span> <span class="n">headline</span><span class="o">=</span><span class="n">p</span><span class="p">[</span><span class="s2">"text"</span><span class="p">],</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="n">o</span><span class="o">.</span><span class="n">slot</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">"title"</span><span class="p">:</span>
+                <span class="n">lay</span> <span class="o">=</span> <span class="n">title_card</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="s2">"text"</span><span class="p">],</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"subtitle"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="n">o</span><span class="o">.</span><span class="n">slot</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">lay</span> <span class="o">=</span> <span class="n">caption</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="s2">"text"</span><span class="p">],</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"attribution"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="n">o</span><span class="o">.</span><span class="n">slot</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">lay</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">unrenderable</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"#</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> [</span><span class="si">{</span><span class="n">o</span><span class="o">.</span><span class="n">start</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">o</span><span class="o">.</span><span class="n">end</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">] slot=</span><span class="si">{</span><span class="n">o</span><span class="o">.</span><span class="n">slot</span><span class="si">!r}</span><span class="s2"> payload=</span><span class="si">{</span><span class="n">p</span><span class="si">!r}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">with_layout</span><span class="p">(</span><span class="n">lay</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">unrenderable</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">"overlay(): these overlays have no layout and no renderable payload "</span>
+            <span class="s2">"(a Label, or a dict with 'text'); render them first or they would be "</span>
+            <span class="s2">"silently missing from the film:</span><span class="se">\n</span><span class="s2">  "</span> <span class="o">+</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">  "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">unrenderable</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+
+<div class="viewcode-block" id="crawl">
+<a class="viewcode-back" href="../../module_docs/tituli/video.html#tituli.video.crawl">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">crawl</span><span class="p">(</span>
+    <span class="n">tall</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span>
+    <span class="n">dst</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">size</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
+    <span class="n">speed_px_s</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">fps</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">DEFAULT_FPS</span><span class="p">,</span>
+    <span class="n">audio</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">crf</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_CRF</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Scroll a tall image up through a ``size`` window at ``speed_px_s``.</span>
+
+<span class="sd">    The image should already carry its own lead-in and tail (as</span>
+<span class="sd">    :func:`tituli.credits.credits_crawl` does), so the clip starts and ends on</span>
+<span class="sd">    an empty frame. Duration is ``(image height - window height) / speed``.</span>
+<span class="sd">    """</span>
+    <span class="n">require_filters</span><span class="p">(</span><span class="s2">"crop"</span><span class="p">)</span>
+    <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">_even</span><span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">_even</span><span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">src</span><span class="p">,</span> <span class="n">tmp</span> <span class="o">=</span> <span class="n">_as_png</span><span class="p">(</span><span class="n">tall</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">src</span><span class="p">)</span> <span class="k">as</span> <span class="n">im</span><span class="p">:</span>
+        <span class="n">ih</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">height</span>
+    <span class="n">travel</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">ih</span> <span class="o">-</span> <span class="n">h</span><span class="p">)</span>
+    <span class="n">duration</span> <span class="o">=</span> <span class="n">travel</span> <span class="o">/</span> <span class="n">speed_px_s</span>
+    <span class="n">vf</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"crop=</span><span class="si">{</span><span class="n">w</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">h</span><span class="si">}</span><span class="s2">:0:'min(t*</span><span class="si">{</span><span class="n">speed_px_s</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">travel</span><span class="si">}</span><span class="s2">)',format=yuv420p"</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">ffmpeg_path</span><span class="p">(),</span> <span class="s2">"-y"</span><span class="p">,</span> <span class="s2">"-loglevel"</span><span class="p">,</span> <span class="s2">"error"</span><span class="p">,</span> <span class="s2">"-loop"</span><span class="p">,</span> <span class="s2">"1"</span><span class="p">,</span> <span class="s2">"-framerate"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">fps</span><span class="p">),</span> <span class="s2">"-i"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">src</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="n">audio</span><span class="p">:</span>
+        <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"-i"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">audio</span><span class="p">)]</span>
+    <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"-t"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">duration</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"-vf"</span><span class="p">,</span> <span class="n">vf</span><span class="p">,</span> <span class="o">*</span><span class="n">_ENCODE</span><span class="p">,</span> <span class="s2">"-crf"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">crf</span><span class="p">),</span> <span class="s2">"-preset"</span><span class="p">,</span> <span class="n">DEFAULT_PRESET</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">audio</span><span class="p">:</span>
+        <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"-c:a"</span><span class="p">,</span> <span class="s2">"aac"</span><span class="p">,</span> <span class="s2">"-shortest"</span><span class="p">]</span>
+    <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">dst</span><span class="p">)]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">_run</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">tmp</span><span class="p">:</span>
+            <span class="n">tmp</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">missing_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="frames_to_video">
+<a class="viewcode-back" href="../../module_docs/tituli/video.html#tituli.video.frames_to_video">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">frames_to_video</span><span class="p">(</span>
+    <span class="n">frames</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">],</span>
+    <span class="n">dst</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">size</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
+    <span class="n">fps</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">DEFAULT_FPS</span><span class="p">,</span>
+    <span class="n">audio</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">crf</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_CRF</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Encode a lazy stream of RGB frames (the kinetic path: per-glyph reveals)."""</span>
+    <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">_even</span><span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">_even</span><span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">ffmpeg_path</span><span class="p">(),</span> <span class="s2">"-y"</span><span class="p">,</span> <span class="s2">"-loglevel"</span><span class="p">,</span> <span class="s2">"error"</span><span class="p">,</span>
+        <span class="s2">"-f"</span><span class="p">,</span> <span class="s2">"rawvideo"</span><span class="p">,</span> <span class="s2">"-pix_fmt"</span><span class="p">,</span> <span class="s2">"rgb24"</span><span class="p">,</span> <span class="s2">"-s"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">w</span><span class="si">}</span><span class="s2">x</span><span class="si">{</span><span class="n">h</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"-r"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">fps</span><span class="p">),</span> <span class="s2">"-i"</span><span class="p">,</span> <span class="s2">"-"</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="k">if</span> <span class="n">audio</span><span class="p">:</span>
+        <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"-i"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">audio</span><span class="p">)]</span>
+    <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="o">*</span><span class="n">_ENCODE</span><span class="p">,</span> <span class="s2">"-crf"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">crf</span><span class="p">),</span> <span class="s2">"-preset"</span><span class="p">,</span> <span class="n">DEFAULT_PRESET</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">audio</span><span class="p">:</span>
+        <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"-c:a"</span><span class="p">,</span> <span class="s2">"aac"</span><span class="p">,</span> <span class="s2">"-shortest"</span><span class="p">]</span>
+    <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">dst</span><span class="p">)]</span>
+    <span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">proc</span><span class="o">.</span><span class="n">stdin</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">frames</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+                <span class="n">f</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">))</span>
+            <span class="n">proc</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">"RGB"</span><span class="p">)</span><span class="o">.</span><span class="n">tobytes</span><span class="p">())</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">proc</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">err</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">errors</span><span class="o">=</span><span class="s2">"replace"</span><span class="p">)</span> <span class="k">if</span> <span class="n">proc</span><span class="o">.</span><span class="n">stderr</span> <span class="k">else</span> <span class="s2">""</span>
+        <span class="n">proc</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">FfmpegError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"ffmpeg failed (</span><span class="si">{</span><span class="n">proc</span><span class="o">.</span><span class="n">returncode</span><span class="si">}</span><span class="s2">):</span><span class="se">\n</span><span class="si">{</span><span class="n">err</span><span class="p">[</span><span class="o">-</span><span class="mi">2000</span><span class="p">:]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="probe_size">
+<a class="viewcode-back" href="../../module_docs/tituli/video.html#tituli.video.probe_size">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">probe_size</span><span class="p">(</span><span class="n">video</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""``(width, height)`` of the first video stream, via ffprobe."""</span>
+    <span class="n">ffprobe</span> <span class="o">=</span> <span class="n">shutil</span><span class="o">.</span><span class="n">which</span><span class="p">(</span><span class="s2">"ffprobe"</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">ffmpeg_path</span><span class="p">())</span><span class="o">.</span><span class="n">with_name</span><span class="p">(</span><span class="s2">"ffprobe"</span><span class="p">))</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">ffprobe</span><span class="p">,</span> <span class="s2">"-v"</span><span class="p">,</span> <span class="s2">"error"</span><span class="p">,</span> <span class="s2">"-select_streams"</span><span class="p">,</span> <span class="s2">"v:0"</span><span class="p">,</span> <span class="s2">"-show_entries"</span><span class="p">,</span> <span class="s2">"stream=width,height"</span><span class="p">,</span>
+         <span class="s2">"-of"</span><span class="p">,</span> <span class="s2">"csv=p=0"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">video</span><span class="p">)],</span>
+        <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">)[:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">w</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">h</span><span class="p">)</span></div>
+
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"FfmpegError"</span><span class="p">,</span>
+    <span class="s2">"materialize"</span><span class="p">,</span>
+    <span class="s2">"ffmpeg_path"</span><span class="p">,</span>
+    <span class="s2">"available_filters"</span><span class="p">,</span>
+    <span class="s2">"require_filters"</span><span class="p">,</span>
+    <span class="s2">"still"</span><span class="p">,</span>
+    <span class="s2">"overlay"</span><span class="p">,</span>
+    <span class="s2">"crawl"</span><span class="p">,</span>
+    <span class="s2">"frames_to_video"</span><span class="p">,</span>
+    <span class="s2">"probe_size"</span><span class="p">,</span>
+<span class="p">]</span>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

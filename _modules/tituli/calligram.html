@@ -1,0 +1,268 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tituli.calligram &mdash; tituli 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            tituli
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli.html">tituli</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/__main__.html">tituli.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/bodies.html">tituli.bodies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/calligram.html">tituli.calligram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/color.html">tituli.color</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/compose.html">tituli.compose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/credits.html">tituli.credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/fonts.html">tituli.fonts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/frame.html">tituli.frame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/geometry.html">tituli.geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/layout.html">tituli.layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/render.html">tituli.render</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/schedule.html">tituli.schedule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/shaping.html">tituli.shaping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/style.html">tituli.style</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/tools.html">tituli.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/video.html">tituli.video</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tituli</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tituli.calligram</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tituli.calligram</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Calligrams and concrete poems: text whose shape is part of the meaning.</span>
+
+<span class="sd">Three treatments, all producing an ordinary :class:`~tituli.layout.Layout`:</span>
+
+<span class="sd">* :func:`on_path` — glyphs ride a :class:`~tituli.geometry.Path` (any shape:</span>
+<span class="sd">  circle, wave, Bézier, SVG ``d``), rotated to the tangent or kept upright;</span>
+<span class="sd">* :func:`rain` — Apollinaire's *Il pleut*: upright letters stepping down</span>
+<span class="sd">  fanning streaks (a preset of the same machinery, with the 1918 measurements</span>
+<span class="sd">  as defaults);</span>
+<span class="sd">* :func:`in_shape` — prose poured into a silhouette, the concrete-page case.</span>
+
+<span class="sd">``shape=`` accepts a named preset, an SVG path string, or a</span>
+<span class="sd">:class:`~tituli.geometry.Path`, so a caller can say ``"circle"`` and a</span>
+<span class="sd">designer can hand over a traced outline — the same seam.</span>
+
+<span class="sd">&gt;&gt;&gt; from tituli.frame import Frame</span>
+<span class="sd">&gt;&gt;&gt; lay = on_path("round and round", shape="circle", frame=Frame.blank((800, 800)))</span>
+<span class="sd">&gt;&gt;&gt; len(lay.runs) == len("round and round".replace(" ", ""))</span>
+<span class="sd">True</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Sequence</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">tituli.frame</span><span class="w"> </span><span class="kn">import</span> <span class="n">Frame</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tituli.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tituli.layout</span><span class="w"> </span><span class="kn">import</span> <span class="n">Layout</span><span class="p">,</span> <span class="n">along_path</span><span class="p">,</span> <span class="n">fill_shape</span><span class="p">,</span> <span class="n">glyph_columns</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tituli.style</span><span class="w"> </span><span class="kn">import</span> <span class="n">CALLIGRAM</span><span class="p">,</span> <span class="n">TextStyle</span>
+
+<span class="c1"># Measured from the 1918 Mercure de France setting of "Il pleut".</span>
+<span class="n">IL_PLEUT_SLANTS</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.186</span><span class="p">,</span> <span class="mf">0.220</span><span class="p">,</span> <span class="mf">0.257</span><span class="p">,</span> <span class="mf">0.298</span><span class="p">,</span> <span class="mf">0.353</span><span class="p">)</span>
+<span class="n">IL_PLEUT_HEAD_OFFSETS</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">7.0</span><span class="p">,</span> <span class="mf">11.7</span><span class="p">,</span> <span class="mf">16.4</span><span class="p">,</span> <span class="mf">19.3</span><span class="p">)</span>
+<span class="n">IL_PLEUT_SIZE_RATIO</span> <span class="o">=</span> <span class="mf">0.86</span>
+
+<span class="n">_SHAPE_INSET</span> <span class="o">=</span> <span class="mf">0.12</span>  <span class="c1"># fraction of the safe box kept clear around a shape</span>
+<span class="n">_WAVE_AMPLITUDE</span> <span class="o">=</span> <span class="mf">0.12</span>  <span class="c1"># of the box height</span>
+<span class="n">_ARC_SWEEP</span> <span class="o">=</span> <span class="p">(</span><span class="mf">200.0</span><span class="p">,</span> <span class="mf">340.0</span><span class="p">)</span>  <span class="c1"># a gentle smile-shaped arc, degrees (screen coords)</span>
+
+<span class="n">ShapeSpec</span> <span class="o">=</span> <span class="s2">"str | Path"</span>
+
+
+<div class="viewcode-block" id="resolve_shape">
+<a class="viewcode-back" href="../../module_docs/tituli/calligram.html#tituli.resolve_shape">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">resolve_shape</span><span class="p">(</span><span class="n">shape</span><span class="p">:</span> <span class="s2">"str | Path"</span><span class="p">,</span> <span class="n">box</span><span class="p">:</span> <span class="n">Box</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Turn a name, an SVG ``d`` string or a Path into a Path fitted to ``box``.</span>
+
+<span class="sd">    Names: ``"line"``, ``"circle"``, ``"arc"``, ``"wave"``, ``"diagonal"``,</span>
+<span class="sd">    ``"s-curve"``. Anything starting with ``M``/``m`` is parsed as SVG.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">shape</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">shape</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">name</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="s2">"Mm"</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Path</span><span class="o">.</span><span class="n">from_svg</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+    <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">center</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">box</span><span class="o">.</span><span class="n">height</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"line"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Path</span><span class="o">.</span><span class="n">line</span><span class="p">((</span><span class="n">box</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="n">cy</span><span class="p">),</span> <span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">x1</span><span class="p">,</span> <span class="n">cy</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"circle"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Path</span><span class="o">.</span><span class="n">circle</span><span class="p">((</span><span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">),</span> <span class="n">r</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"arc"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Path</span><span class="o">.</span><span class="n">arc</span><span class="p">((</span><span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="o">+</span> <span class="n">r</span> <span class="o">*</span> <span class="mf">0.6</span><span class="p">),</span> <span class="n">r</span> <span class="o">*</span> <span class="mf">1.1</span><span class="p">,</span> <span class="o">*</span><span class="n">_ARC_SWEEP</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"wave"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Path</span><span class="o">.</span><span class="n">wave</span><span class="p">((</span><span class="n">box</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="n">cy</span><span class="p">),</span> <span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">x1</span><span class="p">,</span> <span class="n">cy</span><span class="p">),</span> <span class="n">amplitude</span><span class="o">=</span><span class="n">box</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="n">_WAVE_AMPLITUDE</span><span class="p">,</span> <span class="n">cycles</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"diagonal"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Path</span><span class="o">.</span><span class="n">line</span><span class="p">((</span><span class="n">box</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="n">box</span><span class="o">.</span><span class="n">y0</span><span class="p">),</span> <span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">x1</span><span class="p">,</span> <span class="n">box</span><span class="o">.</span><span class="n">y1</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"s-curve"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Path</span><span class="o">.</span><span class="n">bezier</span><span class="p">((</span><span class="n">box</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="n">box</span><span class="o">.</span><span class="n">y1</span><span class="p">),</span> <span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">x0</span> <span class="o">+</span> <span class="n">box</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">,</span> <span class="n">box</span><span class="o">.</span><span class="n">y0</span> <span class="o">+</span> <span class="n">box</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">),</span>
+                           <span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">x1</span> <span class="o">-</span> <span class="n">box</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">,</span> <span class="n">box</span><span class="o">.</span><span class="n">y0</span> <span class="o">+</span> <span class="n">box</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">),</span> <span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">x1</span><span class="p">,</span> <span class="n">box</span><span class="o">.</span><span class="n">y0</span><span class="p">))</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"unknown shape </span><span class="si">{</span><span class="n">shape</span><span class="si">!r}</span><span class="s2">; use a preset name, an SVG path string, or a Path"</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="on_path">
+<a class="viewcode-back" href="../../module_docs/tituli/calligram.html#tituli.on_path">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">on_path</span><span class="p">(</span>
+    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">shape</span><span class="p">:</span> <span class="s2">"str | Path"</span> <span class="o">=</span> <span class="s2">"wave"</span><span class="p">,</span>
+    <span class="n">frame</span><span class="p">:</span> <span class="n">Frame</span><span class="p">,</span>
+    <span class="n">style</span><span class="p">:</span> <span class="n">TextStyle</span> <span class="o">=</span> <span class="n">CALLIGRAM</span><span class="p">,</span>
+    <span class="n">box</span><span class="p">:</span> <span class="n">Box</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">upright</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">align</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"start"</span><span class="p">,</span> <span class="s2">"center"</span><span class="p">,</span> <span class="s2">"end"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"center"</span><span class="p">,</span>
+    <span class="n">fit_text</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Layout</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Set ``text`` along a shape inside ``box`` (default: the safe area, inset).</span>
+
+<span class="sd">    With ``fit_text`` the type is shrunk until the whole string fits the path</span>
+<span class="sd">    length (never clipped); the resulting size is in ``meta["size"]``.</span>
+<span class="sd">    """</span>
+    <span class="n">box</span> <span class="o">=</span> <span class="n">box</span> <span class="ow">or</span> <span class="n">frame</span><span class="o">.</span><span class="n">safe</span><span class="o">.</span><span class="n">inset</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">safe</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="n">_SHAPE_INSET</span><span class="p">,</span> <span class="n">frame</span><span class="o">.</span><span class="n">safe</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="n">_SHAPE_INSET</span><span class="p">)</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">resolve_shape</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">box</span><span class="p">)</span>
+    <span class="n">st</span> <span class="o">=</span> <span class="n">style</span>
+    <span class="n">lay</span> <span class="o">=</span> <span class="n">along_path</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">st</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">upright</span><span class="o">=</span><span class="n">upright</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="n">align</span><span class="p">)</span>
+    <span class="k">while</span> <span class="n">fit_text</span> <span class="ow">and</span> <span class="n">lay</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"overflow"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">st</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mf">0.008</span><span class="p">:</span>
+        <span class="n">st</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">with_</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="n">size</span> <span class="o">*</span> <span class="mf">0.92</span><span class="p">)</span>
+        <span class="n">lay</span> <span class="o">=</span> <span class="n">along_path</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">st</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">upright</span><span class="o">=</span><span class="n">upright</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="n">align</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Layout</span><span class="p">(</span><span class="n">lay</span><span class="o">.</span><span class="n">runs</span><span class="p">,</span> <span class="n">lay</span><span class="o">.</span><span class="n">plates</span><span class="p">,</span> <span class="p">{</span><span class="o">**</span><span class="n">lay</span><span class="o">.</span><span class="n">meta</span><span class="p">,</span> <span class="s2">"size"</span><span class="p">:</span> <span class="n">st</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="s2">"path_length"</span><span class="p">:</span> <span class="n">path</span><span class="o">.</span><span class="n">length</span><span class="p">})</span></div>
+
+
+
+<div class="viewcode-block" id="rain">
+<a class="viewcode-back" href="../../module_docs/tituli/calligram.html#tituli.rain">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">rain</span><span class="p">(</span>
+    <span class="n">lines</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">frame</span><span class="p">:</span> <span class="n">Frame</span><span class="p">,</span>
+    <span class="n">style</span><span class="p">:</span> <span class="n">TextStyle</span> <span class="o">=</span> <span class="n">CALLIGRAM</span><span class="p">,</span>
+    <span class="n">box</span><span class="p">:</span> <span class="n">Box</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">slants</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">IL_PLEUT_SLANTS</span><span class="p">,</span>
+    <span class="n">head_offsets</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">IL_PLEUT_HEAD_OFFSETS</span><span class="p">,</span>
+    <span class="n">size_ratio</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">IL_PLEUT_SIZE_RATIO</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Layout</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""*Il pleut*: each line a streak of upright letters falling across the frame.</span>
+
+<span class="sd">    Wants a portrait frame. ``slants`` (dx per step down) and ``head_offsets``</span>
+<span class="sd">    (where each streak starts, in slot units) are shape parameters, not</span>
+<span class="sd">    coordinates — the defaults are Apollinaire's.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">lines</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span> <span class="k">if</span> <span class="n">l</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span>
+    <span class="n">box</span> <span class="o">=</span> <span class="n">box</span> <span class="ow">or</span> <span class="n">frame</span><span class="o">.</span><span class="n">safe</span>
+    <span class="k">return</span> <span class="n">glyph_columns</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">lines</span><span class="p">),</span> <span class="n">style</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">box</span><span class="o">=</span><span class="n">box</span><span class="p">,</span> <span class="n">slants</span><span class="o">=</span><span class="n">slants</span><span class="p">,</span> <span class="n">head_offsets</span><span class="o">=</span><span class="n">head_offsets</span><span class="p">,</span> <span class="n">size_ratio</span><span class="o">=</span><span class="n">size_ratio</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="in_shape">
+<a class="viewcode-back" href="../../module_docs/tituli/calligram.html#tituli.in_shape">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">in_shape</span><span class="p">(</span>
+    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">mask</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">frame</span><span class="p">:</span> <span class="n">Frame</span><span class="p">,</span>
+    <span class="n">style</span><span class="p">:</span> <span class="n">TextStyle</span> <span class="o">=</span> <span class="n">CALLIGRAM</span><span class="p">,</span>
+    <span class="n">box</span><span class="p">:</span> <span class="n">Box</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">repeat</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Layout</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Pour prose into a silhouette (light = inside). See :func:`tituli.layout.fill_shape`."""</span>
+    <span class="n">box</span> <span class="o">=</span> <span class="n">box</span> <span class="ow">or</span> <span class="n">frame</span><span class="o">.</span><span class="n">safe</span>
+    <span class="k">return</span> <span class="n">fill_shape</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="n">style</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">box</span><span class="o">=</span><span class="n">box</span><span class="p">,</span> <span class="n">repeat</span><span class="o">=</span><span class="n">repeat</span><span class="p">)</span></div>
+
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"on_path"</span><span class="p">,</span> <span class="s2">"rain"</span><span class="p">,</span> <span class="s2">"in_shape"</span><span class="p">,</span> <span class="s2">"resolve_shape"</span><span class="p">,</span> <span class="s2">"IL_PLEUT_SLANTS"</span><span class="p">,</span> <span class="s2">"IL_PLEUT_HEAD_OFFSETS"</span><span class="p">]</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

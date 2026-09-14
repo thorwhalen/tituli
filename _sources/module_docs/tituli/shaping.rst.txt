@@ -1,0 +1,4 @@
+tituli.shaping
+==============
+.. automodule:: tituli.shaping
+   :members:

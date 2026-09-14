@@ -1,0 +1,220 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tituli.bodies &mdash; tituli 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            tituli
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli.html">tituli</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/__main__.html">tituli.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/bodies.html">tituli.bodies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/calligram.html">tituli.calligram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/color.html">tituli.color</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/compose.html">tituli.compose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/credits.html">tituli.credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/fonts.html">tituli.fonts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/frame.html">tituli.frame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/geometry.html">tituli.geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/layout.html">tituli.layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/render.html">tituli.render</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/schedule.html">tituli.schedule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/shaping.html">tituli.shaping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/style.html">tituli.style</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/tools.html">tituli.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/video.html">tituli.video</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tituli</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tituli.bodies</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tituli.bodies</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""A lacing body schema for a rendered caption (``pip install tituli[lacing]``).</span>
+
+<span class="sd">URI: ``annot://schema/text-overlay/v1``. A caption is an annotation **on the</span>
+<span class="sd">image** (``MediaRef(asset_id=&lt;image hash&gt;)``), and when that image sits under an</span>
+<span class="sd">audio segment the pair is expressed the way ``artful.PanelBody`` does it: the</span>
+<span class="sd">annotation's ``reference`` is the interval on the segment and</span>
+<span class="sd">``provenance.was_derived_from`` lists both the image ``asset_id`` and the</span>
+<span class="sd">caption annotation id. No N-ary reference type is invented; the timing lives</span>
+<span class="sd">on the reference, not in this body.</span>
+
+<span class="sd">Registration is lazy and idempotent (:func:`register`), so ``import tituli``</span>
+<span class="sd">never touches lacing.</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+
+<span class="n">TEXT_OVERLAY_V1</span> <span class="o">=</span> <span class="s2">"annot://schema/text-overlay/v1"</span>
+<span class="n">_REGISTERED</span> <span class="o">=</span> <span class="kc">False</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_model</span><span class="p">():</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
+
+    <span class="k">class</span><span class="w"> </span><span class="nc">TextOverlayBodyV1</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""What was written over the picture, and how. Placement is normalised."""</span>
+
+        <span class="n">model_config</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"frozen"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">"extra"</span><span class="p">:</span> <span class="s2">"forbid"</span><span class="p">}</span>
+
+        <span class="n">text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"The caption as displayed (after wrapping/truncation)."</span><span class="p">)</span>
+        <span class="n">attribution</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">""</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"The small credit line under the caption, if any."</span><span class="p">)</span>
+        <span class="n">kind</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">"caption"</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Free string: 'caption', 'lower_third', 'title', 'intertitle', ..."</span><span class="p">)</span>
+        <span class="n">anchor</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">""</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Grid position the block was placed at ('top-left', ...)."</span><span class="p">)</span>
+        <span class="n">box</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+            <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Normalised (x, y, w, h) of the text block in the frame."</span>
+        <span class="p">)</span>
+        <span class="n">ink</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Ink colour as #rrggbb, if recorded."</span><span class="p">)</span>
+        <span class="n">scrim</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Whether a scrim was drawn under the text."</span><span class="p">)</span>
+        <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"The ink/scrim decision the frame's knowledge led to."</span><span class="p">)</span>
+        <span class="n">style</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"The TextStyle fields used, for re-rendering."</span><span class="p">)</span>
+        <span class="n">unlabelled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+            <span class="kc">False</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"True when the still was deliberately shown without a label (an explicit choice, not an omission)."</span>
+        <span class="p">)</span>
+        <span class="n">overlay_asset_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"asset_id of the rendered transparent PNG, if stored."</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">TextOverlayBodyV1</span>
+
+
+<div class="viewcode-block" id="register">
+<a class="viewcode-back" href="../../module_docs/tituli/bodies.html#tituli.bodies.register">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">register</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Register the schema with lacing (once). Returns the URI."""</span>
+    <span class="k">global</span> <span class="n">_REGISTERED</span>
+    <span class="k">if</span> <span class="n">_REGISTERED</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">TEXT_OVERLAY_V1</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">lacing</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_body_schema</span>
+
+    <span class="n">register_body_schema</span><span class="p">(</span><span class="n">TEXT_OVERLAY_V1</span><span class="p">,</span> <span class="n">_model</span><span class="p">())</span>
+    <span class="n">_REGISTERED</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="n">TEXT_OVERLAY_V1</span></div>
+
+
+
+<div class="viewcode-block" id="body_for">
+<a class="viewcode-back" href="../../module_docs/tituli/bodies.html#tituli.bodies.body_for">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">body_for</span><span class="p">(</span><span class="n">layout</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">attribution</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span> <span class="n">kind</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"caption"</span><span class="p">,</span> <span class="n">unlabelled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The body dict for a rendered layout — plain data, no lacing needed.</span>
+
+<span class="sd">    &gt;&gt;&gt; from tituli.frame import Frame</span>
+<span class="sd">    &gt;&gt;&gt; from tituli.compose import caption</span>
+<span class="sd">    &gt;&gt;&gt; f = Frame.blank((1920, 1080))</span>
+<span class="sd">    &gt;&gt;&gt; b = body_for(caption("A still", "PD", frame=f), f, text="A still", attribution="PD")</span>
+<span class="sd">    &gt;&gt;&gt; b["kind"], b["anchor"], len(b["box"])</span>
+<span class="sd">    ('caption', 'bottom-left', 4)</span>
+<span class="sd">    """</span>
+    <span class="n">bb</span> <span class="o">=</span> <span class="n">layout</span><span class="o">.</span><span class="n">bbox</span><span class="p">()</span>
+    <span class="n">ink</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">layout</span><span class="o">.</span><span class="n">runs</span><span class="p">:</span>
+        <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">layout</span><span class="o">.</span><span class="n">runs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">color</span>
+        <span class="n">ink</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"#</span><span class="si">{</span><span class="n">r</span><span class="si">:</span><span class="s2">02x</span><span class="si">}{</span><span class="n">g</span><span class="si">:</span><span class="s2">02x</span><span class="si">}{</span><span class="n">b</span><span class="si">:</span><span class="s2">02x</span><span class="si">}</span><span class="s2">"</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">"text"</span><span class="p">:</span> <span class="n">text</span><span class="p">,</span>
+        <span class="s2">"attribution"</span><span class="p">:</span> <span class="n">attribution</span><span class="p">,</span>
+        <span class="s2">"kind"</span><span class="p">:</span> <span class="n">kind</span><span class="p">,</span>
+        <span class="s2">"anchor"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">layout</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"anchor"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)),</span>
+        <span class="s2">"box"</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">bb</span><span class="o">.</span><span class="n">to_norm</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">frame</span><span class="o">.</span><span class="n">height</span><span class="p">)),</span>
+        <span class="s2">"ink"</span><span class="p">:</span> <span class="n">ink</span><span class="p">,</span>
+        <span class="s2">"scrim"</span><span class="p">:</span> <span class="nb">any</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">kind</span> <span class="o">!=</span> <span class="s2">"box"</span> <span class="ow">or</span> <span class="n">p</span><span class="o">.</span><span class="n">color</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">255</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">layout</span><span class="o">.</span><span class="n">plates</span><span class="p">)</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">"reason"</span><span class="p">:</span> <span class="n">layout</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"ink"</span><span class="p">),</span>
+        <span class="s2">"style"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">"unlabelled"</span><span class="p">:</span> <span class="n">unlabelled</span><span class="p">,</span>
+        <span class="s2">"overlay_asset_id"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">}</span></div>
+
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"TEXT_OVERLAY_V1"</span><span class="p">,</span> <span class="s2">"register"</span><span class="p">,</span> <span class="s2">"body_for"</span><span class="p">]</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,482 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tituli.frame &mdash; tituli 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            tituli
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli.html">tituli</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/__main__.html">tituli.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/bodies.html">tituli.bodies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/calligram.html">tituli.calligram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/color.html">tituli.color</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/compose.html">tituli.compose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/credits.html">tituli.credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/fonts.html">tituli.fonts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/frame.html">tituli.frame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/geometry.html">tituli.geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/layout.html">tituli.layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/render.html">tituli.render</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/schedule.html">tituli.schedule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/shaping.html">tituli.shaping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/style.html">tituli.style</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/tools.html">tituli.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/video.html">tituli.video</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tituli</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tituli.frame</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tituli.frame</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""The frame: what the layout engine is allowed to know about the picture.</span>
+
+<span class="sd">This module is the answer to "is a text-only video a special case of text over</span>
+<span class="sd">video?" — yes, and the axis that unifies them is **how much the layout engine</span>
+<span class="sd">knows about the frame**, a ladder:</span>
+
+<span class="sd">======  ===========================================  =================================</span>
+<span class="sd">rung    the Frame knows                              so the engine can</span>
+<span class="sd">======  ===========================================  =================================</span>
+<span class="sd">(a)     only its size                                place by anchor; must assume the</span>
+<span class="sd">                                                     worst and put a scrim under text</span>
+<span class="sd">(b)     a solid background colour                    choose ink by contrast, no scrim</span>
+<span class="sd">(c)     the actual pixels                            sample luminance under a candidate</span>
+<span class="sd">                                                     box; choose ink; scrim only if the</span>
+<span class="sd">                                                     patch is mid-toned or busy</span>
+<span class="sd">(d)     (c) + regions to keep clear                  rank candidate positions by how</span>
+<span class="sd">                                                     little they cover the subject</span>
+<span class="sd">======  ===========================================  =================================</span>
+
+<span class="sd">A single :class:`Frame` type carries all four rungs; every rung is optional and</span>
+<span class="sd">the engine asks (``luminance_under``, ``overlap``) rather than branching on kind.</span>
+<span class="sd">The regions-to-avoid input is one keyword, ``avoid=``, which takes boxes *or a</span>
+<span class="sd">callable* ``image -&gt; box(es)`` — the shape of ``burns.salient_box`` and of</span>
+<span class="sd">``burns.FacesDetector`` — so subject detection plugs in without a dependency.</span>
+
+<span class="sd">&gt;&gt;&gt; f = Frame.blank((1920, 1080))</span>
+<span class="sd">&gt;&gt;&gt; f.luminance_under(f.safe) is None      # rung (a): unknown</span>
+<span class="sd">True</span>
+<span class="sd">&gt;&gt;&gt; Frame.blank((1920, 1080), color="#fff").luminance_under(f.safe)</span>
+<span class="sd">1.0</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageStat</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">tituli.color</span><span class="w"> </span><span class="kn">import</span> <span class="n">RGBA</span><span class="p">,</span> <span class="n">parse_color</span><span class="p">,</span> <span class="n">relative_luminance</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tituli.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">ANCHORS</span><span class="p">,</span> <span class="n">TITLE_SAFE</span><span class="p">,</span> <span class="n">Box</span><span class="p">,</span> <span class="n">NormBox</span><span class="p">,</span> <span class="n">anchor_box</span><span class="p">,</span> <span class="n">safe_area</span>
+
+<span class="n">Size</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>
+<span class="n">Avoid</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">NormBox</span><span class="p">],</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="n">Any</span><span class="p">]]</span>
+
+<span class="n">DEFAULT_SIZE</span><span class="p">:</span> <span class="n">Size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1920</span><span class="p">,</span> <span class="mi">1080</span><span class="p">)</span>
+<span class="n">_SAMPLE_MAX</span> <span class="o">=</span> <span class="mi">128</span>  <span class="c1"># downscale a patch to at most this many px per side before stats</span>
+<span class="n">_LUMA_CHANNELS</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="c1"># Placement preference when the caller does not say: corners first (a portrait's</span>
+<span class="c1"># face is rarely in a corner; the bottom-left corner is the broadcast lower-third</span>
+<span class="c1"># convention, the top-left the museum-label one), then the edges, "center" last.</span>
+<span class="c1"># With `delivery="youtube"` the bottom row is reserved and the top-left wins.</span>
+<span class="n">DEFAULT_ANCHOR_ORDER</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">"bottom-left"</span><span class="p">,</span>
+    <span class="s2">"top-left"</span><span class="p">,</span>
+    <span class="s2">"bottom-right"</span><span class="p">,</span>
+    <span class="s2">"top-right"</span><span class="p">,</span>
+    <span class="s2">"bottom"</span><span class="p">,</span>
+    <span class="s2">"top"</span><span class="p">,</span>
+    <span class="s2">"left"</span><span class="p">,</span>
+    <span class="s2">"right"</span><span class="p">,</span>
+    <span class="s2">"center"</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="n">ImageLike</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]</span>
+
+<span class="c1"># Parts of the picture a delivery target draws its own chrome over. YouTube puts</span>
+<span class="c1"># subtitles and the control bar across the bottom ~22 % of the frame, so a</span>
+<span class="c1"># lower-third caption there collides with the film's own SRT track. Normalised</span>
+<span class="c1"># (x, y, w, h). Add targets here rather than remembering the rule per caller.</span>
+<span class="n">DELIVERY_RESERVED</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">NormBox</span><span class="p">,</span> <span class="o">...</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"youtube"</span><span class="p">:</span> <span class="p">((</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.78</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.22</span><span class="p">),),</span>
+    <span class="s2">"broadcast"</span><span class="p">:</span> <span class="p">(),</span>
+    <span class="s2">"none"</span><span class="p">:</span> <span class="p">(),</span>
+<span class="p">}</span>
+<span class="n">_MID_LUMINANCE</span> <span class="o">=</span> <span class="mf">0.18</span>  <span class="c1"># the luminance where white and black ink contrast equally</span>
+
+
+<div class="viewcode-block" id="reserved_zones">
+<a class="viewcode-back" href="../../module_docs/tituli/frame.html#tituli.reserved_zones">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">reserved_zones</span><span class="p">(</span><span class="n">delivery</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">NormBox</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Normalised boxes a delivery target keeps for itself.</span>
+
+<span class="sd">    &gt;&gt;&gt; reserved_zones("youtube")</span>
+<span class="sd">    ((0.0, 0.78, 1.0, 0.22),)</span>
+<span class="sd">    &gt;&gt;&gt; reserved_zones(None)</span>
+<span class="sd">    ()</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">delivery</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">DELIVERY_RESERVED</span><span class="p">[</span><span class="n">delivery</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"unknown delivery target </span><span class="si">{</span><span class="n">delivery</span><span class="si">!r}</span><span class="s2">; choose from </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">DELIVERY_RESERVED</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_as_images</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">]:</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="n">image</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">))</span> <span class="k">else</span> <span class="nb">list</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">items</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Frame.from_image needs at least one image"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[(</span><span class="n">i</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">)</span> <span class="k">else</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">i</span><span class="p">))</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">"RGB"</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">items</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_patch_stats</span><span class="p">(</span><span class="n">img</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">box</span><span class="p">:</span> <span class="n">Box</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">crop</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">crop</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">rounded</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">crop</span><span class="o">.</span><span class="n">width</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">crop</span><span class="o">.</span><span class="n">height</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">crop</span><span class="o">.</span><span class="n">thumbnail</span><span class="p">((</span><span class="n">_SAMPLE_MAX</span><span class="p">,</span> <span class="n">_SAMPLE_MAX</span><span class="p">))</span>
+    <span class="c1"># relative luminance is non-linear; the per-channel means are close enough</span>
+    <span class="c1"># to choose an ink and cheap enough to run per frame of a window.</span>
+    <span class="n">stat</span> <span class="o">=</span> <span class="n">ImageStat</span><span class="o">.</span><span class="n">Stat</span><span class="p">(</span><span class="n">crop</span><span class="p">)</span>
+    <span class="n">mean</span> <span class="o">=</span> <span class="n">relative_luminance</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">stat</span><span class="o">.</span><span class="n">mean</span><span class="p">[:</span><span class="n">_LUMA_CHANNELS</span><span class="p">]))</span>
+    <span class="n">std</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">stat</span><span class="o">.</span><span class="n">stddev</span><span class="p">[:</span><span class="n">_LUMA_CHANNELS</span><span class="p">])</span> <span class="o">/</span> <span class="n">_LUMA_CHANNELS</span> <span class="o">/</span> <span class="mf">255.0</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_as_boxes</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">NormBox</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Normalise ``avoid`` output: one ``(x, y, w, h)`` or a sequence of them."""</span>
+    <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span>
+    <span class="n">seq</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">))</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">)]</span>  <span class="c1"># type: ignore[list-item]</span>
+    <span class="k">return</span> <span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">]</span>  <span class="c1"># type: ignore[misc]</span>
+
+
+<div class="viewcode-block" id="Frame">
+<a class="viewcode-back" href="../../module_docs/tituli/frame.html#tituli.Frame">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Frame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Size plus whatever else is known about the picture text will sit on."""</span>
+
+    <span class="n">width</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">height</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">color</span><span class="p">:</span> <span class="n">RGBA</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">compare</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">avoid</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Box</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">reserved</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Box</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">samples</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="p">(),</span> <span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">compare</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Frame.blank">
+<a class="viewcode-back" href="../../module_docs/tituli/frame.html#tituli.Frame.blank">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">blank</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="n">Size</span> <span class="o">=</span> <span class="n">DEFAULT_SIZE</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Frame"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Rung (a) when ``color`` is None, rung (b) when it is given."""</span>
+        <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">size</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">w</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">h</span><span class="p">),</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">color</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">parse_color</span><span class="p">(</span><span class="n">color</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="Frame.from_image">
+<a class="viewcode-back" href="../../module_docs/tituli/frame.html#tituli.Frame.from_image">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_image</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">image</span><span class="p">:</span> <span class="n">ImageLike</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">ImageLike</span><span class="p">],</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">avoid</span><span class="p">:</span> <span class="n">Avoid</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">size</span><span class="p">:</span> <span class="n">Size</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">delivery</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Frame"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Rung (c), and rung (d) when ``avoid`` is given.</span>
+
+<span class="sd">        ``image`` may also be a **sequence** of frames (the stills a camera move</span>
+<span class="sd">        will pass through under the text): the first is what gets composited,</span>
+<span class="sd">        all of them feed :meth:`luminance_stats`, which then reports the *worst*</span>
+<span class="sd">        instant — so a scrim is as light as the whole window allows, not as</span>
+<span class="sd">        heavy as one frame demands.</span>
+
+<span class="sd">        ``avoid`` is normalised boxes, or a callable taking the PIL image and</span>
+<span class="sd">        returning one box or several (``burns.salient_box`` fits directly). It</span>
+<span class="sd">        runs on every sampled frame. ``size`` cover-fits the picture(s) to the</span>
+<span class="sd">        frame first. ``delivery`` names a target whose reserved zones</span>
+<span class="sd">        (``"youtube"``: subtitle band + control bar) placement must keep clear.</span>
+<span class="sd">        """</span>
+        <span class="n">imgs</span> <span class="o">=</span> <span class="n">_as_images</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">imgs</span> <span class="o">=</span> <span class="p">[</span><span class="n">cover_fit</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">imgs</span><span class="p">]</span>
+        <span class="n">first</span> <span class="o">=</span> <span class="n">imgs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">boxes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">NormBox</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">avoid</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">imgs</span><span class="p">:</span>
+                <span class="n">boxes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">_as_boxes</span><span class="p">(</span><span class="n">avoid</span><span class="p">(</span><span class="n">i</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">boxes</span> <span class="o">=</span> <span class="n">_as_boxes</span><span class="p">(</span><span class="n">avoid</span><span class="p">)</span>
+        <span class="n">px_boxes</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">Box</span><span class="o">.</span><span class="n">from_norm</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">first</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">first</span><span class="o">.</span><span class="n">height</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">boxes</span><span class="p">)</span>
+        <span class="n">reserved</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+            <span class="n">Box</span><span class="o">.</span><span class="n">from_norm</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">first</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">first</span><span class="o">.</span><span class="n">height</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">reserved_zones</span><span class="p">(</span><span class="n">delivery</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">first</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">first</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">px_boxes</span><span class="p">,</span> <span class="n">reserved</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">imgs</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="Frame.over">
+<a class="viewcode-back" href="../../module_docs/tituli/frame.html#tituli.Frame.over">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">over</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">stills</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">ImageLike</span><span class="p">],</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">avoid</span><span class="p">:</span> <span class="n">Avoid</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">size</span><span class="p">:</span> <span class="n">Size</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">delivery</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Frame"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""The frame a caption will sit on *over a time window* of stills.</span>
+
+<span class="sd">        The named entry point for the sequence case: the first still is what</span>
+<span class="sd">        gets composited, all of them are sampled, and ``luminance_stats``</span>
+<span class="sd">        reports the worst instant — so a scrim over a Ken Burns move is as</span>
+<span class="sd">        light as the whole window allows. (``from_image`` accepts a sequence</span>
+<span class="sd">        too; this name says what it is for.)</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_image</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">stills</span><span class="p">),</span> <span class="n">avoid</span><span class="o">=</span><span class="n">avoid</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">delivery</span><span class="o">=</span><span class="n">delivery</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Frame.with_delivery">
+<a class="viewcode-back" href="../../module_docs/tituli/frame.html#tituli.Frame.with_delivery">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">with_delivery</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delivery</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Frame"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Same frame, placement keeping clear of that target's reserved zones."""</span>
+        <span class="n">reserved</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">Box</span><span class="o">.</span><span class="n">from_norm</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">reserved_zones</span><span class="p">(</span><span class="n">delivery</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">Frame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">avoid</span><span class="p">,</span> <span class="n">reserved</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="p">)</span></div>
+
+
+    <span class="c1"># -- knowledge queries -------------------------------------------------------</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Size</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Box</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Box</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">safe</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Box</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""The title-safe box (SMPTE ST 2046-1, 90 %)."""</span>
+        <span class="k">return</span> <span class="n">safe_area</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="n">fraction</span><span class="o">=</span><span class="n">TITLE_SAFE</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">knows_pixels</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="Frame.with_avoid">
+<a class="viewcode-back" href="../../module_docs/tituli/frame.html#tituli.Frame.with_avoid">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">with_avoid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">avoid</span><span class="p">:</span> <span class="n">Avoid</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Frame"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Same frame with (additional) regions to keep clear."""</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span>
+        <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">avoid</span><span class="p">)</span> <span class="ow">and</span> <span class="n">img</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"a callable avoid= needs a Frame with an image"</span><span class="p">)</span>
+        <span class="n">boxes</span> <span class="o">=</span> <span class="n">_as_boxes</span><span class="p">(</span><span class="n">avoid</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">avoid</span><span class="p">)</span> <span class="k">else</span> <span class="n">avoid</span><span class="p">)</span>
+        <span class="n">extra</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">Box</span><span class="o">.</span><span class="n">from_norm</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">boxes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Frame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">avoid</span> <span class="o">+</span> <span class="n">extra</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">reserved</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Frame.luminance_under">
+<a class="viewcode-back" href="../../module_docs/tituli/frame.html#tituli.Frame.luminance_under">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">luminance_under</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">box</span><span class="p">:</span> <span class="n">Box</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Mean relative luminance of the pixels under ``box``; None if unknown."""</span>
+        <span class="n">stats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">luminance_stats</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">stats</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">stats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="Frame.luminance_stats">
+<a class="viewcode-back" href="../../module_docs/tituli/frame.html#tituli.Frame.luminance_stats">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">luminance_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">box</span><span class="p">:</span> <span class="n">Box</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""``(mean, stddev)`` of relative luminance under ``box``; None if unknown.</span>
+
+<span class="sd">        A high stddev means a busy patch — even a well-contrasted mean will not</span>
+<span class="sd">        keep every glyph readable, which is when a scrim earns its place.</span>
+<span class="sd">        """</span>
+        <span class="n">imgs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">samples</span> <span class="ow">or</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="p">,)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">())</span>
+        <span class="k">if</span> <span class="n">imgs</span><span class="p">:</span>
+            <span class="n">stats</span> <span class="o">=</span> <span class="p">[</span><span class="n">_patch_stats</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">box</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bounds</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">imgs</span><span class="p">]</span>
+            <span class="n">stats</span> <span class="o">=</span> <span class="p">[</span><span class="n">st</span> <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="n">stats</span> <span class="k">if</span> <span class="n">st</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">stats</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+            <span class="c1"># Worst instant: the mean nearest mid-grey (least contrast headroom</span>
+            <span class="c1"># for either ink) and the busiest patch.</span>
+            <span class="n">mean</span> <span class="o">=</span> <span class="nb">min</span><span class="p">((</span><span class="n">m</span> <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">stats</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="n">m</span> <span class="o">-</span> <span class="n">_MID_LUMINANCE</span><span class="p">))</span>
+            <span class="n">std</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">sd</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">sd</span> <span class="ow">in</span> <span class="n">stats</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">relative_luminance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="Frame.overlap">
+<a class="viewcode-back" href="../../module_docs/tituli/frame.html#tituli.Frame.overlap">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">overlap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">box</span><span class="p">:</span> <span class="n">Box</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Fraction of ``box`` that covers something in ``avoid`` (0 when nothing)."""</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">avoid</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">overlap_fraction</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">avoid</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Frame.place">
+<a class="viewcode-back" href="../../module_docs/tituli/frame.html#tituli.Frame.place">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">place</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">size</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">anchor</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"auto"</span><span class="p">,</span>
+        <span class="n">region</span><span class="p">:</span> <span class="n">Box</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Box</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Where to put a block of ``size``: a named anchor and its pixel box.</span>
+
+<span class="sd">        ``anchor`` may be one name, a preference list, or ``"auto"`` (the default</span>
+<span class="sd">        order). With rung (d) knowledge the candidate that least covers the</span>
+<span class="sd">        subject wins; ties fall to preference order.</span>
+
+<span class="sd">        &gt;&gt;&gt; f = Frame.blank((1000, 500))</span>
+<span class="sd">        &gt;&gt;&gt; f.place((200, 50), anchor="bottom")[0]</span>
+<span class="sd">        'bottom'</span>
+<span class="sd">        """</span>
+        <span class="n">region</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe</span> <span class="k">if</span> <span class="n">region</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">region</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">anchor</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">order</span> <span class="o">=</span> <span class="n">DEFAULT_ANCHOR_ORDER</span> <span class="k">if</span> <span class="n">anchor</span> <span class="o">==</span> <span class="s2">"auto"</span> <span class="k">else</span> <span class="p">(</span><span class="n">anchor</span><span class="p">,)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">order</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">anchor</span><span class="p">)</span>
+        <span class="n">unknown</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">order</span> <span class="k">if</span> <span class="n">a</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ANCHORS</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">unknown</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"unknown anchor(s) </span><span class="si">{</span><span class="n">unknown</span><span class="si">}</span><span class="s2">; choose from </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">ANCHORS</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">candidates</span> <span class="o">=</span> <span class="p">[(</span><span class="n">a</span><span class="p">,</span> <span class="n">anchor_box</span><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">a</span><span class="p">))</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">order</span><span class="p">]</span>
+        <span class="n">clear</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">candidates</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">overlap_fraction</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reserved</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="n">clear</span><span class="p">:</span>
+            <span class="n">candidates</span> <span class="o">=</span> <span class="n">clear</span>
+        <span class="n">best</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span>
+            <span class="nb">enumerate</span><span class="p">(</span><span class="n">candidates</span><span class="p">),</span>
+            <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">ic</span><span class="p">:</span> <span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">overlap</span><span class="p">(</span><span class="n">ic</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span> <span class="mi">2</span><span class="p">),</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_distance_from_subject</span><span class="p">(</span><span class="n">ic</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span> <span class="n">ic</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">best</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_distance_from_subject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">box</span><span class="p">:</span> <span class="n">Box</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Tie-break for coarse avoid boxes: prefer the candidate farthest from their centres."""</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">avoid</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+        <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">center</span>
+        <span class="n">diag</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
+        <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="nb">min</span><span class="p">(((</span><span class="n">cx</span> <span class="o">-</span> <span class="n">a</span><span class="o">.</span><span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">cy</span> <span class="o">-</span> <span class="n">a</span><span class="o">.</span><span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">avoid</span><span class="p">)</span> <span class="o">/</span> <span class="n">diag</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="cover_fit">
+<a class="viewcode-back" href="../../module_docs/tituli/frame.html#tituli.cover_fit">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">cover_fit</span><span class="p">(</span><span class="n">img</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="n">Size</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Scale ``img`` to fill ``size`` and crop the overflow, centred.</span>
+
+<span class="sd">    &gt;&gt;&gt; cover_fit(Image.new("RGB", (100, 50)), (50, 50)).size</span>
+<span class="sd">    (50, 50)</span>
+<span class="sd">    """</span>
+    <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">size</span>
+    <span class="n">scale</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">w</span> <span class="o">/</span> <span class="n">img</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">h</span> <span class="o">/</span> <span class="n">img</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
+    <span class="n">resized</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="n">scale</span><span class="p">)),</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="n">scale</span><span class="p">))))</span>
+    <span class="n">x0</span> <span class="o">=</span> <span class="p">(</span><span class="n">resized</span><span class="o">.</span><span class="n">width</span> <span class="o">-</span> <span class="n">w</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="n">y0</span> <span class="o">=</span> <span class="p">(</span><span class="n">resized</span><span class="o">.</span><span class="n">height</span> <span class="o">-</span> <span class="n">h</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="n">resized</span><span class="o">.</span><span class="n">crop</span><span class="p">((</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x0</span> <span class="o">+</span> <span class="n">w</span><span class="p">,</span> <span class="n">y0</span> <span class="o">+</span> <span class="n">h</span><span class="p">))</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

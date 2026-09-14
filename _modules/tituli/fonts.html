@@ -1,0 +1,444 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tituli.fonts &mdash; tituli 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            tituli
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli.html">tituli</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/__main__.html">tituli.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/bodies.html">tituli.bodies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/calligram.html">tituli.calligram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/color.html">tituli.color</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/compose.html">tituli.compose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/credits.html">tituli.credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/fonts.html">tituli.fonts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/frame.html">tituli.frame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/geometry.html">tituli.geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/layout.html">tituli.layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/render.html">tituli.render</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/schedule.html">tituli.schedule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/shaping.html">tituli.shaping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/style.html">tituli.style</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/tools.html">tituli.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/video.html">tituli.video</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tituli</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tituli.fonts</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tituli.fonts</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Font discovery with no bundled fonts.</span>
+
+<span class="sd">``tituli`` never ships a typeface (licensing), so a *typeface request* — a family</span>
+<span class="sd">name, weight and slant — is resolved against the fonts already installed on the</span>
+<span class="sd">machine, and falls back to the scalable face Pillow embeds (Aileron). That fallback</span>
+<span class="sd">is a real font, not a stub, so every render works out of the box on a bare CI</span>
+<span class="sd">runner; it just looks better on a machine with Helvetica Neue.</span>
+
+<span class="sd">Resolution order is a *preference list*: the first family found wins.</span>
+
+<span class="sd">&gt;&gt;&gt; face = resolve_face(["No Such Family", "DejaVu Sans"], size=48)</span>
+<span class="sd">&gt;&gt;&gt; face.size</span>
+<span class="sd">48</span>
+<span class="sd">&gt;&gt;&gt; face.family in ("DejaVu Sans", "Aileron") or isinstance(face.family, str)</span>
+<span class="sd">True</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">lru_cache</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Sequence</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageFont</span>
+
+<span class="n">_FONT_SUFFIXES</span> <span class="o">=</span> <span class="p">(</span><span class="s2">".ttf"</span><span class="p">,</span> <span class="s2">".ttc"</span><span class="p">,</span> <span class="s2">".otf"</span><span class="p">)</span>
+<span class="n">_MAX_TTC_INDEX</span> <span class="o">=</span> <span class="mi">32</span>  <span class="c1"># sanity bound when probing a collection's faces</span>
+<span class="n">_TTC_FIRST_INDEX</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c1"># The working set the style research settled on, most-preferred first. Every</span>
+<span class="c1"># entry is a family name as the font's own ``name`` table reports it.</span>
+<span class="n">SANS_STACK</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">"Helvetica Neue"</span><span class="p">,</span>
+    <span class="s2">"Inter"</span><span class="p">,</span>
+    <span class="s2">"Helvetica"</span><span class="p">,</span>
+    <span class="s2">"Avenir Next"</span><span class="p">,</span>
+    <span class="s2">"Roboto"</span><span class="p">,</span>
+    <span class="s2">"Univers"</span><span class="p">,</span>
+    <span class="s2">"Liberation Sans"</span><span class="p">,</span>
+    <span class="s2">"DejaVu Sans"</span><span class="p">,</span>
+    <span class="s2">"Arial"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">SERIF_STACK</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">"Georgia"</span><span class="p">,</span>
+    <span class="s2">"Palatino"</span><span class="p">,</span>
+    <span class="s2">"Baskerville"</span><span class="p">,</span>
+    <span class="s2">"Liberation Serif"</span><span class="p">,</span>
+    <span class="s2">"DejaVu Serif"</span><span class="p">,</span>
+    <span class="s2">"Times New Roman"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">DISPLAY_STACK</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"Futura"</span><span class="p">,</span> <span class="s2">"Avenir Next"</span><span class="p">,</span> <span class="s2">"Gill Sans"</span><span class="p">)</span> <span class="o">+</span> <span class="n">SANS_STACK</span>
+<span class="n">MONO_STACK</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"Menlo"</span><span class="p">,</span> <span class="s2">"DejaVu Sans Mono"</span><span class="p">,</span> <span class="s2">"Liberation Mono"</span><span class="p">,</span> <span class="s2">"Courier"</span><span class="p">)</span>
+
+<span class="n">FALLBACK_FAMILY</span> <span class="o">=</span> <span class="s2">"Aileron"</span>  <span class="c1"># what Pillow's embedded ``load_default`` reports</span>
+
+<span class="n">_WEIGHT_WORDS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"thin"</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="s2">"ultralight"</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="s2">"extralight"</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="s2">"light"</span><span class="p">:</span> <span class="mi">300</span><span class="p">,</span>
+    <span class="s2">"regular"</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
+    <span class="s2">"book"</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
+    <span class="s2">"roman"</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
+    <span class="s2">"normal"</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
+    <span class="s2">"medium"</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span>
+    <span class="s2">"semibold"</span><span class="p">:</span> <span class="mi">600</span><span class="p">,</span>
+    <span class="s2">"demibold"</span><span class="p">:</span> <span class="mi">600</span><span class="p">,</span>
+    <span class="s2">"demi"</span><span class="p">:</span> <span class="mi">600</span><span class="p">,</span>
+    <span class="s2">"bold"</span><span class="p">:</span> <span class="mi">700</span><span class="p">,</span>
+    <span class="s2">"extrabold"</span><span class="p">:</span> <span class="mi">800</span><span class="p">,</span>
+    <span class="s2">"ultrabold"</span><span class="p">:</span> <span class="mi">800</span><span class="p">,</span>
+    <span class="s2">"heavy"</span><span class="p">:</span> <span class="mi">800</span><span class="p">,</span>
+    <span class="s2">"black"</span><span class="p">:</span> <span class="mi">900</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">REGULAR_WEIGHT</span> <span class="o">=</span> <span class="mi">400</span>
+<span class="n">BOLD_WEIGHT</span> <span class="o">=</span> <span class="mi">700</span>
+
+
+<div class="viewcode-block" id="FontFile">
+<a class="viewcode-back" href="../../module_docs/tituli/fonts.html#tituli.FontFile">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">FontFile</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""One face inside a font file (a ``.ttc`` holds several)."""</span>
+
+    <span class="n">path</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">index</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">family</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">style</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">weight</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""CSS-style weight parsed from the style name (``"Bold"`` -&gt; 700)."""</span>
+        <span class="k">return</span> <span class="n">_weight_of</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">italic</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Whether the style name says italic/oblique."""</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">return</span> <span class="s2">"italic"</span> <span class="ow">in</span> <span class="n">s</span> <span class="ow">or</span> <span class="s2">"oblique"</span> <span class="ow">in</span> <span class="n">s</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">condensed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Whether the style name says condensed/narrow/compressed."""</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="n">w</span> <span class="ow">in</span> <span class="n">s</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"condensed"</span><span class="p">,</span> <span class="s2">"narrow"</span><span class="p">,</span> <span class="s2">"compressed"</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="Face">
+<a class="viewcode-back" href="../../module_docs/tituli/fonts.html#tituli.Face">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Face</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""A resolved, sized font ready to measure and draw with Pillow."""</span>
+
+    <span class="n">family</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">style</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">size</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pil</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">FreeTypeFont</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""The Pillow font object (cached per ``(path, index, size)``)."""</span>
+        <span class="k">return</span> <span class="n">_load_pil</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Face.with_size">
+<a class="viewcode-back" href="../../module_docs/tituli/fonts.html#tituli.Face.with_size">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">with_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Face"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Same face at another pixel size."""</span>
+        <span class="k">return</span> <span class="n">Face</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">family</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">size</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Face.length">
+<a class="viewcode-back" href="../../module_docs/tituli/fonts.html#tituli.Face.length">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Advance width of ``text`` in pixels."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pil</span><span class="o">.</span><span class="n">getlength</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ascent</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Ascent in pixels."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pil</span><span class="o">.</span><span class="n">getmetrics</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">descent</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Descent in pixels."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pil</span><span class="o">.</span><span class="n">getmetrics</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">line_height</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Ascent + descent."""</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pil</span><span class="o">.</span><span class="n">getmetrics</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">d</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_weight_of</span><span class="p">(</span><span class="n">style</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">style</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"-"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+    <span class="c1"># longest match first so "ultralight" beats "light", "semibold" beats "bold"</span>
+    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">_WEIGHT_WORDS</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="nb">len</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">_WEIGHT_WORDS</span><span class="p">[</span><span class="n">word</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">REGULAR_WEIGHT</span>
+
+
+<div class="viewcode-block" id="font_dirs">
+<a class="viewcode-back" href="../../module_docs/tituli/fonts.html#tituli.font_dirs">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">font_dirs</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Path</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Platform font directories that exist on this machine.</span>
+
+<span class="sd">    Extra directories can be prepended with ``TITULI_FONT_DIRS`` (``os.pathsep``</span>
+<span class="sd">    separated), which is also how a project supplies its own licensed fonts.</span>
+<span class="sd">    """</span>
+    <span class="n">home</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s2">"darwin"</span><span class="p">:</span>
+        <span class="n">candidates</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">home</span> <span class="o">/</span> <span class="s2">"Library/Fonts"</span><span class="p">,</span>
+            <span class="n">Path</span><span class="p">(</span><span class="s2">"/Library/Fonts"</span><span class="p">),</span>
+            <span class="n">Path</span><span class="p">(</span><span class="s2">"/System/Library/Fonts"</span><span class="p">),</span>
+            <span class="n">Path</span><span class="p">(</span><span class="s2">"/System/Library/Fonts/Supplemental"</span><span class="p">),</span>
+        <span class="p">]</span>
+    <span class="k">elif</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"win"</span><span class="p">):</span>
+        <span class="n">windir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"WINDIR"</span><span class="p">,</span> <span class="sa">r</span><span class="s2">"C:\Windows"</span><span class="p">))</span>
+        <span class="n">candidates</span> <span class="o">=</span> <span class="p">[</span><span class="n">home</span> <span class="o">/</span> <span class="s2">"AppData/Local/Microsoft/Windows/Fonts"</span><span class="p">,</span> <span class="n">windir</span> <span class="o">/</span> <span class="s2">"Fonts"</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">candidates</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">home</span> <span class="o">/</span> <span class="s2">".fonts"</span><span class="p">,</span>
+            <span class="n">home</span> <span class="o">/</span> <span class="s2">".local/share/fonts"</span><span class="p">,</span>
+            <span class="n">Path</span><span class="p">(</span><span class="s2">"/usr/local/share/fonts"</span><span class="p">),</span>
+            <span class="n">Path</span><span class="p">(</span><span class="s2">"/usr/share/fonts"</span><span class="p">),</span>
+        <span class="p">]</span>
+    <span class="n">extra</span> <span class="o">=</span> <span class="p">[</span><span class="n">Path</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"TITULI_FONT_DIRS"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">pathsep</span><span class="p">)</span> <span class="k">if</span> <span class="n">p</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">d</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">extra</span> <span class="o">+</span> <span class="n">candidates</span> <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()]</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_iter_font_paths</span><span class="p">(</span><span class="n">dirs</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Path</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dirs</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">rglob</span><span class="p">(</span><span class="s2">"*"</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">_FONT_SUFFIXES</span> <span class="ow">and</span> <span class="n">p</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+                <span class="k">yield</span> <span class="n">p</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_faces_in</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">FontFile</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">_MAX_TTC_INDEX</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">),</span> <span class="mi">12</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">OSError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">,</span> <span class="ne">IndexError</span><span class="p">):</span>
+            <span class="k">break</span>
+        <span class="n">family</span><span class="p">,</span> <span class="n">style</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">getname</span><span class="p">()</span>
+        <span class="k">yield</span> <span class="n">FontFile</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">),</span> <span class="n">index</span><span class="p">,</span> <span class="n">family</span> <span class="ow">or</span> <span class="n">path</span><span class="o">.</span><span class="n">stem</span><span class="p">,</span> <span class="n">style</span> <span class="ow">or</span> <span class="s2">"Regular"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">".ttc"</span><span class="p">:</span>
+            <span class="k">break</span>
+
+
+<div class="viewcode-block" id="font_index">
+<a class="viewcode-back" href="../../module_docs/tituli/fonts.html#tituli.font_index">[docs]</a>
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">font_index</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">FontFile</span><span class="p">,</span> <span class="o">...</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">"""Installed faces grouped by family name. Scanned once per process.</span>
+
+<span class="sd">    &gt;&gt;&gt; idx = font_index()</span>
+<span class="sd">    &gt;&gt;&gt; all(isinstance(k, str) for k in idx)</span>
+<span class="sd">    True</span>
+<span class="sd">    """</span>
+    <span class="n">index</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">FontFile</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">_iter_font_paths</span><span class="p">(</span><span class="n">font_dirs</span><span class="p">()):</span>
+        <span class="k">for</span> <span class="n">ff</span> <span class="ow">in</span> <span class="n">_faces_in</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+            <span class="n">index</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">ff</span><span class="o">.</span><span class="n">family</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ff</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">index</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span></div>
+
+
+
+<div class="viewcode-block" id="families">
+<a class="viewcode-back" href="../../module_docs/tituli/fonts.html#tituli.families">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">families</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Sorted family names installed on this machine."""</span>
+    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">font_index</span><span class="p">())</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_best_style</span><span class="p">(</span>
+    <span class="n">faces</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">FontFile</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">weight</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">italic</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">condensed</span><span class="p">:</span> <span class="nb">bool</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FontFile</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">score</span><span class="p">(</span><span class="n">ff</span><span class="p">:</span> <span class="n">FontFile</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">ff</span><span class="o">.</span><span class="n">italic</span> <span class="o">!=</span> <span class="n">italic</span><span class="p">,</span>
+            <span class="n">ff</span><span class="o">.</span><span class="n">condensed</span> <span class="o">!=</span> <span class="n">condensed</span><span class="p">,</span>
+            <span class="nb">abs</span><span class="p">(</span><span class="n">ff</span><span class="o">.</span><span class="n">weight</span> <span class="o">-</span> <span class="n">weight</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">faces</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">score</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="find_font">
+<a class="viewcode-back" href="../../module_docs/tituli/fonts.html#tituli.find_font">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">find_font</span><span class="p">(</span>
+    <span class="n">family</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">weight</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">REGULAR_WEIGHT</span><span class="p">,</span>
+    <span class="n">italic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">condensed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FontFile</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""First installed family in the preference list, at the closest style.</span>
+
+<span class="sd">    ``family`` may be one name or a preference list. A path to a font file is</span>
+<span class="sd">    accepted too, and wins outright.</span>
+
+<span class="sd">    &gt;&gt;&gt; find_font("definitely-not-installed-xyz") is None</span>
+<span class="sd">    True</span>
+<span class="sd">    """</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">family</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">family</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="nb">list</span><span class="p">(</span><span class="n">family</span><span class="p">)</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">font_index</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">_FONT_SUFFIXES</span><span class="p">)</span> <span class="ow">and</span> <span class="n">Path</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+            <span class="n">faces</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">_faces_in</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">name</span><span class="p">)))</span>
+            <span class="k">if</span> <span class="n">faces</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">_best_style</span><span class="p">(</span><span class="n">faces</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span> <span class="n">italic</span><span class="o">=</span><span class="n">italic</span><span class="p">,</span> <span class="n">condensed</span><span class="o">=</span><span class="n">condensed</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">idx</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">_best_style</span><span class="p">(</span><span class="n">idx</span><span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span> <span class="n">italic</span><span class="o">=</span><span class="n">italic</span><span class="p">,</span> <span class="n">condensed</span><span class="o">=</span><span class="n">condensed</span><span class="p">)</span>
+    <span class="c1"># case-insensitive second pass</span>
+    <span class="n">lower</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">idx</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">lower</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">_best_style</span><span class="p">(</span>
+                <span class="n">idx</span><span class="p">[</span><span class="n">lower</span><span class="p">[</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()]],</span> <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span> <span class="n">italic</span><span class="o">=</span><span class="n">italic</span><span class="p">,</span> <span class="n">condensed</span><span class="o">=</span><span class="n">condensed</span>
+            <span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="resolve_face">
+<a class="viewcode-back" href="../../module_docs/tituli/fonts.html#tituli.resolve_face">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">resolve_face</span><span class="p">(</span>
+    <span class="n">family</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">SANS_STACK</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">weight</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">REGULAR_WEIGHT</span><span class="p">,</span>
+    <span class="n">italic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">condensed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Face</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Resolve a typeface request to a sized ``Face``; never fails.</span>
+
+<span class="sd">    Falls back to Pillow's embedded Aileron when nothing in the list is installed,</span>
+<span class="sd">    so a render on a fontless CI box still produces a real (if plainer) result.</span>
+<span class="sd">    """</span>
+    <span class="n">ff</span> <span class="o">=</span> <span class="n">find_font</span><span class="p">(</span><span class="n">family</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span> <span class="n">italic</span><span class="o">=</span><span class="n">italic</span><span class="p">,</span> <span class="n">condensed</span><span class="o">=</span><span class="n">condensed</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ff</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Face</span><span class="p">(</span><span class="n">FALLBACK_FAMILY</span><span class="p">,</span> <span class="s2">"Regular"</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">size</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Face</span><span class="p">(</span><span class="n">ff</span><span class="o">.</span><span class="n">family</span><span class="p">,</span> <span class="n">ff</span><span class="o">.</span><span class="n">style</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">size</span><span class="p">),</span> <span class="n">ff</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">ff</span><span class="o">.</span><span class="n">index</span><span class="p">)</span></div>
+
+
+
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_load_pil</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">FreeTypeFont</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">load_default</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,4 @@
+tituli
+======
+.. automodule:: tituli
+   :members:

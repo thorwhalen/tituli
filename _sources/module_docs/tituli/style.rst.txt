@@ -1,0 +1,4 @@
+tituli.style
+============
+.. automodule:: tituli.style
+   :members:

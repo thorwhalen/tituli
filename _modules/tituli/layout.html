@@ -1,0 +1,715 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tituli.layout &mdash; tituli 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            tituli
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli.html">tituli</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/__main__.html">tituli.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/bodies.html">tituli.bodies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/calligram.html">tituli.calligram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/color.html">tituli.color</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/compose.html">tituli.compose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/credits.html">tituli.credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/fonts.html">tituli.fonts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/frame.html">tituli.frame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/geometry.html">tituli.geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/layout.html">tituli.layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/render.html">tituli.render</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/schedule.html">tituli.schedule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/shaping.html">tituli.shaping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/style.html">tituli.style</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/tools.html">tituli.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/video.html">tituli.video</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tituli</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tituli.layout</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tituli.layout</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""The layout model: placed runs of text, and the engines that place them.</span>
+
+<span class="sd">A :class:`Layout` is the single intermediate every use case produces and the</span>
+<span class="sd">renderer consumes — a title card, a credits crawl and a calligram are all just</span>
+<span class="sd">different ways of filling one. A :class:`Run` is the unit: a string, a baseline</span>
+<span class="sd">origin in frame pixels, an angle, a resolved face and a colour. A block of prose</span>
+<span class="sd">is a few runs (one per line); a calligram is one run per glyph. That is the whole</span>
+<span class="sd">unification — the humble cases are the degenerate calligram, exactly as hoped.</span>
+
+<span class="sd">Real font metrics throughout (``Face.length``), never an average-character</span>
+<span class="sd">estimate.</span>
+
+<span class="sd">&gt;&gt;&gt; from tituli.frame import Frame</span>
+<span class="sd">&gt;&gt;&gt; from tituli.style import TextStyle</span>
+<span class="sd">&gt;&gt;&gt; lay = block("Hello\\nWorld", TextStyle(size=0.05), Frame.blank((1920, 1080)))</span>
+<span class="sd">&gt;&gt;&gt; len(lay.runs)                      # one run per line (a tracked style would give one per glyph)</span>
+<span class="sd">2</span>
+<span class="sd">&gt;&gt;&gt; lay.bbox().width &gt; 0</span>
+<span class="sd">True</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">replace</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Sequence</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">tituli</span><span class="w"> </span><span class="kn">import</span> <span class="n">fonts</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tituli.color</span><span class="w"> </span><span class="kn">import</span> <span class="n">RGBA</span><span class="p">,</span> <span class="n">parse_color</span><span class="p">,</span> <span class="n">with_alpha</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tituli.frame</span><span class="w"> </span><span class="kn">import</span> <span class="n">Frame</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tituli.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tituli.style</span><span class="w"> </span><span class="kn">import</span> <span class="n">TextStyle</span>
+
+<span class="n">Unit</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"line"</span><span class="p">,</span> <span class="s2">"word"</span><span class="p">,</span> <span class="s2">"glyph"</span><span class="p">]</span>
+<span class="n">PlateKind</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span>
+    <span class="s2">"box"</span><span class="p">,</span> <span class="s2">"gradient-bottom"</span><span class="p">,</span> <span class="s2">"gradient-top"</span><span class="p">,</span>
+    <span class="s2">"corner-top-left"</span><span class="p">,</span> <span class="s2">"corner-top-right"</span><span class="p">,</span> <span class="s2">"corner-bottom-left"</span><span class="p">,</span> <span class="s2">"corner-bottom-right"</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">_WORD_SEP</span> <span class="o">=</span> <span class="s2">" "</span>
+
+
+<div class="viewcode-block" id="Run">
+<a class="viewcode-back" href="../../module_docs/tituli/layout.html#tituli.Run">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Run</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""A string drawn from a baseline origin, possibly rotated."""</span>
+
+    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">x</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">y</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">face</span><span class="p">:</span> <span class="n">fonts</span><span class="o">.</span><span class="n">Face</span>
+    <span class="n">color</span><span class="p">:</span> <span class="n">RGBA</span>
+    <span class="n">angle</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>  <span class="c1"># degrees, clockwise on screen (y points down)</span>
+    <span class="n">opacity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">tracking</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>  <span class="c1"># extra px per glyph (only meaningful for glyph runs)</span>
+    <span class="n">unit</span><span class="p">:</span> <span class="n">Unit</span> <span class="o">=</span> <span class="s2">"line"</span>
+    <span class="n">index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">t_in</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># seconds; None = always visible</span>
+    <span class="n">t_full</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">tags</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">width</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">face</span><span class="o">.</span><span class="n">length</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracking</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Run.bbox">
+<a class="viewcode-back" href="../../module_docs/tituli/layout.html#tituli.Run.bbox">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">bbox</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Box</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Axis-aligned bounds (ignores rotation — fine for placement)."""</span>
+        <span class="k">return</span> <span class="n">Box</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">face</span><span class="o">.</span><span class="n">ascent</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">face</span><span class="o">.</span><span class="n">descent</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">translated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dx</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">dy</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Run"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">dx</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">dy</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="Plate">
+<a class="viewcode-back" href="../../module_docs/tituli/layout.html#tituli.Plate">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Plate</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""A backdrop drawn under the runs: a scrim, a box, a rule."""</span>
+
+    <span class="n">box</span><span class="p">:</span> <span class="n">Box</span>
+    <span class="n">color</span><span class="p">:</span> <span class="n">RGBA</span>
+    <span class="n">kind</span><span class="p">:</span> <span class="n">PlateKind</span> <span class="o">=</span> <span class="s2">"box"</span>
+    <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="c1"># For gradient/corner kinds: fraction of the box (x, y) held at full</span>
+    <span class="c1"># strength before the falloff starts, measured from the strong edge.</span>
+    <span class="n">solid</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">translated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dx</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">dy</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Plate"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">box</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">box</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="Layout">
+<a class="viewcode-back" href="../../module_docs/tituli/layout.html#tituli.Layout">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Layout</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Everything the renderer needs: runs on top of plates, in frame pixels."""</span>
+
+    <span class="n">runs</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Run</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">plates</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Plate</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">meta</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">,</span> <span class="n">compare</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Layout.bbox">
+<a class="viewcode-back" href="../../module_docs/tituli/layout.html#tituli.Layout.bbox">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">bbox</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Box</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Bounds of the runs (plates excluded)."""</span>
+        <span class="n">boxes</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">bbox</span><span class="p">()</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">runs</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">boxes</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Box</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">boxes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">boxes</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">translated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dx</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">dy</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Layout"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Layout</span><span class="p">(</span>
+            <span class="nb">tuple</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">translated</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">runs</span><span class="p">),</span>
+            <span class="nb">tuple</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">translated</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plates</span><span class="p">),</span>
+            <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">),</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="Layout.moved_to">
+<a class="viewcode-back" href="../../module_docs/tituli/layout.html#tituli.Layout.moved_to">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">moved_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">box</span><span class="p">:</span> <span class="n">Box</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Layout"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Translate so the runs' bbox top-left lands on ``box``'s top-left."""</span>
+        <span class="n">bb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bbox</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">translated</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">x0</span> <span class="o">-</span> <span class="n">bb</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="n">box</span><span class="o">.</span><span class="n">y0</span> <span class="o">-</span> <span class="n">bb</span><span class="o">.</span><span class="n">y0</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="s2">"Layout"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Layout"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Layout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">runs</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">runs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">plates</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">plates</span><span class="p">,</span> <span class="p">{</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">,</span> <span class="o">**</span><span class="n">other</span><span class="o">.</span><span class="n">meta</span><span class="p">})</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">with_plates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">plates</span><span class="p">:</span> <span class="n">Plate</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Layout"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Layout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">runs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">plates</span> <span class="o">+</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">plates</span><span class="p">),</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">))</span>
+
+<div class="viewcode-block" id="Layout.with_timing">
+<a class="viewcode-back" href="../../module_docs/tituli/layout.html#tituli.Layout.with_timing">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">with_timing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_in</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">t_full</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Layout"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Give every run the same reveal envelope."""</span>
+        <span class="k">return</span> <span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runs</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">replace</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">t_in</span><span class="o">=</span><span class="n">t_in</span><span class="p">,</span> <span class="n">t_full</span><span class="o">=</span><span class="n">t_full</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">runs</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="Layout.staggered">
+<a class="viewcode-back" href="../../module_docs/tituli/layout.html#tituli.Layout.staggered">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">staggered</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">start</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">step</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">ramp</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Layout"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Reveal runs one after another: run ``i`` starts at ``start + i*step``."""</span>
+        <span class="n">runs</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+            <span class="n">replace</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">t_in</span><span class="o">=</span><span class="n">start</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">step</span><span class="p">,</span> <span class="n">t_full</span><span class="o">=</span><span class="n">start</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">step</span> <span class="o">+</span> <span class="n">ramp</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">runs</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runs</span><span class="o">=</span><span class="n">runs</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">recolored</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="n">RGBA</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Layout"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runs</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">replace</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">runs</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">duration_hint</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Latest ``t_full`` among the runs (0 when untimed)."""</span>
+        <span class="k">return</span> <span class="nb">max</span><span class="p">((</span><span class="n">r</span><span class="o">.</span><span class="n">t_full</span> <span class="ow">or</span> <span class="mf">0.0</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">runs</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">runs</span> <span class="k">else</span> <span class="mf">0.0</span></div>
+
+
+
+<span class="c1"># ----------------------------------------------------------------------------</span>
+<span class="c1"># Measuring and wrapping</span>
+<span class="c1"># ----------------------------------------------------------------------------</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_tracking_px</span><span class="p">(</span><span class="n">style</span><span class="p">:</span> <span class="n">TextStyle</span><span class="p">,</span> <span class="n">face</span><span class="p">:</span> <span class="n">fonts</span><span class="o">.</span><span class="n">Face</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">style</span><span class="o">.</span><span class="n">tracking</span> <span class="o">*</span> <span class="n">face</span><span class="o">.</span><span class="n">size</span>
+
+
+<div class="viewcode-block" id="measure">
+<a class="viewcode-back" href="../../module_docs/tituli/layout.html#tituli.measure">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">measure</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="n">TextStyle</span><span class="p">,</span> <span class="n">frame_height</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Width in pixels of ``text`` set in ``style`` on a frame of that height."""</span>
+    <span class="n">face</span> <span class="o">=</span> <span class="n">style</span><span class="o">.</span><span class="n">face</span><span class="p">(</span><span class="n">frame_height</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">style</span><span class="o">.</span><span class="n">apply_case</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">face</span><span class="o">.</span><span class="n">length</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">+</span> <span class="n">_tracking_px</span><span class="p">(</span><span class="n">style</span><span class="p">,</span> <span class="n">face</span><span class="p">)</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="wrap">
+<a class="viewcode-back" href="../../module_docs/tituli/layout.html#tituli.wrap">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">wrap</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="n">TextStyle</span><span class="p">,</span> <span class="n">frame_height</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">max_width</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Greedy word wrap on measured widths. Explicit newlines are honoured.</span>
+
+<span class="sd">    &gt;&gt;&gt; from tituli.style import CAPTION</span>
+<span class="sd">    &gt;&gt;&gt; lines = wrap("one two three four five six", CAPTION, 1080, max_width=300)</span>
+<span class="sd">    &gt;&gt;&gt; len(lines) &gt;= 2 and all(measure(l, CAPTION, 1080) &lt;= 300 for l in lines)</span>
+<span class="sd">    True</span>
+<span class="sd">    """</span>
+    <span class="n">out</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">para</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">):</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="n">para</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">words</span><span class="p">:</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">words</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">words</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="n">trial</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">line</span><span class="si">}{</span><span class="n">_WORD_SEP</span><span class="si">}{</span><span class="n">w</span><span class="si">}</span><span class="s2">"</span>
+            <span class="k">if</span> <span class="n">measure</span><span class="p">(</span><span class="n">trial</span><span class="p">,</span> <span class="n">style</span><span class="p">,</span> <span class="n">frame_height</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">max_width</span><span class="p">:</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="n">trial</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="n">w</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+
+<div class="viewcode-block" id="fit_size">
+<a class="viewcode-back" href="../../module_docs/tituli/layout.html#tituli.fit_size">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">fit_size</span><span class="p">(</span>
+    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">style</span><span class="p">:</span> <span class="n">TextStyle</span><span class="p">,</span>
+    <span class="n">frame_height</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">max_width</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">max_height</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">min_size</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.012</span><span class="p">,</span>
+    <span class="n">step</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TextStyle</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Shrink ``style.size`` until ``text`` wraps within the given bounds.</span>
+
+<span class="sd">    Shrinks geometrically by ``step`` and never below ``min_size`` (a fraction</span>
+<span class="sd">    of frame height, like ``size`` itself).</span>
+<span class="sd">    """</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">style</span>
+    <span class="k">while</span> <span class="n">s</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="n">min_size</span><span class="p">:</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">wrap</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">frame_height</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="n">max_width</span><span class="p">)</span>
+        <span class="n">widest</span> <span class="o">=</span> <span class="nb">max</span><span class="p">((</span><span class="n">measure</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">frame_height</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">),</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">face</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">face</span><span class="p">(</span><span class="n">frame_height</span><span class="p">)</span>
+        <span class="n">height</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="o">*</span> <span class="n">face</span><span class="o">.</span><span class="n">size</span> <span class="o">*</span> <span class="n">s</span><span class="o">.</span><span class="n">leading</span>
+        <span class="k">if</span> <span class="n">widest</span> <span class="o">&lt;=</span> <span class="n">max_width</span> <span class="ow">and</span> <span class="p">(</span><span class="n">max_height</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">height</span> <span class="o">&lt;=</span> <span class="n">max_height</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">s</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">with_</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">size</span> <span class="o">*</span> <span class="n">step</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">s</span></div>
+
+
+
+<span class="c1"># ----------------------------------------------------------------------------</span>
+<span class="c1"># Engines</span>
+<span class="c1"># ----------------------------------------------------------------------------</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_glyph_runs</span><span class="p">(</span>
+    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">face</span><span class="p">:</span> <span class="n">fonts</span><span class="o">.</span><span class="n">Face</span><span class="p">,</span>
+    <span class="n">color</span><span class="p">:</span> <span class="n">RGBA</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">tracking</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">opacity</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">tags</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+    <span class="n">start_index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Run</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""One run per glyph with tracking applied to the advances."""</span>
+    <span class="n">runs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Run</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">cx</span> <span class="o">=</span> <span class="n">x</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+        <span class="n">runs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">Run</span><span class="p">(</span><span class="n">ch</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">face</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="n">opacity</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"glyph"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">start_index</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="n">tags</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">cx</span> <span class="o">+=</span> <span class="n">face</span><span class="o">.</span><span class="n">length</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span> <span class="o">+</span> <span class="n">tracking</span>
+    <span class="k">return</span> <span class="n">runs</span>
+
+
+<div class="viewcode-block" id="block">
+<a class="viewcode-back" href="../../module_docs/tituli/layout.html#tituli.block">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">block</span><span class="p">(</span>
+    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">style</span><span class="p">:</span> <span class="n">TextStyle</span><span class="p">,</span>
+    <span class="n">frame</span><span class="p">:</span> <span class="n">Frame</span> <span class="o">|</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">max_width</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">x</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">y</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">color</span><span class="p">:</span> <span class="n">RGBA</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">unit</span><span class="p">:</span> <span class="n">Unit</span> <span class="o">=</span> <span class="s2">"line"</span><span class="p">,</span>
+    <span class="n">tags</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Layout</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Lay out prose as lines from the top-left corner ``(x, y)``.</span>
+
+<span class="sd">    ``text`` is a string (wrapped to ``max_width`` when given) or pre-broken</span>
+<span class="sd">    lines. Alignment follows ``style.align`` within ``max_width`` (or the widest</span>
+<span class="sd">    line when no width is given). ``unit="glyph"`` emits one run per character</span>
+<span class="sd">    (needed for tracking and for per-glyph reveals).</span>
+<span class="sd">    """</span>
+    <span class="n">fh</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">height</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">Frame</span><span class="p">)</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+    <span class="n">face</span> <span class="o">=</span> <span class="n">style</span><span class="o">.</span><span class="n">face</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
+    <span class="n">rgba</span> <span class="o">=</span> <span class="n">with_alpha</span><span class="p">(</span><span class="n">parse_color</span><span class="p">(</span><span class="n">color</span> <span class="k">if</span> <span class="n">color</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">style</span><span class="o">.</span><span class="n">color</span><span class="p">),</span> <span class="n">style</span><span class="o">.</span><span class="n">opacity</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">wrap</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">style</span><span class="p">,</span> <span class="n">fh</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="n">max_width</span><span class="p">)</span> <span class="k">if</span> <span class="n">max_width</span> <span class="k">else</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">style</span><span class="o">.</span><span class="n">apply_case</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">]</span>
+    <span class="n">tracking</span> <span class="o">=</span> <span class="n">_tracking_px</span><span class="p">(</span><span class="n">style</span><span class="p">,</span> <span class="n">face</span><span class="p">)</span>
+    <span class="n">widths</span> <span class="o">=</span> <span class="p">[</span><span class="n">face</span><span class="o">.</span><span class="n">length</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">+</span> <span class="n">tracking</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">]</span>
+    <span class="n">box_w</span> <span class="o">=</span> <span class="n">max_width</span> <span class="k">if</span> <span class="n">max_width</span> <span class="k">else</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">widths</span><span class="p">)</span> <span class="k">if</span> <span class="n">widths</span> <span class="k">else</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">line_h</span> <span class="o">=</span> <span class="n">face</span><span class="o">.</span><span class="n">size</span> <span class="o">*</span> <span class="n">style</span><span class="o">.</span><span class="n">leading</span>
+    <span class="n">runs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Run</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">baseline</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">face</span><span class="o">.</span><span class="n">ascent</span> <span class="o">+</span> <span class="p">(</span><span class="n">line_h</span> <span class="o">-</span> <span class="n">face</span><span class="o">.</span><span class="n">line_height</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">per_glyph</span> <span class="o">=</span> <span class="n">unit</span> <span class="o">==</span> <span class="s2">"glyph"</span> <span class="ow">or</span> <span class="n">tracking</span> <span class="o">!=</span> <span class="mi">0</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">widths</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">style</span><span class="o">.</span><span class="n">align</span> <span class="o">==</span> <span class="s2">"center"</span><span class="p">:</span>
+            <span class="n">lx</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="p">(</span><span class="n">box_w</span> <span class="o">-</span> <span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="k">elif</span> <span class="n">style</span><span class="o">.</span><span class="n">align</span> <span class="o">==</span> <span class="s2">"right"</span><span class="p">:</span>
+            <span class="n">lx</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">box_w</span> <span class="o">-</span> <span class="n">w</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">lx</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="p">:</span>
+            <span class="n">baseline</span> <span class="o">+=</span> <span class="n">line_h</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">per_glyph</span><span class="p">:</span>
+            <span class="n">gr</span> <span class="o">=</span> <span class="n">_glyph_runs</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">lx</span><span class="p">,</span> <span class="n">baseline</span><span class="p">,</span> <span class="n">face</span><span class="p">,</span> <span class="n">rgba</span><span class="p">,</span> <span class="n">tracking</span><span class="o">=</span><span class="n">tracking</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="n">tags</span><span class="p">,</span> <span class="n">start_index</span><span class="o">=</span><span class="n">idx</span><span class="p">)</span>
+            <span class="n">runs</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">gr</span><span class="p">)</span>
+            <span class="n">idx</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">gr</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">unit</span> <span class="o">==</span> <span class="s2">"word"</span><span class="p">:</span>
+            <span class="n">cx</span> <span class="o">=</span> <span class="n">lx</span>
+            <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">_WORD_SEP</span><span class="p">):</span>
+                <span class="n">runs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Run</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">baseline</span><span class="p">,</span> <span class="n">face</span><span class="p">,</span> <span class="n">rgba</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"word"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">idx</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="n">tags</span><span class="p">))</span>
+                <span class="n">cx</span> <span class="o">+=</span> <span class="n">face</span><span class="o">.</span><span class="n">length</span><span class="p">(</span><span class="n">word</span> <span class="o">+</span> <span class="n">_WORD_SEP</span><span class="p">)</span>
+                <span class="n">idx</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">runs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Run</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">lx</span><span class="p">,</span> <span class="n">baseline</span><span class="p">,</span> <span class="n">face</span><span class="p">,</span> <span class="n">rgba</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"line"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="n">tags</span><span class="p">))</span>
+        <span class="n">baseline</span> <span class="o">+=</span> <span class="n">line_h</span>
+    <span class="k">return</span> <span class="n">Layout</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">runs</span><span class="p">),</span> <span class="n">meta</span><span class="o">=</span><span class="p">{</span><span class="s2">"line_height"</span><span class="p">:</span> <span class="n">line_h</span><span class="p">,</span> <span class="s2">"block_width"</span><span class="p">:</span> <span class="n">box_w</span><span class="p">})</span></div>
+
+
+
+<div class="viewcode-block" id="along_path">
+<a class="viewcode-back" href="../../module_docs/tituli/layout.html#tituli.along_path">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">along_path</span><span class="p">(</span>
+    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+    <span class="n">style</span><span class="p">:</span> <span class="n">TextStyle</span><span class="p">,</span>
+    <span class="n">frame</span><span class="p">:</span> <span class="n">Frame</span> <span class="o">|</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">start</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">align</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"start"</span><span class="p">,</span> <span class="s2">"center"</span><span class="p">,</span> <span class="s2">"end"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"start"</span><span class="p">,</span>
+    <span class="n">offset</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">upright</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">color</span><span class="p">:</span> <span class="n">RGBA</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tags</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Layout</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Set ``text`` glyph by glyph along ``path`` (the path is the baseline).</span>
+
+<span class="sd">    Each glyph's origin is the point at its arc length and it is rotated to the</span>
+<span class="sd">    tangent there — unless ``upright`` (a calligram convention: letters stay</span>
+<span class="sd">    vertical while their *positions* follow the shape). ``offset`` shifts the</span>
+<span class="sd">    baseline perpendicular to the path (negative = above, in screen terms).</span>
+<span class="sd">    ``align`` positions the whole string on the path from ``start``.</span>
+
+<span class="sd">    Text longer than the path keeps its spacing and runs off the end — that is</span>
+<span class="sd">    reported in ``meta["overflow"]`` rather than silently squeezed.</span>
+<span class="sd">    """</span>
+    <span class="n">fh</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">height</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">Frame</span><span class="p">)</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+    <span class="n">face</span> <span class="o">=</span> <span class="n">style</span><span class="o">.</span><span class="n">face</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
+    <span class="n">rgba</span> <span class="o">=</span> <span class="n">with_alpha</span><span class="p">(</span><span class="n">parse_color</span><span class="p">(</span><span class="n">color</span> <span class="k">if</span> <span class="n">color</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">style</span><span class="o">.</span><span class="n">color</span><span class="p">),</span> <span class="n">style</span><span class="o">.</span><span class="n">opacity</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">style</span><span class="o">.</span><span class="n">apply_case</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">tracking</span> <span class="o">=</span> <span class="n">_tracking_px</span><span class="p">(</span><span class="n">style</span><span class="p">,</span> <span class="n">face</span><span class="p">)</span>
+    <span class="n">advances</span> <span class="o">=</span> <span class="p">[</span><span class="n">face</span><span class="o">.</span><span class="n">length</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span> <span class="o">+</span> <span class="n">tracking</span> <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">text</span><span class="p">]</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">advances</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">tracking</span> <span class="k">if</span> <span class="n">advances</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">align</span> <span class="o">==</span> <span class="s2">"center"</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">length</span> <span class="o">-</span> <span class="n">start</span> <span class="o">-</span> <span class="n">total</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="k">elif</span> <span class="n">align</span> <span class="o">==</span> <span class="s2">"end"</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">length</span> <span class="o">-</span> <span class="n">total</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">start</span>
+    <span class="n">closed</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">closed</span>
+    <span class="k">if</span> <span class="n">closed</span> <span class="ow">and</span> <span class="n">align</span> <span class="o">==</span> <span class="s2">"center"</span><span class="p">:</span>
+        <span class="c1"># centre the string on the path's start point (the top of a circle)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">start</span> <span class="o">-</span> <span class="n">total</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="n">closed</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span> <span class="k">if</span> <span class="n">align</span> <span class="o">!=</span> <span class="s2">"start"</span> <span class="k">else</span> <span class="n">s</span>
+    <span class="n">runs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Run</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">at</span><span class="p">(</span><span class="n">u</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">u</span> <span class="o">%</span> <span class="n">path</span><span class="o">.</span><span class="n">length</span> <span class="k">if</span> <span class="n">closed</span> <span class="k">else</span> <span class="n">u</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">ch</span><span class="p">,</span> <span class="n">adv</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">advances</span><span class="p">)):</span>
+        <span class="n">glyph_w</span> <span class="o">=</span> <span class="n">adv</span> <span class="o">-</span> <span class="n">tracking</span>
+        <span class="n">mid</span> <span class="o">=</span> <span class="n">at</span><span class="p">(</span><span class="n">s</span> <span class="o">+</span> <span class="n">glyph_w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">ang</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="k">if</span> <span class="n">upright</span> <span class="k">else</span> <span class="n">path</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">mid</span><span class="p">)</span>
+        <span class="c1"># Anchor each glyph by its centre on the tangent at its midpoint, then</span>
+        <span class="c1"># step back half an advance to find the baseline origin: glyphs on the</span>
+        <span class="c1"># inside of a bend stop piling into each other.</span>
+        <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">point</span><span class="p">(</span><span class="n">mid</span><span class="p">)</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">mid</span><span class="p">))</span>
+        <span class="n">px</span> <span class="o">=</span> <span class="n">cx</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">glyph_w</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">py</span> <span class="o">=</span> <span class="n">cy</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">glyph_w</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="k">if</span> <span class="n">upright</span><span class="p">:</span>
+            <span class="n">px</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="n">cx</span> <span class="o">-</span> <span class="n">glyph_w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">cy</span>
+        <span class="k">if</span> <span class="n">offset</span><span class="p">:</span>
+            <span class="n">px</span> <span class="o">+=</span> <span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">offset</span>
+            <span class="n">py</span> <span class="o">+=</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">offset</span>
+        <span class="k">if</span> <span class="n">ch</span> <span class="o">!=</span> <span class="n">_WORD_SEP</span><span class="p">:</span>
+            <span class="n">runs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Run</span><span class="p">(</span><span class="n">ch</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">py</span><span class="p">,</span> <span class="n">face</span><span class="p">,</span> <span class="n">rgba</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="n">ang</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"glyph"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="n">tags</span><span class="p">))</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="n">adv</span>
+    <span class="n">overflow</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="k">if</span> <span class="n">closed</span> <span class="k">else</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">s</span> <span class="o">-</span> <span class="n">tracking</span> <span class="o">-</span> <span class="n">path</span><span class="o">.</span><span class="n">length</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">closed</span> <span class="ow">and</span> <span class="n">total</span> <span class="o">&gt;</span> <span class="n">path</span><span class="o">.</span><span class="n">length</span><span class="p">:</span>
+        <span class="n">overflow</span> <span class="o">=</span> <span class="n">total</span> <span class="o">-</span> <span class="n">path</span><span class="o">.</span><span class="n">length</span>
+    <span class="k">return</span> <span class="n">Layout</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">runs</span><span class="p">),</span> <span class="n">meta</span><span class="o">=</span><span class="p">{</span><span class="s2">"overflow"</span><span class="p">:</span> <span class="n">overflow</span><span class="p">})</span></div>
+
+
+
+<div class="viewcode-block" id="glyph_columns">
+<a class="viewcode-back" href="../../module_docs/tituli/layout.html#tituli.glyph_columns">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">glyph_columns</span><span class="p">(</span>
+    <span class="n">lines</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">style</span><span class="p">:</span> <span class="n">TextStyle</span><span class="p">,</span>
+    <span class="n">frame</span><span class="p">:</span> <span class="n">Frame</span> <span class="o">|</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">box</span><span class="p">:</span> <span class="n">Box</span><span class="p">,</span>
+    <span class="n">slants</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+    <span class="n">head_offsets</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+    <span class="n">word_gap_slots</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">size_ratio</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.86</span><span class="p">,</span>
+    <span class="n">color</span><span class="p">:</span> <span class="n">RGBA</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tags</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Layout</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Upright glyphs stepping down slanted streaks — Apollinaire's *Il pleut*.</span>
+
+<span class="sd">    Line ``k`` becomes a streak: glyph ``i`` sits at ``(u, v) = (head_offsets[k]</span>
+<span class="sd">    + i * slants[k], i)`` on an abstract slot grid, fitted to ``box`` in one</span>
+<span class="sd">    step, so the shape is aspect-independent. Letters stay upright. This is the</span>
+<span class="sd">    solver muvid's ``calligram`` archetype introduced, generalised over real</span>
+<span class="sd">    glyph metrics and any frame — the streaks are :class:`Path` lines, which is</span>
+<span class="sd">    how it stays one preset of :func:`along_path` rather than a second family.</span>
+
+<span class="sd">    ``slants`` and ``head_offsets`` are cycled if shorter than ``lines``.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">lines</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Layout</span><span class="p">()</span>
+    <span class="n">fh</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">height</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">Frame</span><span class="p">)</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+    <span class="n">slants</span> <span class="o">=</span> <span class="p">[</span><span class="n">slants</span><span class="p">[</span><span class="n">k</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">slants</span><span class="p">)]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+    <span class="n">heads</span> <span class="o">=</span> <span class="p">[</span><span class="n">head_offsets</span><span class="p">[</span><span class="n">k</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">head_offsets</span><span class="p">)]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+    <span class="n">slots</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">style</span><span class="o">.</span><span class="n">apply_case</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="n">col</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">word_i</span><span class="p">,</span> <span class="n">word</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()):</span>
+            <span class="k">if</span> <span class="n">word_i</span><span class="p">:</span>
+                <span class="n">i</span> <span class="o">+=</span> <span class="n">word_gap_slots</span>
+            <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">word</span><span class="p">:</span>
+                <span class="n">col</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">heads</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">slants</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">float</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">ch</span><span class="p">))</span>
+                <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">slots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+    <span class="n">us</span> <span class="o">=</span> <span class="p">[</span><span class="n">u</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">slots</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">col</span><span class="p">]</span>
+    <span class="n">vs</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">slots</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">col</span><span class="p">]</span>
+    <span class="n">u_span</span> <span class="o">=</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">us</span><span class="p">)</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="n">us</span><span class="p">))</span> <span class="k">if</span> <span class="n">us</span> <span class="k">else</span> <span class="mf">1.0</span>
+    <span class="n">v_span</span> <span class="o">=</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">vs</span><span class="p">)</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="n">vs</span><span class="p">))</span> <span class="k">if</span> <span class="n">vs</span> <span class="k">else</span> <span class="mf">1.0</span>
+    <span class="n">pitch</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">height</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">v_span</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">box</span><span class="o">.</span><span class="n">width</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">u_span</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">px_size</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">pitch</span> <span class="o">*</span> <span class="n">size_ratio</span><span class="p">))</span>
+    <span class="n">sized</span> <span class="o">=</span> <span class="n">style</span><span class="o">.</span><span class="n">with_</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">px_size</span> <span class="o">/</span> <span class="n">fh</span><span class="p">)</span>
+    <span class="n">face</span> <span class="o">=</span> <span class="n">sized</span><span class="o">.</span><span class="n">face</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
+    <span class="n">rgba</span> <span class="o">=</span> <span class="n">with_alpha</span><span class="p">(</span><span class="n">parse_color</span><span class="p">(</span><span class="n">color</span> <span class="k">if</span> <span class="n">color</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">style</span><span class="o">.</span><span class="n">color</span><span class="p">),</span> <span class="n">style</span><span class="o">.</span><span class="n">opacity</span><span class="p">)</span>
+    <span class="n">u0</span><span class="p">,</span> <span class="n">v0</span> <span class="o">=</span> <span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">us</span><span class="p">)</span> <span class="k">if</span> <span class="n">us</span> <span class="k">else</span> <span class="mf">0.0</span><span class="p">),</span> <span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">vs</span><span class="p">)</span> <span class="k">if</span> <span class="n">vs</span> <span class="k">else</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">runs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Run</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">slots</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">col</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">x0</span> <span class="o">+</span> <span class="p">(</span><span class="n">u</span> <span class="o">-</span> <span class="n">u0</span><span class="p">)</span> <span class="o">*</span> <span class="n">pitch</span> <span class="o">+</span> <span class="p">(</span><span class="n">pitch</span> <span class="o">-</span> <span class="n">face</span><span class="o">.</span><span class="n">length</span><span class="p">(</span><span class="n">ch</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">y0</span> <span class="o">+</span> <span class="p">(</span><span class="n">v</span> <span class="o">-</span> <span class="n">v0</span><span class="p">)</span> <span class="o">*</span> <span class="n">pitch</span> <span class="o">+</span> <span class="n">face</span><span class="o">.</span><span class="n">ascent</span>
+            <span class="n">runs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Run</span><span class="p">(</span><span class="n">ch</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">face</span><span class="p">,</span> <span class="n">rgba</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"glyph"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">idx</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="n">tags</span> <span class="o">+</span> <span class="p">(</span><span class="sa">f</span><span class="s2">"streak:</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">"</span><span class="p">,)))</span>
+            <span class="n">idx</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">Layout</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">runs</span><span class="p">),</span> <span class="n">meta</span><span class="o">=</span><span class="p">{</span><span class="s2">"pitch"</span><span class="p">:</span> <span class="n">pitch</span><span class="p">,</span> <span class="s2">"streaks"</span><span class="p">:</span> <span class="n">n</span><span class="p">})</span></div>
+
+
+
+<div class="viewcode-block" id="fill_shape">
+<a class="viewcode-back" href="../../module_docs/tituli/layout.html#tituli.fill_shape">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">fill_shape</span><span class="p">(</span>
+    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">mask</span><span class="p">:</span> <span class="s2">"PILImageLike"</span><span class="p">,</span>
+    <span class="n">style</span><span class="p">:</span> <span class="n">TextStyle</span><span class="p">,</span>
+    <span class="n">frame</span><span class="p">:</span> <span class="n">Frame</span> <span class="o">|</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">box</span><span class="p">:</span> <span class="n">Box</span><span class="p">,</span>
+    <span class="n">threshold</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
+    <span class="n">min_span</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">color</span><span class="p">:</span> <span class="n">RGBA</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tags</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
+    <span class="n">repeat</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Layout</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Pour prose into a silhouette, row by row — the concrete-poem 'shape' case.</span>
+
+<span class="sd">    ``mask`` is any Pillow image (or path): dark pixels are *outside*, light</span>
+<span class="sd">    pixels are the shape (invert your mask if it is the other way round). It is</span>
+<span class="sd">    fitted into ``box``; for each line of text height the horizontal spans of</span>
+<span class="sd">    the shape are found and filled with as many words as fit, in reading order.</span>
+<span class="sd">    With ``repeat`` the text cycles until the shape is full; otherwise leftover</span>
+<span class="sd">    spans stay empty and leftover words are reported in ``meta["unplaced"]``.</span>
+<span class="sd">    """</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+
+    <span class="n">fh</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">height</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">Frame</span><span class="p">)</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+    <span class="n">face</span> <span class="o">=</span> <span class="n">style</span><span class="o">.</span><span class="n">face</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
+    <span class="n">rgba</span> <span class="o">=</span> <span class="n">with_alpha</span><span class="p">(</span><span class="n">parse_color</span><span class="p">(</span><span class="n">color</span> <span class="k">if</span> <span class="n">color</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">style</span><span class="o">.</span><span class="n">color</span><span class="p">),</span> <span class="n">style</span><span class="o">.</span><span class="n">opacity</span><span class="p">)</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="n">style</span><span class="o">.</span><span class="n">apply_case</span><span class="p">(</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">words</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Layout</span><span class="p">()</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">mask</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">)</span> <span class="k">else</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">"L"</span><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">width</span><span class="p">)),</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">height</span><span class="p">))))</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">tobytes</span><span class="p">()</span>
+    <span class="n">W</span><span class="p">,</span> <span class="n">H</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">line_h</span> <span class="o">=</span> <span class="n">face</span><span class="o">.</span><span class="n">size</span> <span class="o">*</span> <span class="n">style</span><span class="o">.</span><span class="n">leading</span>
+    <span class="n">space</span> <span class="o">=</span> <span class="n">face</span><span class="o">.</span><span class="n">length</span><span class="p">(</span><span class="n">_WORD_SEP</span><span class="p">)</span>
+    <span class="n">min_px</span> <span class="o">=</span> <span class="n">face</span><span class="o">.</span><span class="n">size</span> <span class="o">*</span> <span class="n">min_span</span>
+    <span class="n">runs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Run</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">wi</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">while</span> <span class="n">y</span> <span class="o">+</span> <span class="n">line_h</span> <span class="o">&lt;=</span> <span class="n">H</span><span class="p">:</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span> <span class="o">+</span> <span class="n">line_h</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">offset</span> <span class="o">=</span> <span class="n">row</span> <span class="o">*</span> <span class="n">W</span>
+        <span class="c1"># find spans of "inside" pixels on the row through the line's middle</span>
+        <span class="n">spans</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">W</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="n">offset</span> <span class="o">+</span> <span class="n">x</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">threshold</span><span class="p">:</span>
+                <span class="n">x0</span> <span class="o">=</span> <span class="n">x</span>
+                <span class="k">while</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">W</span> <span class="ow">and</span> <span class="n">data</span><span class="p">[</span><span class="n">offset</span> <span class="o">+</span> <span class="n">x</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">threshold</span><span class="p">:</span>
+                    <span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">spans</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">x0</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">x0</span><span class="p">,</span> <span class="n">x1</span> <span class="ow">in</span> <span class="n">spans</span><span class="p">:</span>
+            <span class="n">avail</span> <span class="o">=</span> <span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span>
+            <span class="k">if</span> <span class="n">avail</span> <span class="o">&lt;</span> <span class="n">min_px</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="c1"># collect words that fit</span>
+            <span class="n">chunk</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">used</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="n">probe</span> <span class="o">=</span> <span class="n">wi</span>
+            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">probe</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">repeat</span><span class="p">:</span>
+                        <span class="k">break</span>
+                    <span class="n">probe</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">w</span> <span class="o">=</span> <span class="n">words</span><span class="p">[</span><span class="n">probe</span><span class="p">]</span>
+                <span class="n">ww</span> <span class="o">=</span> <span class="n">face</span><span class="o">.</span><span class="n">length</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+                <span class="n">add</span> <span class="o">=</span> <span class="n">ww</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">chunk</span> <span class="k">else</span> <span class="n">space</span> <span class="o">+</span> <span class="n">ww</span>
+                <span class="k">if</span> <span class="n">used</span> <span class="o">+</span> <span class="n">add</span> <span class="o">&gt;</span> <span class="n">avail</span><span class="p">:</span>
+                    <span class="k">break</span>
+                <span class="n">chunk</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+                <span class="n">used</span> <span class="o">+=</span> <span class="n">add</span>
+                <span class="n">probe</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">repeat</span> <span class="ow">and</span> <span class="n">probe</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">):</span>
+                    <span class="k">break</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">chunk</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">wi</span> <span class="o">=</span> <span class="n">probe</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)</span> <span class="k">if</span> <span class="n">repeat</span> <span class="k">else</span> <span class="n">probe</span>
+            <span class="c1"># justify-ish: centre the chunk in the span</span>
+            <span class="n">cx</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">x0</span> <span class="o">+</span> <span class="n">x0</span> <span class="o">+</span> <span class="p">(</span><span class="n">avail</span> <span class="o">-</span> <span class="n">used</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+            <span class="n">baseline</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">y0</span> <span class="o">+</span> <span class="n">y</span> <span class="o">+</span> <span class="n">face</span><span class="o">.</span><span class="n">ascent</span> <span class="o">+</span> <span class="p">(</span><span class="n">line_h</span> <span class="o">-</span> <span class="n">face</span><span class="o">.</span><span class="n">line_height</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+            <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">chunk</span><span class="p">:</span>
+                <span class="n">runs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Run</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">baseline</span><span class="p">,</span> <span class="n">face</span><span class="p">,</span> <span class="n">rgba</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"word"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">idx</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="n">tags</span><span class="p">))</span>
+                <span class="n">cx</span> <span class="o">+=</span> <span class="n">face</span><span class="o">.</span><span class="n">length</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">+</span> <span class="n">space</span>
+                <span class="n">idx</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">repeat</span> <span class="ow">and</span> <span class="n">wi</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">):</span>
+                <span class="k">break</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">repeat</span> <span class="ow">and</span> <span class="n">wi</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">):</span>
+            <span class="k">break</span>
+        <span class="n">y</span> <span class="o">+=</span> <span class="n">line_h</span>
+    <span class="n">unplaced</span> <span class="o">=</span> <span class="p">[]</span> <span class="k">if</span> <span class="n">repeat</span> <span class="k">else</span> <span class="n">words</span><span class="p">[</span><span class="n">wi</span><span class="p">:]</span>
+    <span class="k">return</span> <span class="n">Layout</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">runs</span><span class="p">),</span> <span class="n">meta</span><span class="o">=</span><span class="p">{</span><span class="s2">"unplaced"</span><span class="p">:</span> <span class="n">unplaced</span><span class="p">})</span></div>
+
+
+
+<span class="n">PILImageLike</span> <span class="o">=</span> <span class="s2">"Image.Image | str"</span>
+
+
+<div class="viewcode-block" id="merge">
+<a class="viewcode-back" href="../../module_docs/tituli/layout.html#tituli.merge">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">merge</span><span class="p">(</span><span class="n">layouts</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Layout</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Layout</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Concatenate layouts."""</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">Layout</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">lay</span> <span class="ow">in</span> <span class="n">layouts</span><span class="p">:</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">out</span> <span class="o">+</span> <span class="n">lay</span>
+    <span class="k">return</span> <span class="n">out</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,515 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tituli.compose &mdash; tituli 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            tituli
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli.html">tituli</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/__main__.html">tituli.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/bodies.html">tituli.bodies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/calligram.html">tituli.calligram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/color.html">tituli.color</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/compose.html">tituli.compose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/credits.html">tituli.credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/fonts.html">tituli.fonts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/frame.html">tituli.frame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/geometry.html">tituli.geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/layout.html">tituli.layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/render.html">tituli.render</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/schedule.html">tituli.schedule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/shaping.html">tituli.shaping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/style.html">tituli.style</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/tools.html">tituli.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/video.html">tituli.video</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tituli</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tituli.compose</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tituli.compose</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""The composed pieces: title cards, captions with attribution, lower thirds.</span>
+
+<span class="sd">Each function turns a few strings into a :class:`~tituli.layout.Layout` placed</span>
+<span class="sd">on a :class:`~tituli.frame.Frame`, applying the ink-and-scrim decision the frame's</span>
+<span class="sd">knowledge allows. The pipeline order is fixed and matters: **shape/wrap →</span>
+<span class="sd">measure → decide ink → cut the scrim to the measured block → compose**. A scrim</span>
+<span class="sd">sized before the text is measured is how a three-line caption ends up hanging</span>
+<span class="sd">off its own backdrop.</span>
+
+<span class="sd">&gt;&gt;&gt; from tituli.frame import Frame</span>
+<span class="sd">&gt;&gt;&gt; lay = title_card("The Apple", "a concrete poem", frame=Frame.blank((1920, 1080)))</span>
+<span class="sd">&gt;&gt;&gt; "".join(r.text for r in lay.runs)      # tracked styles set one run per glyph</span>
+<span class="sd">'The Applea concrete poem'</span>
+<span class="sd">&gt;&gt;&gt; lay.meta["anchor"], lay.meta["ink"]</span>
+<span class="sd">('center', 'background unknown: white on dark scrim')</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequence</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">tituli.color</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">WCAG_NORMAL_MIN</span><span class="p">,</span>
+    <span class="n">WHITE</span><span class="p">,</span>
+    <span class="n">RGBA</span><span class="p">,</span>
+    <span class="n">contrast_from_luminance</span><span class="p">,</span>
+    <span class="n">ink_for</span><span class="p">,</span>
+    <span class="n">parse_color</span><span class="p">,</span>
+    <span class="n">with_alpha</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tituli.frame</span><span class="w"> </span><span class="kn">import</span> <span class="n">Frame</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tituli.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Box</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tituli.layout</span><span class="w"> </span><span class="kn">import</span> <span class="n">Layout</span><span class="p">,</span> <span class="n">Plate</span><span class="p">,</span> <span class="n">Run</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">fit_size</span><span class="p">,</span> <span class="n">measure</span><span class="p">,</span> <span class="n">wrap</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tituli.style</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ATTRIBUTION</span><span class="p">,</span>
+    <span class="n">CAPTION</span><span class="p">,</span>
+    <span class="n">KICKER</span><span class="p">,</span>
+    <span class="n">LOWER_THIRD_NAME</span><span class="p">,</span>
+    <span class="n">LOWER_THIRD_ROLE</span><span class="p">,</span>
+    <span class="n">NOTE_HEADLINE</span><span class="p">,</span>
+    <span class="n">NOTE_LINE</span><span class="p">,</span>
+    <span class="n">SUBTITLE</span><span class="p">,</span>
+    <span class="n">TITLE</span><span class="p">,</span>
+    <span class="n">TextStyle</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Scrim tuning. Opacity is what a dark scrim needs to carry white text over</span>
+<span class="c1"># white paper (the worst case a found-image film throws at it) — the corner</span>
+<span class="c1"># falloff keeps it from dimming the whole frame on everything else.</span>
+<span class="n">SCRIM_DARK</span><span class="p">:</span> <span class="n">RGBA</span> <span class="o">=</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">210</span><span class="p">)</span>
+<span class="n">SCRIM_LIGHT</span><span class="p">:</span> <span class="n">RGBA</span> <span class="o">=</span> <span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">249</span><span class="p">,</span> <span class="mi">246</span><span class="p">,</span> <span class="mi">210</span><span class="p">)</span>
+<span class="n">_BUSY_STD</span> <span class="o">=</span> <span class="mf">0.12</span>  <span class="c1"># luminance stddev above which a patch is "busy"</span>
+<span class="n">_SCRIM_PAD_EM</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># full-strength margin around a block, in em of its largest face</span>
+<span class="n">_SCRIM_BLEED_EM</span> <span class="o">=</span> <span class="mf">9.0</span>  <span class="c1"># the falloff beyond that margin, in em</span>
+<span class="n">_GAP_EM</span> <span class="o">=</span> <span class="mf">0.55</span>  <span class="c1"># vertical gap between the parts of a card, in em</span>
+<span class="n">_TITLE_MAX_WIDTH</span> <span class="o">=</span> <span class="mf">0.8</span>  <span class="c1"># fraction of the safe box a title may span</span>
+<span class="n">_CAPTION_MAX_WIDTH</span> <span class="o">=</span> <span class="mf">0.55</span>
+<span class="n">_LOWER_THIRD_MAX_WIDTH</span> <span class="o">=</span> <span class="mf">0.6</span>
+<span class="n">_NOTE_MAX_WIDTH</span> <span class="o">=</span> <span class="mf">0.62</span>
+<span class="n">_NOTE_MAX_LINES</span> <span class="o">=</span> <span class="mi">4</span>  <span class="c1"># per line of the note, after wrapping</span>
+<span class="n">_ELLIPSIS</span> <span class="o">=</span> <span class="s2">"…"</span>
+<span class="n">_ACCENT</span><span class="p">:</span> <span class="n">RGBA</span> <span class="o">=</span> <span class="p">(</span><span class="mi">214</span><span class="p">,</span> <span class="mi">170</span><span class="p">,</span> <span class="mi">94</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>  <span class="c1"># a warm gold, used only for the accent rule</span>
+<span class="n">_RULE_EM</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.6</span><span class="p">,</span> <span class="mf">0.09</span><span class="p">)</span>  <span class="c1"># accent rule length and thickness, in em of the title face</span>
+
+
+<div class="viewcode-block" id="InkDecision">
+<a class="viewcode-back" href="../../module_docs/tituli/compose.html#tituli.InkDecision">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">InkDecision</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""What the frame told us to do about legibility."""</span>
+
+    <span class="n">ink</span><span class="p">:</span> <span class="n">RGBA</span>
+    <span class="n">scrim</span><span class="p">:</span> <span class="n">RGBA</span> <span class="o">|</span> <span class="kc">None</span>  <span class="c1"># None = no scrim needed</span>
+    <span class="n">luminance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span></div>
+
+
+
+<div class="viewcode-block" id="decide_ink">
+<a class="viewcode-back" href="../../module_docs/tituli/compose.html#tituli.decide_ink">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">decide_ink</span><span class="p">(</span><span class="n">frame</span><span class="p">:</span> <span class="n">Frame</span><span class="p">,</span> <span class="n">box</span><span class="p">:</span> <span class="n">Box</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">preferred</span><span class="p">:</span> <span class="n">RGBA</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">InkDecision</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Choose ink and whether a scrim is needed under ``box``.</span>
+
+<span class="sd">    Rung (a) (nothing known): white on a dark scrim, the universal default.</span>
+<span class="sd">    Rung (b)/(c): the ink with more contrast; a scrim only when contrast is still</span>
+<span class="sd">    short of WCAG 4.5:1 or the patch is busy. ``preferred`` is honoured when it</span>
+<span class="sd">    already has enough contrast.</span>
+<span class="sd">    """</span>
+    <span class="n">stats</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">luminance_stats</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">stats</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">InkDecision</span><span class="p">(</span><span class="n">WHITE</span><span class="p">,</span> <span class="n">SCRIM_DARK</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">"background unknown: white on dark scrim"</span><span class="p">)</span>
+    <span class="n">lum</span><span class="p">,</span> <span class="n">std</span> <span class="o">=</span> <span class="n">stats</span>
+    <span class="k">if</span> <span class="n">preferred</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">contrast_from_luminance</span><span class="p">(</span><span class="n">preferred</span><span class="p">,</span> <span class="n">lum</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">WCAG_NORMAL_MIN</span> <span class="ow">and</span> <span class="n">std</span> <span class="o">&lt;</span> <span class="n">_BUSY_STD</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">InkDecision</span><span class="p">(</span><span class="n">preferred</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">lum</span><span class="p">,</span> <span class="s2">"preferred ink has enough contrast"</span><span class="p">)</span>
+    <span class="n">ink</span> <span class="o">=</span> <span class="n">ink_for</span><span class="p">(</span><span class="n">luminance</span><span class="o">=</span><span class="n">lum</span><span class="p">)</span>
+    <span class="n">ok</span> <span class="o">=</span> <span class="n">contrast_from_luminance</span><span class="p">(</span><span class="n">ink</span><span class="p">,</span> <span class="n">lum</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">WCAG_NORMAL_MIN</span>
+    <span class="k">if</span> <span class="n">ok</span> <span class="ow">and</span> <span class="n">std</span> <span class="o">&lt;</span> <span class="n">_BUSY_STD</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">InkDecision</span><span class="p">(</span><span class="n">ink</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">lum</span><span class="p">,</span> <span class="s2">"background contrast sufficient"</span><span class="p">)</span>
+    <span class="n">scrim</span> <span class="o">=</span> <span class="n">SCRIM_DARK</span> <span class="k">if</span> <span class="n">ink</span> <span class="o">==</span> <span class="n">WHITE</span> <span class="k">else</span> <span class="n">SCRIM_LIGHT</span>
+    <span class="n">why</span> <span class="o">=</span> <span class="s2">"busy background"</span> <span class="k">if</span> <span class="n">ok</span> <span class="k">else</span> <span class="s2">"insufficient contrast"</span>
+    <span class="k">return</span> <span class="n">InkDecision</span><span class="p">(</span><span class="n">ink</span><span class="p">,</span> <span class="n">scrim</span><span class="p">,</span> <span class="n">lum</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">why</span><span class="si">}</span><span class="s2">: scrim added"</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_scrim_plate</span><span class="p">(</span><span class="n">block_box</span><span class="p">:</span> <span class="n">Box</span><span class="p">,</span> <span class="n">frame</span><span class="p">:</span> <span class="n">Frame</span><span class="p">,</span> <span class="n">scrim</span><span class="p">:</span> <span class="n">RGBA</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">em</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">anchor</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Plate</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""A 2-D corner (or edge) falloff cut to the block, bleeding away from it."""</span>
+    <span class="n">pad</span> <span class="o">=</span> <span class="n">em</span> <span class="o">*</span> <span class="n">_SCRIM_PAD_EM</span>
+    <span class="n">bleed</span> <span class="o">=</span> <span class="n">em</span> <span class="o">*</span> <span class="n">_SCRIM_BLEED_EM</span>
+    <span class="n">core</span> <span class="o">=</span> <span class="n">Box</span><span class="p">(</span><span class="n">block_box</span><span class="o">.</span><span class="n">x0</span> <span class="o">-</span> <span class="n">pad</span><span class="p">,</span> <span class="n">block_box</span><span class="o">.</span><span class="n">y0</span> <span class="o">-</span> <span class="n">pad</span><span class="p">,</span> <span class="n">block_box</span><span class="o">.</span><span class="n">x1</span> <span class="o">+</span> <span class="n">pad</span><span class="p">,</span> <span class="n">block_box</span><span class="o">.</span><span class="n">y1</span> <span class="o">+</span> <span class="n">pad</span><span class="p">)</span>
+    <span class="n">horizontal</span> <span class="o">=</span> <span class="s2">"left"</span> <span class="ow">in</span> <span class="n">anchor</span> <span class="ow">or</span> <span class="s2">"right"</span> <span class="ow">in</span> <span class="n">anchor</span>
+    <span class="n">vertical</span> <span class="o">=</span> <span class="s2">"top"</span> <span class="ow">in</span> <span class="n">anchor</span> <span class="ow">or</span> <span class="s2">"bottom"</span> <span class="ow">in</span> <span class="n">anchor</span>
+    <span class="c1"># The plate runs from the frame edge the block hugs, through the core, and</span>
+    <span class="c1"># `bleed` further; `solid` is the core's share of that extent per axis.</span>
+    <span class="n">x0</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="k">if</span> <span class="s2">"left"</span> <span class="ow">in</span> <span class="n">anchor</span> <span class="k">else</span> <span class="n">core</span><span class="o">.</span><span class="n">x0</span> <span class="o">-</span> <span class="n">bleed</span>
+    <span class="n">x1</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">width</span><span class="p">)</span> <span class="k">if</span> <span class="s2">"right"</span> <span class="ow">in</span> <span class="n">anchor</span> <span class="k">else</span> <span class="n">core</span><span class="o">.</span><span class="n">x1</span> <span class="o">+</span> <span class="n">bleed</span>
+    <span class="n">y0</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="k">if</span> <span class="s2">"top"</span> <span class="ow">in</span> <span class="n">anchor</span> <span class="k">else</span> <span class="n">core</span><span class="o">.</span><span class="n">y0</span> <span class="o">-</span> <span class="n">bleed</span>
+    <span class="n">y1</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">height</span><span class="p">)</span> <span class="k">if</span> <span class="s2">"bottom"</span> <span class="ow">in</span> <span class="n">anchor</span> <span class="k">else</span> <span class="n">core</span><span class="o">.</span><span class="n">y1</span> <span class="o">+</span> <span class="n">bleed</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">horizontal</span><span class="p">:</span>
+        <span class="n">x0</span><span class="p">,</span> <span class="n">x1</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">vertical</span><span class="p">:</span>
+        <span class="n">y0</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">y0</span> <span class="o">-</span> <span class="n">bleed</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">y1</span> <span class="o">+</span> <span class="n">bleed</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">Box</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">bounds</span><span class="p">)</span>
+    <span class="n">solid_x</span> <span class="o">=</span> <span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">x1</span> <span class="k">if</span> <span class="s2">"left"</span> <span class="ow">in</span> <span class="n">anchor</span> <span class="k">else</span> <span class="n">b</span><span class="o">.</span><span class="n">x1</span> <span class="o">-</span> <span class="n">core</span><span class="o">.</span><span class="n">x0</span><span class="p">)</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
+    <span class="n">solid_y</span> <span class="o">=</span> <span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">y1</span> <span class="k">if</span> <span class="s2">"top"</span> <span class="ow">in</span> <span class="n">anchor</span> <span class="k">else</span> <span class="n">b</span><span class="o">.</span><span class="n">y1</span> <span class="o">-</span> <span class="n">core</span><span class="o">.</span><span class="n">y0</span><span class="p">)</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
+    <span class="n">solid</span> <span class="o">=</span> <span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">solid_x</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">solid_y</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">horizontal</span> <span class="ow">and</span> <span class="n">vertical</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Plate</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">scrim</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"corner-</span><span class="si">{</span><span class="n">anchor</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">solid</span><span class="o">=</span><span class="n">solid</span><span class="p">)</span>  <span class="c1"># type: ignore[arg-type]</span>
+    <span class="k">if</span> <span class="s2">"bottom"</span> <span class="ow">in</span> <span class="n">anchor</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Plate</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">scrim</span><span class="p">,</span> <span class="s2">"gradient-bottom"</span><span class="p">,</span> <span class="n">solid</span><span class="o">=</span><span class="n">solid</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">"top"</span> <span class="ow">in</span> <span class="n">anchor</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Plate</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">scrim</span><span class="p">,</span> <span class="s2">"gradient-top"</span><span class="p">,</span> <span class="n">solid</span><span class="o">=</span><span class="n">solid</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Plate</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">scrim</span><span class="p">,</span> <span class="s2">"box"</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="n">em</span> <span class="o">*</span> <span class="mf">0.3</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="truncate">
+<a class="viewcode-back" href="../../module_docs/tituli/compose.html#tituli.truncate">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">truncate</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="n">TextStyle</span><span class="p">,</span> <span class="n">frame_height</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">max_width</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">max_lines</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Wrap and hard-truncate with an ellipsis at ``max_lines`` lines.</span>
+
+<span class="sd">    For text whose length you do not control (a licence template blob pasted</span>
+<span class="sd">    into an artist field). The result always fits.</span>
+<span class="sd">    """</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="n">wrap</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">style</span><span class="p">,</span> <span class="n">frame_height</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="n">max_width</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">max_lines</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+    <span class="n">kept</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[:</span><span class="n">max_lines</span><span class="p">]</span>
+    <span class="n">last</span> <span class="o">=</span> <span class="n">kept</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">while</span> <span class="n">last</span> <span class="ow">and</span> <span class="n">measure</span><span class="p">(</span><span class="n">last</span> <span class="o">+</span> <span class="n">_ELLIPSIS</span><span class="p">,</span> <span class="n">style</span><span class="p">,</span> <span class="n">frame_height</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_width</span><span class="p">:</span>
+        <span class="n">last</span> <span class="o">=</span> <span class="n">last</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+    <span class="n">kept</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">last</span> <span class="o">+</span> <span class="n">_ELLIPSIS</span>
+    <span class="k">return</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">kept</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_stack</span><span class="p">(</span><span class="n">parts</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">TextStyle</span><span class="p">]],</span> <span class="n">frame</span><span class="p">:</span> <span class="n">Frame</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">max_width</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">align</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Layout</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Lay out several (text, style) blocks top-to-bottom with style-sized gaps."""</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">Layout</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">style</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">parts</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">text</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">st</span> <span class="o">=</span> <span class="n">style</span><span class="o">.</span><span class="n">with_</span><span class="p">(</span><span class="n">align</span><span class="o">=</span><span class="n">align</span><span class="p">)</span> <span class="k">if</span> <span class="n">align</span> <span class="k">else</span> <span class="n">style</span>
+        <span class="n">lay</span> <span class="o">=</span> <span class="n">block</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">st</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="n">max_width</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">out</span> <span class="o">+</span> <span class="n">lay</span>
+        <span class="n">y</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">))</span> <span class="o">*</span> <span class="n">lay</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s2">"line_height"</span><span class="p">]</span> <span class="o">+</span> <span class="n">st</span><span class="o">.</span><span class="n">face</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">height</span><span class="p">)</span><span class="o">.</span><span class="n">size</span> <span class="o">*</span> <span class="n">_GAP_EM</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+
+<div class="viewcode-block" id="title_card">
+<a class="viewcode-back" href="../../module_docs/tituli/compose.html#tituli.title_card">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">title_card</span><span class="p">(</span>
+    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">subtitle</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">frame</span><span class="p">:</span> <span class="n">Frame</span><span class="p">,</span>
+    <span class="n">kicker</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span>
+    <span class="n">anchor</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"center"</span><span class="p">,</span>
+    <span class="n">title_style</span><span class="p">:</span> <span class="n">TextStyle</span> <span class="o">=</span> <span class="n">TITLE</span><span class="p">,</span>
+    <span class="n">subtitle_style</span><span class="p">:</span> <span class="n">TextStyle</span> <span class="o">=</span> <span class="n">SUBTITLE</span><span class="p">,</span>
+    <span class="n">kicker_style</span><span class="p">:</span> <span class="n">TextStyle</span> <span class="o">=</span> <span class="n">KICKER</span><span class="p">,</span>
+    <span class="n">ink</span><span class="p">:</span> <span class="n">RGBA</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">scrim</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Layout</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""An opening card: optional kicker, title, optional subtitle.</span>
+
+<span class="sd">    Fits the title to 80 % of the safe width (shrinking, never clipping), stacks</span>
+<span class="sd">    the parts with a gap proportional to the type, places the block at</span>
+<span class="sd">    ``anchor`` (subject-avoiding when the frame knows the picture), and picks</span>
+<span class="sd">    ink by the frame's contrast. ``scrim`` forces a scrim on/off; None decides.</span>
+<span class="sd">    """</span>
+    <span class="n">safe</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">safe</span>
+    <span class="n">max_w</span> <span class="o">=</span> <span class="n">safe</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="n">_TITLE_MAX_WIDTH</span>
+    <span class="n">tstyle</span> <span class="o">=</span> <span class="n">fit_size</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">title_style</span><span class="p">,</span> <span class="n">frame</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="n">max_w</span><span class="p">,</span> <span class="n">max_height</span><span class="o">=</span><span class="n">safe</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="mf">0.6</span><span class="p">)</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="p">[(</span><span class="n">kicker</span><span class="p">,</span> <span class="n">kicker_style</span><span class="p">),</span> <span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">tstyle</span><span class="p">),</span> <span class="p">(</span><span class="n">subtitle</span><span class="p">,</span> <span class="n">subtitle_style</span><span class="p">)]</span>
+    <span class="n">align</span> <span class="o">=</span> <span class="s2">"center"</span> <span class="k">if</span> <span class="n">anchor</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"top"</span><span class="p">,</span> <span class="s2">"center"</span><span class="p">,</span> <span class="s2">"bottom"</span><span class="p">)</span> <span class="k">else</span> <span class="p">(</span><span class="s2">"left"</span> <span class="k">if</span> <span class="s2">"left"</span> <span class="ow">in</span> <span class="n">anchor</span> <span class="k">else</span> <span class="s2">"right"</span><span class="p">)</span>
+    <span class="n">lay</span> <span class="o">=</span> <span class="n">_stack</span><span class="p">(</span><span class="n">parts</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="n">max_w</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="n">align</span><span class="p">)</span>
+    <span class="n">bb</span> <span class="o">=</span> <span class="n">lay</span><span class="o">.</span><span class="n">bbox</span><span class="p">()</span>
+    <span class="n">where</span><span class="p">,</span> <span class="n">box</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">place</span><span class="p">((</span><span class="n">bb</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">bb</span><span class="o">.</span><span class="n">height</span><span class="p">),</span> <span class="n">anchor</span><span class="o">=</span><span class="n">anchor</span><span class="p">)</span>
+    <span class="n">lay</span> <span class="o">=</span> <span class="n">lay</span><span class="o">.</span><span class="n">moved_to</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_finish</span><span class="p">(</span><span class="n">lay</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">where</span><span class="p">,</span> <span class="n">ink</span><span class="o">=</span><span class="n">ink</span><span class="p">,</span> <span class="n">scrim</span><span class="o">=</span><span class="n">scrim</span><span class="p">,</span> <span class="n">em</span><span class="o">=</span><span class="n">tstyle</span><span class="o">.</span><span class="n">face</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">height</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">preferred</span><span class="o">=</span><span class="n">parse_color</span><span class="p">(</span><span class="n">title_style</span><span class="o">.</span><span class="n">color</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="caption">
+<a class="viewcode-back" href="../../module_docs/tituli/compose.html#tituli.caption">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">caption</span><span class="p">(</span>
+    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">attribution</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">frame</span><span class="p">:</span> <span class="n">Frame</span><span class="p">,</span>
+    <span class="n">anchor</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"auto"</span><span class="p">,</span>
+    <span class="n">style</span><span class="p">:</span> <span class="n">TextStyle</span> <span class="o">=</span> <span class="n">CAPTION</span><span class="p">,</span>
+    <span class="n">attribution_style</span><span class="p">:</span> <span class="n">TextStyle</span> <span class="o">=</span> <span class="n">ATTRIBUTION</span><span class="p">,</span>
+    <span class="n">max_lines</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="n">max_width</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">_CAPTION_MAX_WIDTH</span><span class="p">,</span>
+    <span class="n">ink</span><span class="p">:</span> <span class="n">RGBA</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">scrim</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">accent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Layout</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""A museum label over a picture: what is on screen, plus a tiny credit line.</span>
+
+<span class="sd">    ``text`` is wrapped to ``max_width`` of the safe box and hard-truncated at</span>
+<span class="sd">    ``max_lines``; ``attribution`` is set small and slightly transparent — present</span>
+<span class="sd">    enough to credit, small enough not to compete. Placement avoids the</span>
+<span class="sd">    frame's ``avoid`` boxes and its delivery target's reserved zones; the</span>
+<span class="sd">    scrim is a 2-D corner falloff cut to the measured block.</span>
+<span class="sd">    """</span>
+    <span class="n">safe</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">safe</span>
+    <span class="n">max_w</span> <span class="o">=</span> <span class="n">safe</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="n">max_width</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="n">truncate</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">style</span><span class="p">,</span> <span class="n">frame</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="n">max_w</span><span class="p">,</span> <span class="n">max_lines</span><span class="o">=</span><span class="n">max_lines</span><span class="p">)</span>
+    <span class="n">credit</span> <span class="o">=</span> <span class="n">truncate</span><span class="p">(</span><span class="n">attribution</span><span class="p">,</span> <span class="n">attribution_style</span><span class="p">,</span> <span class="n">frame</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="n">max_w</span><span class="p">,</span> <span class="n">max_lines</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">attribution</span> <span class="k">else</span> <span class="s2">""</span>
+    <span class="c1"># Try the layout at each candidate anchor's alignment; alignment follows the side.</span>
+    <span class="n">lay</span> <span class="o">=</span> <span class="n">_stack</span><span class="p">([(</span><span class="n">body</span><span class="p">,</span> <span class="n">style</span><span class="p">),</span> <span class="p">(</span><span class="n">credit</span><span class="p">,</span> <span class="n">attribution_style</span><span class="p">)],</span> <span class="n">frame</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="n">max_w</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">"left"</span><span class="p">)</span>
+    <span class="n">bb</span> <span class="o">=</span> <span class="n">lay</span><span class="o">.</span><span class="n">bbox</span><span class="p">()</span>
+    <span class="n">where</span><span class="p">,</span> <span class="n">box</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">place</span><span class="p">((</span><span class="n">bb</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">bb</span><span class="o">.</span><span class="n">height</span><span class="p">),</span> <span class="n">anchor</span><span class="o">=</span><span class="n">anchor</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">"right"</span> <span class="ow">in</span> <span class="n">where</span><span class="p">:</span>
+        <span class="n">lay</span> <span class="o">=</span> <span class="n">_stack</span><span class="p">([(</span><span class="n">body</span><span class="p">,</span> <span class="n">style</span><span class="p">),</span> <span class="p">(</span><span class="n">credit</span><span class="p">,</span> <span class="n">attribution_style</span><span class="p">)],</span> <span class="n">frame</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="n">max_w</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">"right"</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">where</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"top"</span><span class="p">,</span> <span class="s2">"center"</span><span class="p">,</span> <span class="s2">"bottom"</span><span class="p">):</span>
+        <span class="n">lay</span> <span class="o">=</span> <span class="n">_stack</span><span class="p">([(</span><span class="n">body</span><span class="p">,</span> <span class="n">style</span><span class="p">),</span> <span class="p">(</span><span class="n">credit</span><span class="p">,</span> <span class="n">attribution_style</span><span class="p">)],</span> <span class="n">frame</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="n">max_w</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">"center"</span><span class="p">)</span>
+    <span class="n">bb</span> <span class="o">=</span> <span class="n">lay</span><span class="o">.</span><span class="n">bbox</span><span class="p">()</span>
+    <span class="n">lay</span> <span class="o">=</span> <span class="n">lay</span><span class="o">.</span><span class="n">moved_to</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+    <span class="n">em</span> <span class="o">=</span> <span class="n">style</span><span class="o">.</span><span class="n">face</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">height</span><span class="p">)</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">_finish</span><span class="p">(</span><span class="n">lay</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">where</span><span class="p">,</span> <span class="n">ink</span><span class="o">=</span><span class="n">ink</span><span class="p">,</span> <span class="n">scrim</span><span class="o">=</span><span class="n">scrim</span><span class="p">,</span> <span class="n">em</span><span class="o">=</span><span class="n">em</span><span class="p">,</span> <span class="n">preferred</span><span class="o">=</span><span class="n">parse_color</span><span class="p">(</span><span class="n">style</span><span class="o">.</span><span class="n">color</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">accent</span><span class="p">:</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">_with_accent_rule</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">em</span><span class="p">,</span> <span class="n">where</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+
+<div class="viewcode-block" id="lower_third">
+<a class="viewcode-back" href="../../module_docs/tituli/compose.html#tituli.lower_third">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">lower_third</span><span class="p">(</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">role</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">frame</span><span class="p">:</span> <span class="n">Frame</span><span class="p">,</span>
+    <span class="n">anchor</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"bottom-left"</span><span class="p">,</span>
+    <span class="n">name_style</span><span class="p">:</span> <span class="n">TextStyle</span> <span class="o">=</span> <span class="n">LOWER_THIRD_NAME</span><span class="p">,</span>
+    <span class="n">role_style</span><span class="p">:</span> <span class="n">TextStyle</span> <span class="o">=</span> <span class="n">LOWER_THIRD_ROLE</span><span class="p">,</span>
+    <span class="n">ink</span><span class="p">:</span> <span class="n">RGBA</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">scrim</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Layout</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Who is speaking: a name and a role, left-anchored, scrimmed if needed.</span>
+
+<span class="sd">    Respects the frame's delivery zones — with ``delivery="youtube"`` the block</span>
+<span class="sd">    moves above the subtitle band rather than into it.</span>
+<span class="sd">    """</span>
+    <span class="n">max_w</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">safe</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="n">_LOWER_THIRD_MAX_WIDTH</span>
+    <span class="n">name_t</span> <span class="o">=</span> <span class="n">truncate</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">name_style</span><span class="p">,</span> <span class="n">frame</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="n">max_w</span><span class="p">,</span> <span class="n">max_lines</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">role_t</span> <span class="o">=</span> <span class="n">truncate</span><span class="p">(</span><span class="n">role</span><span class="p">,</span> <span class="n">role_style</span><span class="p">,</span> <span class="n">frame</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="n">max_w</span><span class="p">,</span> <span class="n">max_lines</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">role</span> <span class="k">else</span> <span class="s2">""</span>
+    <span class="n">lay</span> <span class="o">=</span> <span class="n">_stack</span><span class="p">([(</span><span class="n">name_t</span><span class="p">,</span> <span class="n">name_style</span><span class="p">),</span> <span class="p">(</span><span class="n">role_t</span><span class="p">,</span> <span class="n">role_style</span><span class="p">)],</span> <span class="n">frame</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="n">max_w</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">"left"</span><span class="p">)</span>
+    <span class="n">bb</span> <span class="o">=</span> <span class="n">lay</span><span class="o">.</span><span class="n">bbox</span><span class="p">()</span>
+    <span class="n">where</span><span class="p">,</span> <span class="n">box</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">place</span><span class="p">((</span><span class="n">bb</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">bb</span><span class="o">.</span><span class="n">height</span><span class="p">),</span> <span class="n">anchor</span><span class="o">=</span><span class="n">anchor</span><span class="p">)</span>
+    <span class="n">lay</span> <span class="o">=</span> <span class="n">lay</span><span class="o">.</span><span class="n">moved_to</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+    <span class="n">em</span> <span class="o">=</span> <span class="n">name_style</span><span class="o">.</span><span class="n">face</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">height</span><span class="p">)</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">_finish</span><span class="p">(</span><span class="n">lay</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">where</span><span class="p">,</span> <span class="n">ink</span><span class="o">=</span><span class="n">ink</span><span class="p">,</span> <span class="n">scrim</span><span class="o">=</span><span class="n">scrim</span><span class="p">,</span> <span class="n">em</span><span class="o">=</span><span class="n">em</span><span class="p">,</span> <span class="n">preferred</span><span class="o">=</span><span class="n">parse_color</span><span class="p">(</span><span class="n">name_style</span><span class="o">.</span><span class="n">color</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">_with_accent_rule</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">em</span><span class="p">,</span> <span class="n">where</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="note">
+<a class="viewcode-back" href="../../module_docs/tituli/compose.html#tituli.note">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">note</span><span class="p">(</span>
+    <span class="n">lines</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">frame</span><span class="p">:</span> <span class="n">Frame</span><span class="p">,</span>
+    <span class="n">headline</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span>
+    <span class="n">anchor</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"top-left"</span><span class="p">,</span>
+    <span class="n">headline_style</span><span class="p">:</span> <span class="n">TextStyle</span> <span class="o">=</span> <span class="n">NOTE_HEADLINE</span><span class="p">,</span>
+    <span class="n">line_style</span><span class="p">:</span> <span class="n">TextStyle</span> <span class="o">=</span> <span class="n">NOTE_LINE</span><span class="p">,</span>
+    <span class="n">max_width</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">_NOTE_MAX_WIDTH</span><span class="p">,</span>
+    <span class="n">ink</span><span class="p">:</span> <span class="n">RGBA</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">scrim</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">accent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Layout</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""An editorial context card: an optional headline over equal-weight lines.</span>
+
+<span class="sd">    The block for what the audio assumes and a cold viewer does not have</span>
+<span class="sd">    ("what *Hamilton* is", "Philip died at 19"). Heavier than a caption —</span>
+<span class="sd">    schedule it with a higher ``weight`` so the two never share a corner. Each</span>
+<span class="sd">    line wraps to ``max_width`` of the safe box and is truncated at</span>
+<span class="sd">    ``_NOTE_MAX_LINES`` rows; lines are laid out as written, so keep them short.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">lines</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span> <span class="k">if</span> <span class="n">l</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span>
+    <span class="n">max_w</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">safe</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="n">max_width</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="p">[</span><span class="n">truncate</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">line_style</span><span class="p">,</span> <span class="n">frame</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="n">max_w</span><span class="p">,</span> <span class="n">max_lines</span><span class="o">=</span><span class="n">_NOTE_MAX_LINES</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">]</span>
+    <span class="n">head</span> <span class="o">=</span> <span class="n">truncate</span><span class="p">(</span><span class="n">headline</span><span class="p">,</span> <span class="n">headline_style</span><span class="p">,</span> <span class="n">frame</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="n">max_w</span><span class="p">,</span> <span class="n">max_lines</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="k">if</span> <span class="n">headline</span> <span class="k">else</span> <span class="s2">""</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="p">[(</span><span class="n">head</span><span class="p">,</span> <span class="n">headline_style</span><span class="p">)]</span> <span class="o">+</span> <span class="p">[(</span><span class="n">b</span><span class="p">,</span> <span class="n">line_style</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">body</span><span class="p">]</span>
+    <span class="n">align</span> <span class="o">=</span> <span class="s2">"left"</span>
+    <span class="n">lay</span> <span class="o">=</span> <span class="n">_stack</span><span class="p">(</span><span class="n">parts</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="n">max_w</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="n">align</span><span class="p">)</span>
+    <span class="n">bb</span> <span class="o">=</span> <span class="n">lay</span><span class="o">.</span><span class="n">bbox</span><span class="p">()</span>
+    <span class="n">where</span><span class="p">,</span> <span class="n">box</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">place</span><span class="p">((</span><span class="n">bb</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">bb</span><span class="o">.</span><span class="n">height</span><span class="p">),</span> <span class="n">anchor</span><span class="o">=</span><span class="n">anchor</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">"right"</span> <span class="ow">in</span> <span class="n">where</span> <span class="ow">or</span> <span class="n">where</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"top"</span><span class="p">,</span> <span class="s2">"center"</span><span class="p">,</span> <span class="s2">"bottom"</span><span class="p">):</span>
+        <span class="n">align</span> <span class="o">=</span> <span class="s2">"right"</span> <span class="k">if</span> <span class="s2">"right"</span> <span class="ow">in</span> <span class="n">where</span> <span class="k">else</span> <span class="s2">"center"</span>
+        <span class="n">lay</span> <span class="o">=</span> <span class="n">_stack</span><span class="p">(</span><span class="n">parts</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="n">max_w</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="n">align</span><span class="p">)</span>
+    <span class="n">lay</span> <span class="o">=</span> <span class="n">lay</span><span class="o">.</span><span class="n">moved_to</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+    <span class="n">em</span> <span class="o">=</span> <span class="p">(</span><span class="n">headline_style</span> <span class="k">if</span> <span class="n">head</span> <span class="k">else</span> <span class="n">line_style</span><span class="p">)</span><span class="o">.</span><span class="n">face</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">height</span><span class="p">)</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">_finish</span><span class="p">(</span><span class="n">lay</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">where</span><span class="p">,</span> <span class="n">ink</span><span class="o">=</span><span class="n">ink</span><span class="p">,</span> <span class="n">scrim</span><span class="o">=</span><span class="n">scrim</span><span class="p">,</span> <span class="n">em</span><span class="o">=</span><span class="n">em</span><span class="p">,</span> <span class="n">preferred</span><span class="o">=</span><span class="n">parse_color</span><span class="p">(</span><span class="n">line_style</span><span class="o">.</span><span class="n">color</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">_with_accent_rule</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">em</span><span class="p">,</span> <span class="n">where</span><span class="p">)</span> <span class="k">if</span> <span class="n">accent</span> <span class="k">else</span> <span class="n">out</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_with_accent_rule</span><span class="p">(</span><span class="n">lay</span><span class="p">:</span> <span class="n">Layout</span><span class="p">,</span> <span class="n">em</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">anchor</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Layout</span><span class="p">:</span>
+    <span class="n">bb</span> <span class="o">=</span> <span class="n">lay</span><span class="o">.</span><span class="n">bbox</span><span class="p">()</span>
+    <span class="n">length</span><span class="p">,</span> <span class="n">thick</span> <span class="o">=</span> <span class="n">em</span> <span class="o">*</span> <span class="n">_RULE_EM</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">max</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">em</span> <span class="o">*</span> <span class="n">_RULE_EM</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">gap</span> <span class="o">=</span> <span class="n">em</span> <span class="o">*</span> <span class="mf">0.45</span>
+    <span class="k">if</span> <span class="s2">"right"</span> <span class="ow">in</span> <span class="n">anchor</span><span class="p">:</span>
+        <span class="n">x0</span> <span class="o">=</span> <span class="n">bb</span><span class="o">.</span><span class="n">x1</span> <span class="o">-</span> <span class="n">length</span>
+    <span class="k">elif</span> <span class="s2">"left"</span> <span class="ow">in</span> <span class="n">anchor</span><span class="p">:</span>
+        <span class="n">x0</span> <span class="o">=</span> <span class="n">bb</span><span class="o">.</span><span class="n">x0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">x0</span> <span class="o">=</span> <span class="p">(</span><span class="n">bb</span><span class="o">.</span><span class="n">x0</span> <span class="o">+</span> <span class="n">bb</span><span class="o">.</span><span class="n">x1</span> <span class="o">-</span> <span class="n">length</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">rule</span> <span class="o">=</span> <span class="n">Plate</span><span class="p">(</span><span class="n">Box</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">bb</span><span class="o">.</span><span class="n">y0</span> <span class="o">-</span> <span class="n">gap</span> <span class="o">-</span> <span class="n">thick</span><span class="p">,</span> <span class="n">x0</span> <span class="o">+</span> <span class="n">length</span><span class="p">,</span> <span class="n">bb</span><span class="o">.</span><span class="n">y0</span> <span class="o">-</span> <span class="n">gap</span><span class="p">),</span> <span class="n">_ACCENT</span><span class="p">,</span> <span class="s2">"box"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">lay</span><span class="o">.</span><span class="n">with_plates</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_finish</span><span class="p">(</span>
+    <span class="n">lay</span><span class="p">:</span> <span class="n">Layout</span><span class="p">,</span>
+    <span class="n">frame</span><span class="p">:</span> <span class="n">Frame</span><span class="p">,</span>
+    <span class="n">anchor</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">ink</span><span class="p">:</span> <span class="n">RGBA</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">scrim</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">em</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">preferred</span><span class="p">:</span> <span class="n">RGBA</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Layout</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Apply the ink decision and, if needed, the scrim — after measuring."""</span>
+    <span class="n">bb</span> <span class="o">=</span> <span class="n">lay</span><span class="o">.</span><span class="n">bbox</span><span class="p">()</span>
+    <span class="n">decision</span> <span class="o">=</span> <span class="n">decide_ink</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">bb</span><span class="p">,</span> <span class="n">preferred</span><span class="o">=</span><span class="n">preferred</span><span class="p">)</span>
+    <span class="n">chosen</span> <span class="o">=</span> <span class="n">ink</span> <span class="k">if</span> <span class="n">ink</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">decision</span><span class="o">.</span><span class="n">ink</span>
+    <span class="n">runs</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+        <span class="n">Run</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="o">**</span><span class="n">r</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">,</span> <span class="s2">"color"</span><span class="p">:</span> <span class="n">with_alpha</span><span class="p">(</span><span class="n">chosen</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">color</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">/</span> <span class="mi">255</span><span class="p">)})</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">lay</span><span class="o">.</span><span class="n">runs</span>
+    <span class="p">)</span>
+    <span class="n">lay</span> <span class="o">=</span> <span class="n">Layout</span><span class="p">(</span><span class="n">runs</span><span class="p">,</span> <span class="n">lay</span><span class="o">.</span><span class="n">plates</span><span class="p">,</span> <span class="p">{</span><span class="o">**</span><span class="n">lay</span><span class="o">.</span><span class="n">meta</span><span class="p">,</span> <span class="s2">"ink"</span><span class="p">:</span> <span class="n">decision</span><span class="o">.</span><span class="n">reason</span><span class="p">,</span> <span class="s2">"anchor"</span><span class="p">:</span> <span class="n">anchor</span><span class="p">})</span>
+    <span class="n">want_scrim</span> <span class="o">=</span> <span class="n">decision</span><span class="o">.</span><span class="n">scrim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">scrim</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">scrim</span>
+    <span class="k">if</span> <span class="n">want_scrim</span><span class="p">:</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">decision</span><span class="o">.</span><span class="n">scrim</span> <span class="ow">or</span> <span class="p">(</span><span class="n">SCRIM_DARK</span> <span class="k">if</span> <span class="n">chosen</span> <span class="o">==</span> <span class="n">WHITE</span> <span class="k">else</span> <span class="n">SCRIM_LIGHT</span><span class="p">)</span>
+        <span class="n">plate</span> <span class="o">=</span> <span class="n">_scrim_plate</span><span class="p">(</span><span class="n">bb</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">em</span><span class="o">=</span><span class="n">em</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="n">anchor</span><span class="p">)</span>
+        <span class="n">lay</span> <span class="o">=</span> <span class="n">Layout</span><span class="p">(</span><span class="n">lay</span><span class="o">.</span><span class="n">runs</span><span class="p">,</span> <span class="p">(</span><span class="n">plate</span><span class="p">,)</span> <span class="o">+</span> <span class="n">lay</span><span class="o">.</span><span class="n">plates</span><span class="p">,</span> <span class="n">lay</span><span class="o">.</span><span class="n">meta</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">lay</span>
+
+
+<div class="viewcode-block" id="intertitle">
+<a class="viewcode-back" href="../../module_docs/tituli/compose.html#tituli.intertitle">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">intertitle</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">frame</span><span class="p">:</span> <span class="n">Frame</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="n">TextStyle</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Layout</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""A silent-film style card: serif italic prose, centred on the frame."""</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">tituli.style</span><span class="w"> </span><span class="kn">import</span> <span class="n">INTERTITLE</span>
+
+    <span class="n">st</span> <span class="o">=</span> <span class="n">style</span> <span class="ow">or</span> <span class="n">INTERTITLE</span>
+    <span class="n">safe</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">safe</span>
+    <span class="n">st</span> <span class="o">=</span> <span class="n">fit_size</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">st</span><span class="p">,</span> <span class="n">frame</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="n">safe</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="mf">0.7</span><span class="p">,</span> <span class="n">max_height</span><span class="o">=</span><span class="n">safe</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="mf">0.7</span><span class="p">)</span>
+    <span class="n">lay</span> <span class="o">=</span> <span class="n">block</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">st</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="n">safe</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="mf">0.7</span><span class="p">)</span>
+    <span class="n">bb</span> <span class="o">=</span> <span class="n">lay</span><span class="o">.</span><span class="n">bbox</span><span class="p">()</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">box</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">place</span><span class="p">((</span><span class="n">bb</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">bb</span><span class="o">.</span><span class="n">height</span><span class="p">),</span> <span class="n">anchor</span><span class="o">=</span><span class="s2">"center"</span><span class="p">)</span>
+    <span class="n">lay</span> <span class="o">=</span> <span class="n">lay</span><span class="o">.</span><span class="n">moved_to</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_finish</span><span class="p">(</span><span class="n">lay</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="s2">"center"</span><span class="p">,</span> <span class="n">ink</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scrim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">em</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="n">face</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">height</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">preferred</span><span class="o">=</span><span class="n">parse_color</span><span class="p">(</span><span class="n">st</span><span class="o">.</span><span class="n">color</span><span class="p">))</span></div>
+
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"InkDecision"</span><span class="p">,</span>
+    <span class="s2">"decide_ink"</span><span class="p">,</span>
+    <span class="s2">"truncate"</span><span class="p">,</span>
+    <span class="s2">"title_card"</span><span class="p">,</span>
+    <span class="s2">"caption"</span><span class="p">,</span>
+    <span class="s2">"lower_third"</span><span class="p">,</span>
+    <span class="s2">"note"</span><span class="p">,</span>
+    <span class="s2">"intertitle"</span><span class="p">,</span>
+    <span class="s2">"SCRIM_DARK"</span><span class="p">,</span>
+    <span class="s2">"SCRIM_LIGHT"</span><span class="p">,</span>
+<span class="p">]</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

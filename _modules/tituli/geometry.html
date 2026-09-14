@@ -1,0 +1,636 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tituli.geometry &mdash; tituli 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            tituli
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli.html">tituli</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/__main__.html">tituli.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/bodies.html">tituli.bodies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/calligram.html">tituli.calligram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/color.html">tituli.color</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/compose.html">tituli.compose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/credits.html">tituli.credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/fonts.html">tituli.fonts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/frame.html">tituli.frame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/geometry.html">tituli.geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/layout.html">tituli.layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/render.html">tituli.render</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/schedule.html">tituli.schedule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/shaping.html">tituli.shaping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/style.html">tituli.style</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/tools.html">tituli.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/video.html">tituli.video</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tituli</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tituli.geometry</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tituli.geometry</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Boxes, anchors, safe areas and parametric paths — the coordinate vocabulary.</span>
+
+<span class="sd">Two coordinate systems, deliberately:</span>
+
+<span class="sd">* **normalised** ``(x, y, w, h)`` in ``0..1`` of the frame, top-left origin — the</span>
+<span class="sd">  resolution-independent form used by specs, by ``burns.salient_box`` and by the</span>
+<span class="sd">  lacing body. This is what a *request* is written in.</span>
+<span class="sd">* **pixel** :class:`Box` ``(x0, y0, x1, y1)`` floats — what layout and rendering</span>
+<span class="sd">  compute in once a :class:`~tituli.frame.Frame` size is known.</span>
+
+<span class="sd">A :class:`Path` is a curve you can lay glyphs along: ``point(s)`` and ``angle(s)``</span>
+<span class="sd">by arc length. Constructors cover lines, arcs, waves, Béziers, polylines and SVG</span>
+<span class="sd">``d`` strings, which is what lets a calligram be *any* shape rather than a</span>
+<span class="sd">hard-coded sine.</span>
+
+<span class="sd">&gt;&gt;&gt; b = Box(10, 20, 110, 70)</span>
+<span class="sd">&gt;&gt;&gt; b.width, b.height, b.center</span>
+<span class="sd">(100, 50, (60.0, 45.0))</span>
+<span class="sd">&gt;&gt;&gt; Box.from_norm((0.25, 0.5, 0.5, 0.25), 1920, 1080)</span>
+<span class="sd">Box(x0=480.0, y0=540.0, x1=1440.0, y1=810.0)</span>
+<span class="sd">&gt;&gt;&gt; p = Path.line((0, 0), (100, 0))</span>
+<span class="sd">&gt;&gt;&gt; p.length, p.point(50), p.angle(50)</span>
+<span class="sd">(100.0, (50.0, 0.0), 0.0)</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Sequence</span>
+
+<span class="n">Point</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
+<span class="n">NormBox</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>  <span class="c1"># x, y, w, h in 0..1</span>
+
+<span class="c1"># SMPTE ST 2046-1: action-safe 93 %, title-safe 90 % of the picture.</span>
+<span class="n">ACTION_SAFE</span> <span class="o">=</span> <span class="mf">0.93</span>
+<span class="n">TITLE_SAFE</span> <span class="o">=</span> <span class="mf">0.90</span>
+
+<span class="n">_PATH_SAMPLES</span> <span class="o">=</span> <span class="mi">512</span>  <span class="c1"># arc-length table resolution for curved paths</span>
+<span class="n">_BEZIER_SAMPLES</span> <span class="o">=</span> <span class="mi">48</span>
+<span class="n">_DEG</span> <span class="o">=</span> <span class="mf">180.0</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span>
+
+
+<div class="viewcode-block" id="Box">
+<a class="viewcode-back" href="../../module_docs/tituli/geometry.html#tituli.Box">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Box</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""A pixel-space rectangle ``(x0, y0, x1, y1)``; edges are floats."""</span>
+
+    <span class="n">x0</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">y0</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">x1</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">y1</span><span class="p">:</span> <span class="nb">float</span>
+
+<div class="viewcode-block" id="Box.from_size">
+<a class="viewcode-back" href="../../module_docs/tituli/geometry.html#tituli.Box.from_size">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_size</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">w</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">h</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Box"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Build from an origin and a size."""</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="n">w</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">h</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Box.from_norm">
+<a class="viewcode-back" href="../../module_docs/tituli/geometry.html#tituli.Box.from_norm">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_norm</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">nb</span><span class="p">:</span> <span class="n">NormBox</span><span class="p">,</span> <span class="n">width</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">height</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Box"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Scale a normalised ``(x, y, w, h)`` into a frame of that size."""</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">nb</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">width</span><span class="p">,</span> <span class="n">y</span> <span class="o">*</span> <span class="n">height</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">w</span><span class="p">)</span> <span class="o">*</span> <span class="n">width</span><span class="p">,</span> <span class="p">(</span><span class="n">y</span> <span class="o">+</span> <span class="n">h</span><span class="p">)</span> <span class="o">*</span> <span class="n">height</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Box.to_norm">
+<a class="viewcode-back" href="../../module_docs/tituli/geometry.html#tituli.Box.to_norm">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_norm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">height</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NormBox</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""The inverse of :meth:`from_norm`."""</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x0</span> <span class="o">/</span> <span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y0</span> <span class="o">/</span> <span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">/</span> <span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">/</span> <span class="n">height</span><span class="p">)</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">width</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">x0</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">height</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">y1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">y0</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">center</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Point</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">x0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">x1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">y1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">area</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">)</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Box.inset">
+<a class="viewcode-back" href="../../module_docs/tituli/geometry.html#tituli.Box.inset">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">inset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dx</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">dy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Box"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Shrink by ``dx`` horizontally and ``dy`` (default ``dx``) vertically."""</span>
+        <span class="n">dy</span> <span class="o">=</span> <span class="n">dx</span> <span class="k">if</span> <span class="n">dy</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">dy</span>
+        <span class="k">return</span> <span class="n">Box</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x0</span> <span class="o">+</span> <span class="n">dx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y0</span> <span class="o">+</span> <span class="n">dy</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x1</span> <span class="o">-</span> <span class="n">dx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y1</span> <span class="o">-</span> <span class="n">dy</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dx</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">dy</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Box"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Box</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x0</span> <span class="o">+</span> <span class="n">dx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y0</span> <span class="o">+</span> <span class="n">dy</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x1</span> <span class="o">+</span> <span class="n">dx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y1</span> <span class="o">+</span> <span class="n">dy</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">intersection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="s2">"Box"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Box"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Box</span><span class="p">(</span>
+            <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">x0</span><span class="p">),</span>
+            <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y0</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">y0</span><span class="p">),</span>
+            <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x1</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">x1</span><span class="p">),</span>
+            <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y1</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">y1</span><span class="p">),</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="Box.overlap_fraction">
+<a class="viewcode-back" href="../../module_docs/tituli/geometry.html#tituli.Box.overlap_fraction">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">overlap_fraction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="s2">"Box"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Fraction of *this* box's area covered by ``other``.</span>
+
+<span class="sd">        &gt;&gt;&gt; Box(0, 0, 10, 10).overlap_fraction(Box(5, 0, 20, 10))</span>
+<span class="sd">        0.5</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">area</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">other</span><span class="p">)</span><span class="o">.</span><span class="n">area</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">area</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">union</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="s2">"Box"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Box"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Box</span><span class="p">(</span>
+            <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">x0</span><span class="p">),</span>
+            <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y0</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">y0</span><span class="p">),</span>
+            <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x1</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">x1</span><span class="p">),</span>
+            <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y1</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">y1</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">rounded</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x0</span><span class="p">)),</span>
+            <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y0</span><span class="p">)),</span>
+            <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x1</span><span class="p">)),</span>
+            <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y1</span><span class="p">)),</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="safe_area">
+<a class="viewcode-back" href="../../module_docs/tituli/geometry.html#tituli.safe_area">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">safe_area</span><span class="p">(</span><span class="n">width</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">height</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">fraction</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">TITLE_SAFE</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Box</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The centred box holding ``fraction`` of each dimension.</span>
+
+<span class="sd">    &gt;&gt;&gt; safe_area(1000, 500)</span>
+<span class="sd">    Box(x0=50.0, y0=25.0, x1=950.0, y1=475.0)</span>
+<span class="sd">    """</span>
+    <span class="n">mx</span> <span class="o">=</span> <span class="p">(</span><span class="n">width</span> <span class="o">-</span> <span class="n">width</span> <span class="o">*</span> <span class="n">fraction</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">my</span> <span class="o">=</span> <span class="p">(</span><span class="n">height</span> <span class="o">-</span> <span class="n">height</span> <span class="o">*</span> <span class="n">fraction</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="n">Box</span><span class="p">(</span><span class="n">mx</span><span class="p">,</span> <span class="n">my</span><span class="p">,</span> <span class="n">width</span> <span class="o">-</span> <span class="n">mx</span><span class="p">,</span> <span class="n">height</span> <span class="o">-</span> <span class="n">my</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># Anchor names -&gt; (fx, fy): where the block's own reference point sits within the</span>
+<span class="c1"># region, in 0..1. The nine-position grid every overlay is placed on.</span>
+<span class="n">ANCHORS</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"top-left"</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+    <span class="s2">"top"</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+    <span class="s2">"top-right"</span><span class="p">:</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+    <span class="s2">"left"</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span>
+    <span class="s2">"center"</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span>
+    <span class="s2">"right"</span><span class="p">:</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span>
+    <span class="s2">"bottom-left"</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+    <span class="s2">"bottom"</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+    <span class="s2">"bottom-right"</span><span class="p">:</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="anchor_box">
+<a class="viewcode-back" href="../../module_docs/tituli/geometry.html#tituli.anchor_box">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">anchor_box</span><span class="p">(</span><span class="n">region</span><span class="p">:</span> <span class="n">Box</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">anchor</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Box</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Place a block of ``size`` inside ``region`` at a named anchor.</span>
+
+<span class="sd">    &gt;&gt;&gt; anchor_box(Box(0, 0, 100, 100), (20, 10), "bottom-right")</span>
+<span class="sd">    Box(x0=80.0, y0=90.0, x1=100.0, y1=100.0)</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">anchor</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ANCHORS</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"unknown anchor </span><span class="si">{</span><span class="n">anchor</span><span class="si">!r}</span><span class="s2">; choose from </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">ANCHORS</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">fx</span><span class="p">,</span> <span class="n">fy</span> <span class="o">=</span> <span class="n">ANCHORS</span><span class="p">[</span><span class="n">anchor</span><span class="p">]</span>
+    <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">size</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">region</span><span class="o">.</span><span class="n">x0</span> <span class="o">+</span> <span class="p">(</span><span class="n">region</span><span class="o">.</span><span class="n">width</span> <span class="o">-</span> <span class="n">w</span><span class="p">)</span> <span class="o">*</span> <span class="n">fx</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">region</span><span class="o">.</span><span class="n">y0</span> <span class="o">+</span> <span class="p">(</span><span class="n">region</span><span class="o">.</span><span class="n">height</span> <span class="o">-</span> <span class="n">h</span><span class="p">)</span> <span class="o">*</span> <span class="n">fy</span>
+    <span class="k">return</span> <span class="n">Box</span><span class="o">.</span><span class="n">from_size</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ----------------------------------------------------------------------------</span>
+<span class="c1"># Paths</span>
+<span class="c1"># ----------------------------------------------------------------------------</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_dist</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">Point</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">Point</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+
+<div class="viewcode-block" id="Path">
+<a class="viewcode-back" href="../../module_docs/tituli/geometry.html#tituli.Path">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Path</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""A polyline with an arc-length parameterisation.</span>
+
+<span class="sd">    Build one with the constructors (:meth:`line`, :meth:`arc`, :meth:`wave`,</span>
+<span class="sd">    :meth:`bezier`, :meth:`polyline`, :meth:`from_svg`, :meth:`from_function`) and</span>
+<span class="sd">    query it by distance along the curve: ``point(s)`` and ``angle(s)`` (degrees,</span>
+<span class="sd">    clockwise-positive on screen because y points down).</span>
+<span class="sd">    """</span>
+
+    <span class="n">points</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Point</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"a Path needs at least two points"</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_cumulative</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+        <span class="n">acc</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+            <span class="n">acc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">acc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">_dist</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">acc</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cumulative</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">closed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Whether the path ends where it starts (a circle, a closed SVG path).</span>
+
+<span class="sd">        &gt;&gt;&gt; Path.circle((0, 0), 10).closed, Path.line((0, 0), (1, 1)).closed</span>
+<span class="sd">        (True, False)</span>
+<span class="sd">        """</span>
+        <span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">),</span> <span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span><span class="p">,</span> <span class="n">y1</span> <span class="o">-</span> <span class="n">y0</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mf">1e-6</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_segment_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+        <span class="n">cum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cumulative</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">cum</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="c1"># binary search for the segment containing s</span>
+        <span class="n">lo</span><span class="p">,</span> <span class="n">hi</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">cum</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">hi</span> <span class="o">-</span> <span class="n">lo</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">lo</span> <span class="o">+</span> <span class="n">hi</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+            <span class="k">if</span> <span class="n">cum</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">s</span><span class="p">:</span>
+                <span class="n">lo</span> <span class="o">=</span> <span class="n">mid</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">hi</span> <span class="o">=</span> <span class="n">mid</span>
+        <span class="n">seg_len</span> <span class="o">=</span> <span class="n">cum</span><span class="p">[</span><span class="n">hi</span><span class="p">]</span> <span class="o">-</span> <span class="n">cum</span><span class="p">[</span><span class="n">lo</span><span class="p">]</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="k">if</span> <span class="n">seg_len</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="p">(</span><span class="n">s</span> <span class="o">-</span> <span class="n">cum</span><span class="p">[</span><span class="n">lo</span><span class="p">])</span> <span class="o">/</span> <span class="n">seg_len</span>
+        <span class="k">return</span> <span class="n">lo</span><span class="p">,</span> <span class="n">t</span>
+
+<div class="viewcode-block" id="Path.point">
+<a class="viewcode-back" href="../../module_docs/tituli/geometry.html#tituli.Path.point">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Point</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Position at arc length ``s`` (clamped to the path)."""</span>
+        <span class="n">i</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_segment_at</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">),</span> <span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">x0</span> <span class="o">+</span> <span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span> <span class="o">*</span> <span class="n">t</span><span class="p">,</span> <span class="n">y0</span> <span class="o">+</span> <span class="p">(</span><span class="n">y1</span> <span class="o">-</span> <span class="n">y0</span><span class="p">)</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Path.angle">
+<a class="viewcode-back" href="../../module_docs/tituli/geometry.html#tituli.Path.angle">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">angle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Tangent direction at ``s`` in degrees (0 = rightwards, 90 = down)."""</span>
+        <span class="n">i</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_segment_at</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">),</span> <span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">y1</span> <span class="o">-</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span> <span class="o">*</span> <span class="n">_DEG</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">transformed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Point</span><span class="p">],</span> <span class="n">Point</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="s2">"Path"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">fn</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">scaled</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sx</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">sy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Path"</span><span class="p">:</span>
+        <span class="n">sy</span> <span class="o">=</span> <span class="n">sx</span> <span class="k">if</span> <span class="n">sy</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">sy</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">sx</span><span class="p">,</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">sy</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">translated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dx</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">dy</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Path"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">dx</span><span class="p">,</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">dy</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">bbox</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Box</span><span class="p">:</span>
+        <span class="n">xs</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">]</span>
+        <span class="n">ys</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">Box</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">xs</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">ys</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">xs</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">ys</span><span class="p">))</span>
+
+<div class="viewcode-block" id="Path.fit">
+<a class="viewcode-back" href="../../module_docs/tituli/geometry.html#tituli.Path.fit">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">box</span><span class="p">:</span> <span class="n">Box</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">keep_aspect</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Path"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Scale and translate so the path's bounding box fills ``box``.</span>
+
+<span class="sd">        Degenerate axes (a horizontal line has zero height) are centred rather</span>
+<span class="sd">        than scaled.</span>
+<span class="sd">        """</span>
+        <span class="n">bb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bbox</span><span class="p">()</span>
+        <span class="n">sx</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">width</span> <span class="o">/</span> <span class="n">bb</span><span class="o">.</span><span class="n">width</span> <span class="k">if</span> <span class="n">bb</span><span class="o">.</span><span class="n">width</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">1.0</span>
+        <span class="n">sy</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">height</span> <span class="o">/</span> <span class="n">bb</span><span class="o">.</span><span class="n">height</span> <span class="k">if</span> <span class="n">bb</span><span class="o">.</span><span class="n">height</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">1.0</span>
+        <span class="k">if</span> <span class="n">keep_aspect</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">sx</span><span class="p">,</span> <span class="n">sy</span><span class="p">)</span>
+            <span class="n">sx</span> <span class="o">=</span> <span class="n">sy</span> <span class="o">=</span> <span class="n">s</span>
+        <span class="n">scaled</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scaled</span><span class="p">(</span><span class="n">sx</span><span class="p">,</span> <span class="n">sy</span><span class="p">)</span>
+        <span class="n">sb</span> <span class="o">=</span> <span class="n">scaled</span><span class="o">.</span><span class="n">bbox</span><span class="p">()</span>
+        <span class="n">dx</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">x0</span> <span class="o">+</span> <span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">width</span> <span class="o">-</span> <span class="n">sb</span><span class="o">.</span><span class="n">width</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">sb</span><span class="o">.</span><span class="n">x0</span>
+        <span class="n">dy</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">y0</span> <span class="o">+</span> <span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">height</span> <span class="o">-</span> <span class="n">sb</span><span class="o">.</span><span class="n">height</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">sb</span><span class="o">.</span><span class="n">y0</span>
+        <span class="k">return</span> <span class="n">scaled</span><span class="o">.</span><span class="n">translated</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">)</span></div>
+
+
+    <span class="c1"># -- constructors ---------------------------------------------------------</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">line</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">start</span><span class="p">:</span> <span class="n">Point</span><span class="p">,</span> <span class="n">end</span><span class="p">:</span> <span class="n">Point</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Path"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">((</span><span class="nb">tuple</span><span class="p">(</span><span class="n">start</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">end</span><span class="p">)))</span>  <span class="c1"># type: ignore[arg-type]</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">polyline</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">points</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Point</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="s2">"Path"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="nb">tuple</span><span class="p">((</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">y</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">points</span><span class="p">))</span>
+
+<div class="viewcode-block" id="Path.from_function">
+<a class="viewcode-back" href="../../module_docs/tituli/geometry.html#tituli.Path.from_function">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_function</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">float</span><span class="p">],</span> <span class="n">Point</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">samples</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">_PATH_SAMPLES</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Path"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Sample ``fn(t)`` for ``t`` in ``[0, 1]``."""</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">fn</span><span class="p">(</span><span class="n">i</span> <span class="o">/</span> <span class="p">(</span><span class="n">samples</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">samples</span><span class="p">)))</span></div>
+
+
+<div class="viewcode-block" id="Path.arc">
+<a class="viewcode-back" href="../../module_docs/tituli/geometry.html#tituli.Path.arc">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">arc</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">center</span><span class="p">:</span> <span class="n">Point</span><span class="p">,</span>
+        <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">start_deg</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">end_deg</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">samples</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">_PATH_SAMPLES</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Path"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Circular arc; angles in degrees, 0 = right, 90 = down (screen coords)."""</span>
+        <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="o">=</span> <span class="n">center</span>
+        <span class="n">a0</span><span class="p">,</span> <span class="n">a1</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">start_deg</span><span class="p">),</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">end_deg</span><span class="p">)</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">fn</span><span class="p">(</span><span class="n">t</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Point</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">a0</span> <span class="o">+</span> <span class="p">(</span><span class="n">a1</span> <span class="o">-</span> <span class="n">a0</span><span class="p">)</span> <span class="o">*</span> <span class="n">t</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">cx</span> <span class="o">+</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">cy</span> <span class="o">+</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_function</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="n">samples</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Path.circle">
+<a class="viewcode-back" href="../../module_docs/tituli/geometry.html#tituli.Path.circle">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">circle</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">center</span><span class="p">:</span> <span class="n">Point</span><span class="p">,</span> <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">start_deg</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="o">-</span><span class="mf">90.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Path"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""A full circle starting at the top by default, running clockwise."""</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">arc</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">start_deg</span><span class="p">,</span> <span class="n">start_deg</span> <span class="o">+</span> <span class="mf">360.0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Path.wave">
+<a class="viewcode-back" href="../../module_docs/tituli/geometry.html#tituli.Path.wave">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">wave</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">start</span><span class="p">:</span> <span class="n">Point</span><span class="p">,</span>
+        <span class="n">end</span><span class="p">:</span> <span class="n">Point</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">amplitude</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">cycles</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">samples</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">_PATH_SAMPLES</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Path"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""A sine wave along the segment ``start -&gt; end``."""</span>
+        <span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">),</span> <span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">)</span> <span class="o">=</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span>
+        <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span><span class="p">,</span> <span class="n">y1</span> <span class="o">-</span> <span class="n">y0</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">)</span> <span class="ow">or</span> <span class="mf">1.0</span>
+        <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span> <span class="o">=</span> <span class="o">-</span><span class="n">dy</span> <span class="o">/</span> <span class="n">n</span><span class="p">,</span> <span class="n">dx</span> <span class="o">/</span> <span class="n">n</span>  <span class="c1"># unit normal</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">fn</span><span class="p">(</span><span class="n">t</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Point</span><span class="p">:</span>
+            <span class="n">off</span> <span class="o">=</span> <span class="n">amplitude</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">cycles</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">x0</span> <span class="o">+</span> <span class="n">dx</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="n">nx</span> <span class="o">*</span> <span class="n">off</span><span class="p">,</span> <span class="n">y0</span> <span class="o">+</span> <span class="n">dy</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="n">ny</span> <span class="o">*</span> <span class="n">off</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_function</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="n">samples</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Path.bezier">
+<a class="viewcode-back" href="../../module_docs/tituli/geometry.html#tituli.Path.bezier">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">bezier</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">controls</span><span class="p">:</span> <span class="n">Point</span><span class="p">,</span> <span class="n">samples</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">_PATH_SAMPLES</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Path"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""A Bézier curve of any degree through ``controls`` (De Casteljau)."""</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">controls</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"a Bézier needs at least two control points"</span><span class="p">)</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">fn</span><span class="p">(</span><span class="n">t</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Point</span><span class="p">:</span>
+            <span class="n">pts</span> <span class="o">=</span> <span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">controls</span><span class="p">]</span>
+            <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">pts</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">pts</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">t</span><span class="p">,</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pts</span><span class="p">,</span> <span class="n">pts</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+                <span class="p">]</span>
+            <span class="k">return</span> <span class="n">pts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># type: ignore[return-value]</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_function</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="n">samples</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Path.from_svg">
+<a class="viewcode-back" href="../../module_docs/tituli/geometry.html#tituli.Path.from_svg">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_svg</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Path"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Parse an SVG path ``d`` string (M L H V C S Q T Z, absolute or relative).</span>
+
+<span class="sd">        Arcs (``A``) are not supported — approximate them with a Bézier.</span>
+
+<span class="sd">        &gt;&gt;&gt; Path.from_svg("M 0 0 L 10 0 L 10 10").length</span>
+<span class="sd">        20.0</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">_svg_points</span><span class="p">(</span><span class="n">d</span><span class="p">)))</span></div>
+</div>
+
+
+
+<span class="n">_SVG_TOKEN</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"[MmLlHhVvCcSsQqTtZzAa]|-?\d*\.?\d+(?:[eE][-+]?\d+)?"</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_svg_points</span><span class="p">(</span><span class="n">d</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Point</span><span class="p">]:</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="n">_SVG_TOKEN</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="n">pts</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Point</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">cur</span><span class="p">:</span> <span class="n">Point</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">start</span><span class="p">:</span> <span class="n">Point</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">last_ctrl</span><span class="p">:</span> <span class="n">Point</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="s2">""</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">nums</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+        <span class="k">nonlocal</span> <span class="n">i</span>
+        <span class="n">vals</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">n</span><span class="p">]]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"truncated SVG path near token </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="n">n</span>
+        <span class="k">return</span> <span class="n">vals</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">rel</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Point</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Point</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">cur</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cur</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">if</span> <span class="n">cmd</span><span class="o">.</span><span class="n">islower</span><span class="p">()</span> <span class="k">else</span> <span class="n">p</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_curve</span><span class="p">(</span><span class="n">ctrl</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Point</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">curve</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">bezier</span><span class="p">(</span><span class="n">cur</span><span class="p">,</span> <span class="o">*</span><span class="n">ctrl</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="n">_BEZIER_SAMPLES</span><span class="p">)</span>
+        <span class="n">pts</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">curve</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">):</span>
+        <span class="n">tok</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">tok</span><span class="o">.</span><span class="n">isalpha</span><span class="p">():</span>
+            <span class="n">cmd</span> <span class="o">=</span> <span class="n">tok</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">cmd</span> <span class="ow">in</span> <span class="s2">"Zz"</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">pts</span> <span class="ow">and</span> <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">start</span><span class="p">:</span>
+                    <span class="n">pts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+                <span class="n">cur</span> <span class="o">=</span> <span class="n">start</span>
+                <span class="n">last_ctrl</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">continue</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">cmd</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="s2">"M"</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">nums</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">cur</span> <span class="o">=</span> <span class="n">rel</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">cur</span>
+            <span class="k">if</span> <span class="n">pts</span><span class="p">:</span>
+                <span class="n">pts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur</span><span class="p">)</span>  <span class="c1"># a subpath break is drawn as a jump (single polyline)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">pts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur</span><span class="p">)</span>
+            <span class="n">cmd</span> <span class="o">=</span> <span class="s2">"l"</span> <span class="k">if</span> <span class="n">cmd</span> <span class="o">==</span> <span class="s2">"m"</span> <span class="k">else</span> <span class="s2">"L"</span>
+            <span class="n">last_ctrl</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">elif</span> <span class="n">c</span> <span class="o">==</span> <span class="s2">"L"</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">nums</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">cur</span> <span class="o">=</span> <span class="n">rel</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+            <span class="n">pts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur</span><span class="p">)</span>
+            <span class="n">last_ctrl</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">elif</span> <span class="n">c</span> <span class="o">==</span> <span class="s2">"H"</span><span class="p">:</span>
+            <span class="p">(</span><span class="n">x</span><span class="p">,)</span> <span class="o">=</span> <span class="n">nums</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">cur</span> <span class="o">=</span> <span class="p">(</span><span class="n">cur</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">,</span> <span class="n">cur</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">if</span> <span class="n">cmd</span><span class="o">.</span><span class="n">islower</span><span class="p">()</span> <span class="k">else</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">cur</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">pts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur</span><span class="p">)</span>
+            <span class="n">last_ctrl</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">elif</span> <span class="n">c</span> <span class="o">==</span> <span class="s2">"V"</span><span class="p">:</span>
+            <span class="p">(</span><span class="n">y</span><span class="p">,)</span> <span class="o">=</span> <span class="n">nums</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">cur</span> <span class="o">=</span> <span class="p">(</span><span class="n">cur</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cur</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">y</span><span class="p">)</span> <span class="k">if</span> <span class="n">cmd</span><span class="o">.</span><span class="n">islower</span><span class="p">()</span> <span class="k">else</span> <span class="p">(</span><span class="n">cur</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="p">)</span>
+            <span class="n">pts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur</span><span class="p">)</span>
+            <span class="n">last_ctrl</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">elif</span> <span class="n">c</span> <span class="o">==</span> <span class="s2">"C"</span><span class="p">:</span>
+            <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">nums</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+            <span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">rel</span><span class="p">((</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">)),</span> <span class="n">rel</span><span class="p">((</span><span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">)),</span> <span class="n">rel</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+            <span class="n">add_curve</span><span class="p">([</span><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span> <span class="n">end</span><span class="p">])</span>
+            <span class="n">last_ctrl</span><span class="p">,</span> <span class="n">cur</span> <span class="o">=</span> <span class="n">c2</span><span class="p">,</span> <span class="n">end</span>
+        <span class="k">elif</span> <span class="n">c</span> <span class="o">==</span> <span class="s2">"S"</span><span class="p">:</span>
+            <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">nums</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+            <span class="n">c2</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">rel</span><span class="p">((</span><span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">)),</span> <span class="n">rel</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+            <span class="n">c1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">cur</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">last_ctrl</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">cur</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">last_ctrl</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">if</span> <span class="n">last_ctrl</span> <span class="k">else</span> <span class="n">cur</span>
+            <span class="n">add_curve</span><span class="p">([</span><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span> <span class="n">end</span><span class="p">])</span>
+            <span class="n">last_ctrl</span><span class="p">,</span> <span class="n">cur</span> <span class="o">=</span> <span class="n">c2</span><span class="p">,</span> <span class="n">end</span>
+        <span class="k">elif</span> <span class="n">c</span> <span class="o">==</span> <span class="s2">"Q"</span><span class="p">:</span>
+            <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">nums</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+            <span class="n">c1</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">rel</span><span class="p">((</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">)),</span> <span class="n">rel</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+            <span class="n">add_curve</span><span class="p">([</span><span class="n">c1</span><span class="p">,</span> <span class="n">end</span><span class="p">])</span>
+            <span class="n">last_ctrl</span><span class="p">,</span> <span class="n">cur</span> <span class="o">=</span> <span class="n">c1</span><span class="p">,</span> <span class="n">end</span>
+        <span class="k">elif</span> <span class="n">c</span> <span class="o">==</span> <span class="s2">"T"</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">nums</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="n">rel</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+            <span class="n">c1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">cur</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">last_ctrl</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">cur</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">last_ctrl</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">if</span> <span class="n">last_ctrl</span> <span class="k">else</span> <span class="n">cur</span>
+            <span class="n">add_curve</span><span class="p">([</span><span class="n">c1</span><span class="p">,</span> <span class="n">end</span><span class="p">])</span>
+            <span class="n">last_ctrl</span><span class="p">,</span> <span class="n">cur</span> <span class="o">=</span> <span class="n">c1</span><span class="p">,</span> <span class="n">end</span>
+        <span class="k">elif</span> <span class="n">c</span> <span class="o">==</span> <span class="s2">"A"</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"SVG arc commands are not supported; use a Bézier"</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"unexpected token </span><span class="si">{</span><span class="n">tok</span><span class="si">!r}</span><span class="s2"> in SVG path"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pts</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"SVG path has fewer than two points"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pts</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

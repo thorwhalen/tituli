@@ -1,0 +1,246 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tituli.shaping &mdash; tituli 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            tituli
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli.html">tituli</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/__main__.html">tituli.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/bodies.html">tituli.bodies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/calligram.html">tituli.calligram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/color.html">tituli.color</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/compose.html">tituli.compose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/credits.html">tituli.credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/fonts.html">tituli.fonts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/frame.html">tituli.frame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/geometry.html">tituli.geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/layout.html">tituli.layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/render.html">tituli.render</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/schedule.html">tituli.schedule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/shaping.html">tituli.shaping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/style.html">tituli.style</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/tools.html">tituli.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/tituli/video.html">tituli.video</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tituli</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tituli.shaping</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tituli.shaping</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Optional engine: HarfBuzz shaping + FreeType rendering (``pip install tituli[shaping]``).</span>
+
+<span class="sd">The Pillow default handles Latin text well and rotates glyph *bitmaps*. This</span>
+<span class="sd">engine shapes the run with HarfBuzz (kerning, ligatures, Arabic/Devanagari</span>
+<span class="sd">joining) and asks FreeType to apply the rotation to the **outline** before</span>
+<span class="sd">rasterising, which is the typographically correct order. Same :class:`Run`</span>
+<span class="sd">in, same canvas out — it is the ``engine=`` seam of :func:`tituli.render.render`.</span>
+
+<span class="sd">Import cost is paid only when constructed; the module itself imports nothing</span>
+<span class="sd">optional at top level.</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">lru_cache</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">tituli.layout</span><span class="w"> </span><span class="kn">import</span> <span class="n">Run</span>
+
+<span class="n">_HB_SCALE</span> <span class="o">=</span> <span class="mi">64</span>  <span class="c1"># 26.6 fixed point</span>
+<span class="n">_FT_MATRIX_ONE</span> <span class="o">=</span> <span class="mh">0x10000</span>  <span class="c1"># 16.16 fixed point</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_require</span><span class="p">():</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">freetype</span>  <span class="c1"># noqa: F401</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">uharfbuzz</span>  <span class="c1"># noqa: F401</span>
+    <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># pragma: no cover - depends on the extra</span>
+        <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">"the HarfBuzz engine needs `pip install tituli[shaping]`"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+
+
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">64</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_hb_font</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">uharfbuzz</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">hb</span>
+
+    <span class="n">blob</span> <span class="o">=</span> <span class="n">hb</span><span class="o">.</span><span class="n">Blob</span><span class="o">.</span><span class="n">from_file_path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">face</span> <span class="o">=</span> <span class="n">hb</span><span class="o">.</span><span class="n">Face</span><span class="p">(</span><span class="n">blob</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span>
+    <span class="n">font</span> <span class="o">=</span> <span class="n">hb</span><span class="o">.</span><span class="n">Font</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+    <span class="n">font</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="p">(</span><span class="n">size</span> <span class="o">*</span> <span class="n">_HB_SCALE</span><span class="p">,</span> <span class="n">size</span> <span class="o">*</span> <span class="n">_HB_SCALE</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">font</span>
+
+
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">64</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_ft_face</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">freetype</span>
+
+    <span class="n">face</span> <span class="o">=</span> <span class="n">freetype</span><span class="o">.</span><span class="n">Face</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span>
+    <span class="n">face</span><span class="o">.</span><span class="n">set_char_size</span><span class="p">(</span><span class="n">size</span> <span class="o">*</span> <span class="n">_HB_SCALE</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">face</span>
+
+
+<div class="viewcode-block" id="shape">
+<a class="viewcode-back" href="../../module_docs/tituli/shaping.html#tituli.shaping.shape">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">shape</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">features</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">"""``[(glyph_id, x_advance, y_advance, x_offset, y_offset), ...]`` in pixels."""</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">uharfbuzz</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">hb</span>
+
+    <span class="n">font</span> <span class="o">=</span> <span class="n">_hb_font</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+    <span class="n">buf</span> <span class="o">=</span> <span class="n">hb</span><span class="o">.</span><span class="n">Buffer</span><span class="p">()</span>
+    <span class="n">buf</span><span class="o">.</span><span class="n">add_str</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">buf</span><span class="o">.</span><span class="n">guess_segment_properties</span><span class="p">()</span>
+    <span class="n">hb</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">font</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">features</span> <span class="ow">or</span> <span class="p">{</span><span class="s2">"kern"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">"liga"</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">info</span><span class="p">,</span> <span class="n">pos</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">buf</span><span class="o">.</span><span class="n">glyph_infos</span><span class="p">,</span> <span class="n">buf</span><span class="o">.</span><span class="n">glyph_positions</span><span class="p">):</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">info</span><span class="o">.</span><span class="n">codepoint</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">x_advance</span> <span class="o">/</span> <span class="n">_HB_SCALE</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">y_advance</span> <span class="o">/</span> <span class="n">_HB_SCALE</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">x_offset</span> <span class="o">/</span> <span class="n">_HB_SCALE</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">y_offset</span> <span class="o">/</span> <span class="n">_HB_SCALE</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+
+<div class="viewcode-block" id="HarfBuzzEngine">
+<a class="viewcode-back" href="../../module_docs/tituli/shaping.html#tituli.shaping.HarfBuzzEngine">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">HarfBuzzEngine</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Draw runs through HarfBuzz + FreeType. Falls back to Pillow for the embedded font."""</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">_require</span><span class="p">()</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">tituli.render</span><span class="w"> </span><span class="kn">import</span> <span class="n">PillowEngine</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fallback</span> <span class="o">=</span> <span class="n">PillowEngine</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">draw_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">canvas</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">run</span><span class="p">:</span> <span class="n">Run</span><span class="p">,</span> <span class="n">opacity</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">freetype</span>
+
+        <span class="n">face</span> <span class="o">=</span> <span class="n">run</span><span class="o">.</span><span class="n">face</span>
+        <span class="k">if</span> <span class="n">face</span><span class="o">.</span><span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># Pillow's embedded fallback font has no file</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_fallback</span><span class="o">.</span><span class="n">draw_run</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="n">run</span><span class="p">,</span> <span class="n">opacity</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">run</span><span class="o">.</span><span class="n">color</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="n">a</span> <span class="o">/</span> <span class="mi">255</span><span class="p">)</span> <span class="o">*</span> <span class="n">run</span><span class="o">.</span><span class="n">opacity</span> <span class="o">*</span> <span class="n">opacity</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">alpha</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">run</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">ft</span> <span class="o">=</span> <span class="n">_ft_face</span><span class="p">(</span><span class="n">face</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">face</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">face</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+        <span class="n">ang</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="o">-</span><span class="n">run</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span>  <span class="c1"># FreeType's y points up</span>
+        <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">ang</span><span class="p">),</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">ang</span><span class="p">)</span>
+        <span class="n">matrix</span> <span class="o">=</span> <span class="n">freetype</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span>
+            <span class="nb">int</span><span class="p">(</span><span class="n">cos</span> <span class="o">*</span> <span class="n">_FT_MATRIX_ONE</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="o">-</span><span class="n">sin</span> <span class="o">*</span> <span class="n">_FT_MATRIX_ONE</span><span class="p">),</span>
+            <span class="nb">int</span><span class="p">(</span><span class="n">sin</span> <span class="o">*</span> <span class="n">_FT_MATRIX_ONE</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">cos</span> <span class="o">*</span> <span class="n">_FT_MATRIX_ONE</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">pen_x</span><span class="p">,</span> <span class="n">pen_y</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span>  <span class="c1"># along the (rotated) baseline, in unrotated px</span>
+        <span class="k">for</span> <span class="n">gid</span><span class="p">,</span> <span class="n">xa</span><span class="p">,</span> <span class="n">ya</span><span class="p">,</span> <span class="n">xo</span><span class="p">,</span> <span class="n">yo</span> <span class="ow">in</span> <span class="n">shape</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">face</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">face</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">face</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+            <span class="n">ft</span><span class="o">.</span><span class="n">set_transform</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">freetype</span><span class="o">.</span><span class="n">Vector</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="n">ft</span><span class="o">.</span><span class="n">load_glyph</span><span class="p">(</span><span class="n">gid</span><span class="p">,</span> <span class="n">freetype</span><span class="o">.</span><span class="n">FT_LOAD_RENDER</span> <span class="o">|</span> <span class="n">freetype</span><span class="o">.</span><span class="n">FT_LOAD_TARGET_NORMAL</span><span class="p">)</span>
+            <span class="n">bmp</span> <span class="o">=</span> <span class="n">ft</span><span class="o">.</span><span class="n">glyph</span><span class="o">.</span><span class="n">bitmap</span>
+            <span class="k">if</span> <span class="n">bmp</span><span class="o">.</span><span class="n">width</span> <span class="ow">and</span> <span class="n">bmp</span><span class="o">.</span><span class="n">rows</span><span class="p">:</span>
+                <span class="c1"># rotate the pen position into screen space (y down, angle clockwise)</span>
+                <span class="n">sa</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span>
+                <span class="n">sx</span> <span class="o">=</span> <span class="n">run</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="p">(</span><span class="n">pen_x</span> <span class="o">+</span> <span class="n">xo</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">sa</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">pen_y</span> <span class="o">+</span> <span class="n">yo</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">sa</span><span class="p">)</span>
+                <span class="n">sy</span> <span class="o">=</span> <span class="n">run</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="p">(</span><span class="n">pen_x</span> <span class="o">+</span> <span class="n">xo</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">sa</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">pen_y</span> <span class="o">+</span> <span class="n">yo</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">sa</span><span class="p">)</span>
+                <span class="n">tile</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">frombytes</span><span class="p">(</span><span class="s2">"L"</span><span class="p">,</span> <span class="p">(</span><span class="n">bmp</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">bmp</span><span class="o">.</span><span class="n">rows</span><span class="p">),</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">bmp</span><span class="o">.</span><span class="n">buffer</span><span class="p">),</span> <span class="s2">"raw"</span><span class="p">,</span> <span class="s2">"L"</span><span class="p">,</span> <span class="n">bmp</span><span class="o">.</span><span class="n">pitch</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">alpha</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">tile</span> <span class="o">=</span> <span class="n">tile</span><span class="o">.</span><span class="n">point</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">v</span> <span class="o">*</span> <span class="n">alpha</span><span class="p">))</span>
+                <span class="n">layer</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">"RGBA"</span><span class="p">,</span> <span class="n">tile</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+                <span class="n">layer</span><span class="o">.</span><span class="n">putalpha</span><span class="p">(</span><span class="n">tile</span><span class="p">)</span>
+                <span class="n">x0</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">sx</span> <span class="o">+</span> <span class="n">ft</span><span class="o">.</span><span class="n">glyph</span><span class="o">.</span><span class="n">bitmap_left</span><span class="p">))</span>
+                <span class="n">y0</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">sy</span> <span class="o">-</span> <span class="n">ft</span><span class="o">.</span><span class="n">glyph</span><span class="o">.</span><span class="n">bitmap_top</span><span class="p">))</span>
+                <span class="n">canvas</span><span class="o">.</span><span class="n">alpha_composite</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">))</span>
+            <span class="n">pen_x</span> <span class="o">+=</span> <span class="n">xa</span> <span class="o">+</span> <span class="n">run</span><span class="o">.</span><span class="n">tracking</span>
+            <span class="n">pen_y</span> <span class="o">+=</span> <span class="n">ya</span></div>
+
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"HarfBuzzEngine"</span><span class="p">,</span> <span class="s2">"shape"</span><span class="p">]</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
