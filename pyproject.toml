@@ -1,0 +1,214 @@
+[build-system]
+requires = [
+    "hatchling",
+]
+build-backend = "hatchling.build"
+
+[project]
+name = "tituli"
+version = "0.0.1"
+description = "Text in video: title cards, credits, captions and calligrams with tasteful defaults"
+readme = "README.md"
+requires-python = ">=3.10"
+keywords = [
+    "video",
+    "typography",
+    "title-card",
+    "credits",
+    "captions",
+    "calligram",
+    "kinetic-typography",
+    "ffmpeg",
+    "pillow",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Multimedia :: Graphics",
+    "Topic :: Multimedia :: Video",
+    "Topic :: Text Processing :: Fonts",
+]
+authors = [
+    { name = "Thor Whalen" },
+]
+# The functional core needs only Pillow (FreeType rasterisation, image I/O).
+# Video output shells out to `ffmpeg` on PATH (declared under [tool.wads.ops]);
+# it never links a media library and never requires drawtext/libass.
+dependencies = [
+    "pillow>=10.1",
+]
+license = "MIT"
+
+[project.urls]
+Homepage = "https://github.com/thorwhalen/tituli"
+Repository = "https://github.com/thorwhalen/tituli"
+Documentation = "https://thorwhalen.github.io/tituli"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "ruff>=0.1.0",
+]
+docs = [
+    "sphinx>=6.0",
+    "sphinx-rtd-theme>=1.0",
+]
+# HarfBuzz shaping + FreeType outline transforms (ligatures, kerning, complex
+# scripts, rotation before rasterisation). ~5 MB of wheels; the Pillow default
+# engine covers Latin text without it.
+shaping = ["uharfbuzz", "freetype-py"]
+# Subject avoidance via `burns.salient_box` (gradient saliency, numpy + Pillow).
+# Pass it as `avoid=`; nothing in tituli imports burns.
+saliency = ["burns>=0.0.11"]
+# The lacing body schema for captions-as-linked-artifacts (`tituli.bodies`).
+lacing = ["lacing"]
+# `python -m tituli ...` (cw is stdlib-only).
+cli = ["cw>=0.1.1,<0.2"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+exclude = [
+    "**/*.ipynb",
+    ".git",
+    ".venv",
+    "build",
+    "dist",
+    "tests",
+    "examples",
+    "scrap",
+]
+
+[tool.ruff.lint]
+select = [
+    "D100",
+]
+ignore = [
+    "D203",
+    "E501",
+    "B905",
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"**/tests/*" = [
+    "D",
+]
+"**/examples/*" = [
+    "D",
+]
+"**/scrap/*" = [
+    "D",
+]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+# `--doctest-modules` with no path argument collects from testpaths only, so the
+# package dir is listed: its doctests run, and every module gets import-smoked.
+testpaths = [
+    "tests",
+    "tituli",
+]
+doctest_optionflags = [
+    "NORMALIZE_WHITESPACE",
+    "ELLIPSIS",
+]
+
+# ffmpeg is needed only by tituli.video (and its tests); the wads
+# install-system-deps action reads this block.
+[tool.wads.ops.ffmpeg]
+description = "Multimedia framework for compositing overlays and encoding video"
+url = "https://ffmpeg.org/"
+check.linux = "which ffmpeg"
+check.macos = "which ffmpeg"
+check.windows = "where ffmpeg"
+install.linux = ["sudo apt-get update", "sudo apt-get install -y ffmpeg"]
+install.macos = "brew install ffmpeg"
+install.windows = "choco install ffmpeg -y --no-progress"
+
+[tool.wads.ci]
+project_name = ""
+
+[tool.wads.ci.install]
+extras = "cli,shaping"
+
+[tool.wads.ci.commands]
+pre_test = []
+test = []
+post_test = []
+lint = []
+format = []
+
+[tool.wads.ci.env]
+required_envvars = []
+test_envvars = []
+extra_envvars = []
+
+[tool.wads.ci.env.defaults]
+
+[tool.wads.ci.quality.ruff]
+enabled = true
+
+[tool.wads.ci.quality.black]
+enabled = false
+
+[tool.wads.ci.quality.mypy]
+enabled = false
+
+[tool.wads.ci.testing]
+enabled = true
+python_versions = [
+    "3.10",
+    "3.12",
+]
+pytest_args = [
+    "-v",
+    "--tb=short",
+]
+coverage_enabled = true
+coverage_threshold = 0
+coverage_report_format = [
+    "term",
+    "xml",
+]
+exclude_paths = [
+    "examples",
+    "scrap",
+]
+test_on_windows = false
+
+[tool.wads.ci.metrics]
+enabled = true
+config_path = ".github/umpyre-config.yml"
+storage_branch = "code-metrics"
+python_version = "3.10"
+force_run = false
+
+[tool.wads.ci.build]
+sdist = true
+wheel = true
+
+[tool.wads.ci.publish]
+enabled = true
+skip_ci_marker = "[skip ci]"
+publish_marker = "[publish]"
+
+[tool.wads.ci.docs]
+enabled = true
+builder = "epythet"
+ignore_paths = [
+    "tests/",
+    "scrap/",
+    "examples/",
+]
