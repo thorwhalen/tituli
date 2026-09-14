@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>tituli.fonts &mdash; tituli 0.0.1 documentation</title>
+  <title>tituli.fonts &mdash; tituli 0.0.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/documentation_options.js?v=e3a6060d"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -144,7 +144,12 @@
     <span class="s2">"Times New Roman"</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">DISPLAY_STACK</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"Futura"</span><span class="p">,</span> <span class="s2">"Avenir Next"</span><span class="p">,</span> <span class="s2">"Gill Sans"</span><span class="p">)</span> <span class="o">+</span> <span class="n">SANS_STACK</span>
-<span class="n">MONO_STACK</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"Menlo"</span><span class="p">,</span> <span class="s2">"DejaVu Sans Mono"</span><span class="p">,</span> <span class="s2">"Liberation Mono"</span><span class="p">,</span> <span class="s2">"Courier"</span><span class="p">)</span>
+<span class="n">MONO_STACK</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">"Menlo"</span><span class="p">,</span>
+    <span class="s2">"DejaVu Sans Mono"</span><span class="p">,</span>
+    <span class="s2">"Liberation Mono"</span><span class="p">,</span>
+    <span class="s2">"Courier"</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="n">FALLBACK_FAMILY</span> <span class="o">=</span> <span class="s2">"Aileron"</span>  <span class="c1"># what Pillow's embedded ``load_default`` reports</span>
 
@@ -285,7 +290,9 @@
             <span class="n">Path</span><span class="p">(</span><span class="s2">"/usr/local/share/fonts"</span><span class="p">),</span>
             <span class="n">Path</span><span class="p">(</span><span class="s2">"/usr/share/fonts"</span><span class="p">),</span>
         <span class="p">]</span>
-    <span class="n">extra</span> <span class="o">=</span> <span class="p">[</span><span class="n">Path</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"TITULI_FONT_DIRS"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">pathsep</span><span class="p">)</span> <span class="k">if</span> <span class="n">p</span><span class="p">]</span>
+    <span class="n">extra</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">Path</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"TITULI_FONT_DIRS"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">pathsep</span><span class="p">)</span> <span class="k">if</span> <span class="n">p</span>
+    <span class="p">]</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">d</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">extra</span> <span class="o">+</span> <span class="n">candidates</span> <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()]</span></div>
 
 
@@ -371,15 +378,22 @@
         <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">_FONT_SUFFIXES</span><span class="p">)</span> <span class="ow">and</span> <span class="n">Path</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
             <span class="n">faces</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">_faces_in</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">name</span><span class="p">)))</span>
             <span class="k">if</span> <span class="n">faces</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">_best_style</span><span class="p">(</span><span class="n">faces</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span> <span class="n">italic</span><span class="o">=</span><span class="n">italic</span><span class="p">,</span> <span class="n">condensed</span><span class="o">=</span><span class="n">condensed</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">_best_style</span><span class="p">(</span>
+                    <span class="n">faces</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span> <span class="n">italic</span><span class="o">=</span><span class="n">italic</span><span class="p">,</span> <span class="n">condensed</span><span class="o">=</span><span class="n">condensed</span>
+                <span class="p">)</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">idx</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">_best_style</span><span class="p">(</span><span class="n">idx</span><span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span> <span class="n">italic</span><span class="o">=</span><span class="n">italic</span><span class="p">,</span> <span class="n">condensed</span><span class="o">=</span><span class="n">condensed</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">_best_style</span><span class="p">(</span>
+                <span class="n">idx</span><span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span> <span class="n">italic</span><span class="o">=</span><span class="n">italic</span><span class="p">,</span> <span class="n">condensed</span><span class="o">=</span><span class="n">condensed</span>
+            <span class="p">)</span>
     <span class="c1"># case-insensitive second pass</span>
     <span class="n">lower</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">idx</span><span class="p">}</span>
     <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">lower</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">_best_style</span><span class="p">(</span>
-                <span class="n">idx</span><span class="p">[</span><span class="n">lower</span><span class="p">[</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()]],</span> <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span> <span class="n">italic</span><span class="o">=</span><span class="n">italic</span><span class="p">,</span> <span class="n">condensed</span><span class="o">=</span><span class="n">condensed</span>
+                <span class="n">idx</span><span class="p">[</span><span class="n">lower</span><span class="p">[</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()]],</span>
+                <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span>
+                <span class="n">italic</span><span class="o">=</span><span class="n">italic</span><span class="p">,</span>
+                <span class="n">condensed</span><span class="o">=</span><span class="n">condensed</span><span class="p">,</span>
             <span class="p">)</span>
     <span class="k">return</span> <span class="kc">None</span></div>
 

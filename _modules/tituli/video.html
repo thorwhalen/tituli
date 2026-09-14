@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>tituli.video &mdash; tituli 0.0.1 documentation</title>
+  <title>tituli.video &mdash; tituli 0.0.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/documentation_options.js?v=e3a6060d"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -132,7 +132,16 @@
 <span class="n">_REQUIRED_FILTERS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"overlay"</span><span class="p">,</span> <span class="s2">"fade"</span><span class="p">,</span> <span class="s2">"crop"</span><span class="p">,</span> <span class="s2">"format"</span><span class="p">,</span> <span class="s2">"setpts"</span><span class="p">)</span>
 <span class="c1"># YouTube rejects an `elst` edit list that `+faststart` alone leaves behind.</span>
 <span class="n">_MOV_FLAGS</span> <span class="o">=</span> <span class="s2">"+faststart+negative_cts_offsets"</span>
-<span class="n">_ENCODE</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"-c:v"</span><span class="p">,</span> <span class="s2">"libx264"</span><span class="p">,</span> <span class="s2">"-pix_fmt"</span><span class="p">,</span> <span class="s2">"yuv420p"</span><span class="p">,</span> <span class="s2">"-movflags"</span><span class="p">,</span> <span class="n">_MOV_FLAGS</span><span class="p">,</span> <span class="s2">"-use_editlist"</span><span class="p">,</span> <span class="s2">"0"</span><span class="p">]</span>
+<span class="n">_ENCODE</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"-c:v"</span><span class="p">,</span>
+    <span class="s2">"libx264"</span><span class="p">,</span>
+    <span class="s2">"-pix_fmt"</span><span class="p">,</span>
+    <span class="s2">"yuv420p"</span><span class="p">,</span>
+    <span class="s2">"-movflags"</span><span class="p">,</span>
+    <span class="n">_MOV_FLAGS</span><span class="p">,</span>
+    <span class="s2">"-use_editlist"</span><span class="p">,</span>
+    <span class="s2">"0"</span><span class="p">,</span>
+<span class="p">]</span>
 
 
 <div class="viewcode-block" id="FfmpegError">
@@ -162,7 +171,12 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">available_filters</span><span class="p">(</span><span class="n">binary</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">frozenset</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">"""Names of the filters this ffmpeg build has."""</span>
     <span class="n">binary</span> <span class="o">=</span> <span class="n">binary</span> <span class="ow">or</span> <span class="n">ffmpeg_path</span><span class="p">()</span>
-    <span class="n">out</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">binary</span><span class="p">,</span> <span class="s2">"-hide_banner"</span><span class="p">,</span> <span class="s2">"-filters"</span><span class="p">],</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">stdout</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">binary</span><span class="p">,</span> <span class="s2">"-hide_banner"</span><span class="p">,</span> <span class="s2">"-filters"</span><span class="p">],</span>
+        <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">check</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">stdout</span>
     <span class="n">names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">out</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
         <span class="n">parts</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
@@ -179,7 +193,9 @@
     <span class="n">have</span> <span class="o">=</span> <span class="n">available_filters</span><span class="p">()</span>
     <span class="n">missing</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">names</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">have</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">missing</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">FfmpegError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"this ffmpeg build lacks filter(s) </span><span class="si">{</span><span class="n">missing</span><span class="si">}</span><span class="s2">; tituli needs </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">names</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span></div>
+        <span class="k">raise</span> <span class="n">FfmpegError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"this ffmpeg build lacks filter(s) </span><span class="si">{</span><span class="n">missing</span><span class="si">}</span><span class="s2">; tituli needs </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">names</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+        <span class="p">)</span></div>
 
 
 
@@ -223,10 +239,31 @@
         <span class="sa">f</span><span class="s2">"format=rgba,fade=t=in:st=0:d=</span><span class="si">{</span><span class="n">fade_in</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">,"</span>
         <span class="sa">f</span><span class="s2">"fade=t=out:st=</span><span class="si">{</span><span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="n">duration</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">fade_out</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">:d=</span><span class="si">{</span><span class="n">fade_out</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">,format=yuv420p"</span>
     <span class="p">)</span>
-    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">ffmpeg_path</span><span class="p">(),</span> <span class="s2">"-y"</span><span class="p">,</span> <span class="s2">"-loglevel"</span><span class="p">,</span> <span class="s2">"error"</span><span class="p">,</span> <span class="s2">"-loop"</span><span class="p">,</span> <span class="s2">"1"</span><span class="p">,</span> <span class="s2">"-framerate"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">fps</span><span class="p">),</span> <span class="s2">"-i"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">src</span><span class="p">)]</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">ffmpeg_path</span><span class="p">(),</span>
+        <span class="s2">"-y"</span><span class="p">,</span>
+        <span class="s2">"-loglevel"</span><span class="p">,</span>
+        <span class="s2">"error"</span><span class="p">,</span>
+        <span class="s2">"-loop"</span><span class="p">,</span>
+        <span class="s2">"1"</span><span class="p">,</span>
+        <span class="s2">"-framerate"</span><span class="p">,</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">fps</span><span class="p">),</span>
+        <span class="s2">"-i"</span><span class="p">,</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">src</span><span class="p">),</span>
+    <span class="p">]</span>
     <span class="k">if</span> <span class="n">audio</span><span class="p">:</span>
         <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"-i"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">audio</span><span class="p">)]</span>
-    <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"-t"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">duration</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"-vf"</span><span class="p">,</span> <span class="n">vf</span><span class="p">,</span> <span class="o">*</span><span class="n">_ENCODE</span><span class="p">,</span> <span class="s2">"-crf"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">crf</span><span class="p">),</span> <span class="s2">"-preset"</span><span class="p">,</span> <span class="n">DEFAULT_PRESET</span><span class="p">]</span>
+    <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span>
+        <span class="s2">"-t"</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">duration</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+        <span class="s2">"-vf"</span><span class="p">,</span>
+        <span class="n">vf</span><span class="p">,</span>
+        <span class="o">*</span><span class="n">_ENCODE</span><span class="p">,</span>
+        <span class="s2">"-crf"</span><span class="p">,</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">crf</span><span class="p">),</span>
+        <span class="s2">"-preset"</span><span class="p">,</span>
+        <span class="n">DEFAULT_PRESET</span><span class="p">,</span>
+    <span class="p">]</span>
     <span class="k">if</span> <span class="n">audio</span><span class="p">:</span>
         <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"-c:a"</span><span class="p">,</span> <span class="s2">"aac"</span><span class="p">,</span> <span class="s2">"-shortest"</span><span class="p">]</span>
     <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">dst</span><span class="p">)]</span>
@@ -239,7 +276,9 @@
 
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_as_png</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">near</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_as_png</span><span class="p">(</span>
+    <span class="n">image</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">near</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">):</span>
         <span class="n">tmp</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">near</span><span class="p">)</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">".tituli-tmp.png"</span><span class="p">)</span>
         <span class="n">img</span> <span class="o">=</span> <span class="n">image</span>
@@ -294,7 +333,14 @@
 
     <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">ffmpeg_path</span><span class="p">(),</span> <span class="s2">"-y"</span><span class="p">,</span> <span class="s2">"-loglevel"</span><span class="p">,</span> <span class="s2">"error"</span><span class="p">,</span> <span class="s2">"-i"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">video</span><span class="p">)]</span>
     <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pngs</span><span class="p">,</span> <span class="n">items</span><span class="p">):</span>
-        <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"-loop"</span><span class="p">,</span> <span class="s2">"1"</span><span class="p">,</span> <span class="s2">"-t"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">max</span><span class="p">(</span><span class="n">_MIN_HOLD_S</span><span class="p">,</span><span class="w"> </span><span class="n">o</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"-i"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="p">)]</span>
+        <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span>
+            <span class="s2">"-loop"</span><span class="p">,</span>
+            <span class="s2">"1"</span><span class="p">,</span>
+            <span class="s2">"-t"</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">max</span><span class="p">(</span><span class="n">_MIN_HOLD_S</span><span class="p">,</span><span class="w"> </span><span class="n">o</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+            <span class="s2">"-i"</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="p">),</span>
+        <span class="p">]</span>
     <span class="n">steps</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">current</span> <span class="o">=</span> <span class="s2">"0:v"</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
@@ -313,10 +359,19 @@
         <span class="p">)</span>
         <span class="n">current</span> <span class="o">=</span> <span class="n">nxt</span>
     <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span>
-        <span class="s2">"-filter_complex"</span><span class="p">,</span> <span class="s2">";"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">steps</span><span class="p">),</span>
-        <span class="s2">"-map"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"[</span><span class="si">{</span><span class="n">current</span><span class="si">}</span><span class="s2">]"</span><span class="p">,</span> <span class="s2">"-map"</span><span class="p">,</span> <span class="s2">"0:a?"</span><span class="p">,</span>
-        <span class="o">*</span><span class="n">_ENCODE</span><span class="p">,</span> <span class="s2">"-crf"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">crf</span><span class="p">),</span> <span class="s2">"-preset"</span><span class="p">,</span> <span class="n">preset</span><span class="p">,</span>
-        <span class="s2">"-c:a"</span><span class="p">,</span> <span class="s2">"copy"</span><span class="p">,</span>
+        <span class="s2">"-filter_complex"</span><span class="p">,</span>
+        <span class="s2">";"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">steps</span><span class="p">),</span>
+        <span class="s2">"-map"</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">"[</span><span class="si">{</span><span class="n">current</span><span class="si">}</span><span class="s2">]"</span><span class="p">,</span>
+        <span class="s2">"-map"</span><span class="p">,</span>
+        <span class="s2">"0:a?"</span><span class="p">,</span>
+        <span class="o">*</span><span class="n">_ENCODE</span><span class="p">,</span>
+        <span class="s2">"-crf"</span><span class="p">,</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">crf</span><span class="p">),</span>
+        <span class="s2">"-preset"</span><span class="p">,</span>
+        <span class="n">preset</span><span class="p">,</span>
+        <span class="s2">"-c:a"</span><span class="p">,</span>
+        <span class="s2">"copy"</span><span class="p">,</span>
         <span class="nb">str</span><span class="p">(</span><span class="n">dst</span><span class="p">),</span>
     <span class="p">]</span>
     <span class="n">_run</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
@@ -358,15 +413,25 @@
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">"text"</span> <span class="ow">in</span> <span class="n">p</span><span class="p">:</span>
             <span class="n">kind</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"kind"</span><span class="p">,</span> <span class="s2">"caption"</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">"lower_third"</span><span class="p">:</span>
-                <span class="n">lay</span> <span class="o">=</span> <span class="n">lower_third</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="s2">"text"</span><span class="p">],</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"role"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="n">o</span><span class="o">.</span><span class="n">slot</span><span class="p">)</span>
+                <span class="n">lay</span> <span class="o">=</span> <span class="n">lower_third</span><span class="p">(</span>
+                    <span class="n">p</span><span class="p">[</span><span class="s2">"text"</span><span class="p">],</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"role"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="n">o</span><span class="o">.</span><span class="n">slot</span>
+                <span class="p">)</span>
             <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">"note"</span><span class="p">:</span>
-                <span class="n">lay</span> <span class="o">=</span> <span class="n">note</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"lines"</span><span class="p">,</span> <span class="p">()),</span> <span class="n">headline</span><span class="o">=</span><span class="n">p</span><span class="p">[</span><span class="s2">"text"</span><span class="p">],</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="n">o</span><span class="o">.</span><span class="n">slot</span><span class="p">)</span>
+                <span class="n">lay</span> <span class="o">=</span> <span class="n">note</span><span class="p">(</span>
+                    <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"lines"</span><span class="p">,</span> <span class="p">()),</span> <span class="n">headline</span><span class="o">=</span><span class="n">p</span><span class="p">[</span><span class="s2">"text"</span><span class="p">],</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="n">o</span><span class="o">.</span><span class="n">slot</span>
+                <span class="p">)</span>
             <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">"title"</span><span class="p">:</span>
-                <span class="n">lay</span> <span class="o">=</span> <span class="n">title_card</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="s2">"text"</span><span class="p">],</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"subtitle"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="n">o</span><span class="o">.</span><span class="n">slot</span><span class="p">)</span>
+                <span class="n">lay</span> <span class="o">=</span> <span class="n">title_card</span><span class="p">(</span>
+                    <span class="n">p</span><span class="p">[</span><span class="s2">"text"</span><span class="p">],</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"subtitle"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="n">o</span><span class="o">.</span><span class="n">slot</span>
+                <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">lay</span> <span class="o">=</span> <span class="n">caption</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="s2">"text"</span><span class="p">],</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"attribution"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="n">o</span><span class="o">.</span><span class="n">slot</span><span class="p">)</span>
+                <span class="n">lay</span> <span class="o">=</span> <span class="n">caption</span><span class="p">(</span>
+                    <span class="n">p</span><span class="p">[</span><span class="s2">"text"</span><span class="p">],</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"attribution"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="n">o</span><span class="o">.</span><span class="n">slot</span>
+                <span class="p">)</span>
         <span class="k">if</span> <span class="n">lay</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">unrenderable</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"#</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> [</span><span class="si">{</span><span class="n">o</span><span class="o">.</span><span class="n">start</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">o</span><span class="o">.</span><span class="n">end</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">] slot=</span><span class="si">{</span><span class="n">o</span><span class="o">.</span><span class="n">slot</span><span class="si">!r}</span><span class="s2"> payload=</span><span class="si">{</span><span class="n">p</span><span class="si">!r}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="n">unrenderable</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"#</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> [</span><span class="si">{</span><span class="n">o</span><span class="o">.</span><span class="n">start</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">o</span><span class="o">.</span><span class="n">end</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">] slot=</span><span class="si">{</span><span class="n">o</span><span class="o">.</span><span class="n">slot</span><span class="si">!r}</span><span class="s2"> payload=</span><span class="si">{</span><span class="n">p</span><span class="si">!r}</span><span class="s2">"</span>
+            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">with_layout</span><span class="p">(</span><span class="n">lay</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">unrenderable</span><span class="p">:</span>
@@ -405,10 +470,31 @@
     <span class="n">travel</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">ih</span> <span class="o">-</span> <span class="n">h</span><span class="p">)</span>
     <span class="n">duration</span> <span class="o">=</span> <span class="n">travel</span> <span class="o">/</span> <span class="n">speed_px_s</span>
     <span class="n">vf</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"crop=</span><span class="si">{</span><span class="n">w</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">h</span><span class="si">}</span><span class="s2">:0:'min(t*</span><span class="si">{</span><span class="n">speed_px_s</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">travel</span><span class="si">}</span><span class="s2">)',format=yuv420p"</span>
-    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">ffmpeg_path</span><span class="p">(),</span> <span class="s2">"-y"</span><span class="p">,</span> <span class="s2">"-loglevel"</span><span class="p">,</span> <span class="s2">"error"</span><span class="p">,</span> <span class="s2">"-loop"</span><span class="p">,</span> <span class="s2">"1"</span><span class="p">,</span> <span class="s2">"-framerate"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">fps</span><span class="p">),</span> <span class="s2">"-i"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">src</span><span class="p">)]</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">ffmpeg_path</span><span class="p">(),</span>
+        <span class="s2">"-y"</span><span class="p">,</span>
+        <span class="s2">"-loglevel"</span><span class="p">,</span>
+        <span class="s2">"error"</span><span class="p">,</span>
+        <span class="s2">"-loop"</span><span class="p">,</span>
+        <span class="s2">"1"</span><span class="p">,</span>
+        <span class="s2">"-framerate"</span><span class="p">,</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">fps</span><span class="p">),</span>
+        <span class="s2">"-i"</span><span class="p">,</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">src</span><span class="p">),</span>
+    <span class="p">]</span>
     <span class="k">if</span> <span class="n">audio</span><span class="p">:</span>
         <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"-i"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">audio</span><span class="p">)]</span>
-    <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"-t"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">duration</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"-vf"</span><span class="p">,</span> <span class="n">vf</span><span class="p">,</span> <span class="o">*</span><span class="n">_ENCODE</span><span class="p">,</span> <span class="s2">"-crf"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">crf</span><span class="p">),</span> <span class="s2">"-preset"</span><span class="p">,</span> <span class="n">DEFAULT_PRESET</span><span class="p">]</span>
+    <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span>
+        <span class="s2">"-t"</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">duration</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+        <span class="s2">"-vf"</span><span class="p">,</span>
+        <span class="n">vf</span><span class="p">,</span>
+        <span class="o">*</span><span class="n">_ENCODE</span><span class="p">,</span>
+        <span class="s2">"-crf"</span><span class="p">,</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">crf</span><span class="p">),</span>
+        <span class="s2">"-preset"</span><span class="p">,</span>
+        <span class="n">DEFAULT_PRESET</span><span class="p">,</span>
+    <span class="p">]</span>
     <span class="k">if</span> <span class="n">audio</span><span class="p">:</span>
         <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"-c:a"</span><span class="p">,</span> <span class="s2">"aac"</span><span class="p">,</span> <span class="s2">"-shortest"</span><span class="p">]</span>
     <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">dst</span><span class="p">)]</span>
@@ -435,8 +521,20 @@
 <span class="w">    </span><span class="sd">"""Encode a lazy stream of RGB frames (the kinetic path: per-glyph reveals)."""</span>
     <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">_even</span><span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">_even</span><span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
     <span class="n">args</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">ffmpeg_path</span><span class="p">(),</span> <span class="s2">"-y"</span><span class="p">,</span> <span class="s2">"-loglevel"</span><span class="p">,</span> <span class="s2">"error"</span><span class="p">,</span>
-        <span class="s2">"-f"</span><span class="p">,</span> <span class="s2">"rawvideo"</span><span class="p">,</span> <span class="s2">"-pix_fmt"</span><span class="p">,</span> <span class="s2">"rgb24"</span><span class="p">,</span> <span class="s2">"-s"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">w</span><span class="si">}</span><span class="s2">x</span><span class="si">{</span><span class="n">h</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"-r"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">fps</span><span class="p">),</span> <span class="s2">"-i"</span><span class="p">,</span> <span class="s2">"-"</span><span class="p">,</span>
+        <span class="n">ffmpeg_path</span><span class="p">(),</span>
+        <span class="s2">"-y"</span><span class="p">,</span>
+        <span class="s2">"-loglevel"</span><span class="p">,</span>
+        <span class="s2">"error"</span><span class="p">,</span>
+        <span class="s2">"-f"</span><span class="p">,</span>
+        <span class="s2">"rawvideo"</span><span class="p">,</span>
+        <span class="s2">"-pix_fmt"</span><span class="p">,</span>
+        <span class="s2">"rgb24"</span><span class="p">,</span>
+        <span class="s2">"-s"</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">w</span><span class="si">}</span><span class="s2">x</span><span class="si">{</span><span class="n">h</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+        <span class="s2">"-r"</span><span class="p">,</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">fps</span><span class="p">),</span>
+        <span class="s2">"-i"</span><span class="p">,</span>
+        <span class="s2">"-"</span><span class="p">,</span>
     <span class="p">]</span>
     <span class="k">if</span> <span class="n">audio</span><span class="p">:</span>
         <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"-i"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">audio</span><span class="p">)]</span>
@@ -467,9 +565,21 @@
 <span class="w">    </span><span class="sd">"""``(width, height)`` of the first video stream, via ffprobe."""</span>
     <span class="n">ffprobe</span> <span class="o">=</span> <span class="n">shutil</span><span class="o">.</span><span class="n">which</span><span class="p">(</span><span class="s2">"ffprobe"</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">ffmpeg_path</span><span class="p">())</span><span class="o">.</span><span class="n">with_name</span><span class="p">(</span><span class="s2">"ffprobe"</span><span class="p">))</span>
     <span class="n">out</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
-        <span class="p">[</span><span class="n">ffprobe</span><span class="p">,</span> <span class="s2">"-v"</span><span class="p">,</span> <span class="s2">"error"</span><span class="p">,</span> <span class="s2">"-select_streams"</span><span class="p">,</span> <span class="s2">"v:0"</span><span class="p">,</span> <span class="s2">"-show_entries"</span><span class="p">,</span> <span class="s2">"stream=width,height"</span><span class="p">,</span>
-         <span class="s2">"-of"</span><span class="p">,</span> <span class="s2">"csv=p=0"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">video</span><span class="p">)],</span>
-        <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">[</span>
+            <span class="n">ffprobe</span><span class="p">,</span>
+            <span class="s2">"-v"</span><span class="p">,</span>
+            <span class="s2">"error"</span><span class="p">,</span>
+            <span class="s2">"-select_streams"</span><span class="p">,</span>
+            <span class="s2">"v:0"</span><span class="p">,</span>
+            <span class="s2">"-show_entries"</span><span class="p">,</span>
+            <span class="s2">"stream=width,height"</span><span class="p">,</span>
+            <span class="s2">"-of"</span><span class="p">,</span>
+            <span class="s2">"csv=p=0"</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">(</span><span class="n">video</span><span class="p">),</span>
+        <span class="p">],</span>
+        <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
     <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">)[:</span><span class="mi">2</span><span class="p">]</span>
     <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">w</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">h</span><span class="p">)</span></div>
@@ -488,7 +598,6 @@
     <span class="s2">"frames_to_video"</span><span class="p">,</span>
     <span class="s2">"probe_size"</span><span class="p">,</span>
 <span class="p">]</span>
-
 </pre></div>
 
            </div>

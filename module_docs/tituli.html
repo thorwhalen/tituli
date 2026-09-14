@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>tituli &mdash; tituli 0.0.1 documentation</title>
+  <title>tituli &mdash; tituli 0.0.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../_static/documentation_options.js?v=e3a6060d"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -59,6 +59,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#tituli.Credits"><code class="docutils literal notranslate"><span class="pre">Credits</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#tituli.Credits.from_dict"><code class="docutils literal notranslate"><span class="pre">Credits.from_dict()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#tituli.Credits.from_lines"><code class="docutils literal notranslate"><span class="pre">Credits.from_lines()</span></code></a></li>
 </ul>
 </li>
@@ -264,9 +265,24 @@ text-overlay body schema), <code class="docutils literal notranslate"><span clas
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">tituli.</span></span><span class="sig-name descname"><span class="pre">Credits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sections</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple[~tituli.credits.Section</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">...]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">closing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">...]</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tituli/credits.html#Credits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tituli.Credits" title="Link to this definition"></a></dt>
 <dd><p>The whole roll.</p>
 <dl class="py method">
+<dt class="sig sig-object py" id="tituli.Credits.from_dict">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="tituli/credits.html#tituli.credits.Credits" title="tituli.credits.Credits"><span class="pre">Credits</span></a></span></span><a class="reference internal" href="../_modules/tituli/credits.html#Credits.from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tituli.Credits.from_dict" title="Link to this definition"></a></dt>
+<dd><p>Build from <code class="docutils literal notranslate"><span class="pre">{&quot;title&quot;,</span> <span class="pre">&quot;sections&quot;:</span> <span class="pre">[{&quot;heading&quot;,</span> <span class="pre">&quot;entries&quot;,</span> <span class="pre">&quot;kind&quot;}],</span> <span class="pre">&quot;closing&quot;}</span></code>.</p>
+<p>The caller owns making the text presentable: tituli sets whatever it is
+given, so a raw manifest — camera filenames as roles, <code class="docutils literal notranslate"><span class="pre">&quot;Unknown</span>
+<span class="pre">authorUnknown</span> <span class="pre">author&quot;</span></code> from a concatenated field — comes out as a
+designed card of raw manifest strings. Map titles, artists and
+licences into readable roles and names first.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="tituli.Credits.from_lines">
 <span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_lines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lines</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">heading</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Credits'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="tituli/credits.html#tituli.credits.Credits" title="tituli.credits.Credits"><span class="pre">Credits</span></a></span></span><a class="reference internal" href="../_modules/tituli/credits.html#Credits.from_lines"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tituli.Credits.from_lines" title="Link to this definition"></a></dt>
 <dd><p>The plain-list case (what <code class="docutils literal notranslate"><span class="pre">braidio.video.credits_card</span></code> takes).</p>
+<p>Each line is set as prose, verbatim. Lines built from a fetch manifest
+(<code class="docutils literal notranslate"><span class="pre">&quot;&lt;file&gt;</span> <span class="pre">—</span> <span class="pre">&lt;author&gt;</span> <span class="pre">—</span> <span class="pre">&lt;licence&gt;&quot;</span></code>) read as a terminal dump however
+well they are typeset; prefer <a class="reference internal" href="#tituli.Credits.from_dict" title="tituli.Credits.from_dict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_dict()</span></code></a> with <code class="docutils literal notranslate"><span class="pre">{&quot;role&quot;,</span> <span class="pre">&quot;name&quot;}</span></code>
+entries (“Portrait of Eliza Hamilton”, “Ralph Earl, 1787 · public domain”).</p>
 </dd></dl>
 
 </dd></dl>

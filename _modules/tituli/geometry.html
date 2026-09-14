@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>tituli.geometry &mdash; tituli 0.0.1 documentation</title>
+  <title>tituli.geometry &mdash; tituli 0.0.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/documentation_options.js?v=e3a6060d"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -166,7 +166,12 @@
 <a class="viewcode-back" href="../../module_docs/tituli/geometry.html#tituli.Box.to_norm">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">to_norm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">height</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NormBox</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""The inverse of :meth:`from_norm`."""</span>
-        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x0</span> <span class="o">/</span> <span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y0</span> <span class="o">/</span> <span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">/</span> <span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">/</span> <span class="n">height</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">x0</span> <span class="o">/</span> <span class="n">width</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">y0</span> <span class="o">/</span> <span class="n">height</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">/</span> <span class="n">width</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">/</span> <span class="n">height</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
 
     <span class="nd">@property</span>
@@ -445,7 +450,9 @@
 <div class="viewcode-block" id="Path.circle">
 <a class="viewcode-back" href="../../module_docs/tituli/geometry.html#tituli.Path.circle">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">circle</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">center</span><span class="p">:</span> <span class="n">Point</span><span class="p">,</span> <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">start_deg</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="o">-</span><span class="mf">90.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Path"</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">circle</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">center</span><span class="p">:</span> <span class="n">Point</span><span class="p">,</span> <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">start_deg</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="o">-</span><span class="mf">90.0</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Path"</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""A full circle starting at the top by default, running clockwise."""</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">arc</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">start_deg</span><span class="p">,</span> <span class="n">start_deg</span> <span class="o">+</span> <span class="mf">360.0</span><span class="p">)</span></div>
 
@@ -583,7 +590,11 @@
         <span class="k">elif</span> <span class="n">c</span> <span class="o">==</span> <span class="s2">"S"</span><span class="p">:</span>
             <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">nums</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
             <span class="n">c2</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">rel</span><span class="p">((</span><span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">)),</span> <span class="n">rel</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
-            <span class="n">c1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">cur</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">last_ctrl</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">cur</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">last_ctrl</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">if</span> <span class="n">last_ctrl</span> <span class="k">else</span> <span class="n">cur</span>
+            <span class="n">c1</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">cur</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">last_ctrl</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">cur</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">last_ctrl</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">last_ctrl</span>
+                <span class="k">else</span> <span class="n">cur</span>
+            <span class="p">)</span>
             <span class="n">add_curve</span><span class="p">([</span><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span> <span class="n">end</span><span class="p">])</span>
             <span class="n">last_ctrl</span><span class="p">,</span> <span class="n">cur</span> <span class="o">=</span> <span class="n">c2</span><span class="p">,</span> <span class="n">end</span>
         <span class="k">elif</span> <span class="n">c</span> <span class="o">==</span> <span class="s2">"Q"</span><span class="p">:</span>
@@ -594,7 +605,11 @@
         <span class="k">elif</span> <span class="n">c</span> <span class="o">==</span> <span class="s2">"T"</span><span class="p">:</span>
             <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">nums</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
             <span class="n">end</span> <span class="o">=</span> <span class="n">rel</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
-            <span class="n">c1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">cur</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">last_ctrl</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">cur</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">last_ctrl</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">if</span> <span class="n">last_ctrl</span> <span class="k">else</span> <span class="n">cur</span>
+            <span class="n">c1</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">cur</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">last_ctrl</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">cur</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">last_ctrl</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">last_ctrl</span>
+                <span class="k">else</span> <span class="n">cur</span>
+            <span class="p">)</span>
             <span class="n">add_curve</span><span class="p">([</span><span class="n">c1</span><span class="p">,</span> <span class="n">end</span><span class="p">])</span>
             <span class="n">last_ctrl</span><span class="p">,</span> <span class="n">cur</span> <span class="o">=</span> <span class="n">c1</span><span class="p">,</span> <span class="n">end</span>
         <span class="k">elif</span> <span class="n">c</span> <span class="o">==</span> <span class="s2">"A"</span><span class="p">:</span>

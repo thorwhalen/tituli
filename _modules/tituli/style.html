@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>tituli.style &mdash; tituli 0.0.1 documentation</title>
+  <title>tituli.style &mdash; tituli 0.0.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/documentation_options.js?v=e3a6060d"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -120,7 +120,15 @@
 <span class="n">Case</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"as-is"</span><span class="p">,</span> <span class="s2">"upper"</span><span class="p">,</span> <span class="s2">"lower"</span><span class="p">,</span> <span class="s2">"title"</span><span class="p">]</span>
 
 <span class="c1"># Named weights so callers never write a magic number.</span>
-<span class="n">THIN</span><span class="p">,</span> <span class="n">LIGHT</span><span class="p">,</span> <span class="n">REGULAR</span><span class="p">,</span> <span class="n">MEDIUM</span><span class="p">,</span> <span class="n">SEMIBOLD</span><span class="p">,</span> <span class="n">BOLD</span><span class="p">,</span> <span class="n">BLACK_WEIGHT</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">700</span><span class="p">,</span> <span class="mi">900</span>
+<span class="n">THIN</span><span class="p">,</span> <span class="n">LIGHT</span><span class="p">,</span> <span class="n">REGULAR</span><span class="p">,</span> <span class="n">MEDIUM</span><span class="p">,</span> <span class="n">SEMIBOLD</span><span class="p">,</span> <span class="n">BOLD</span><span class="p">,</span> <span class="n">BLACK_WEIGHT</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="mi">100</span><span class="p">,</span>
+    <span class="mi">300</span><span class="p">,</span>
+    <span class="mi">400</span><span class="p">,</span>
+    <span class="mi">500</span><span class="p">,</span>
+    <span class="mi">600</span><span class="p">,</span>
+    <span class="mi">700</span><span class="p">,</span>
+    <span class="mi">900</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="n">_DEFAULT_LEADING</span> <span class="o">=</span> <span class="mf">1.2</span>
 <span class="n">_MIN_FONT_PX</span> <span class="o">=</span> <span class="mi">8</span>
@@ -199,13 +207,23 @@
 
 <span class="n">CAPTION</span> <span class="o">=</span> <span class="n">TextStyle</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">SEMIBOLD</span><span class="p">,</span> <span class="n">leading</span><span class="o">=</span><span class="mf">1.25</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">"left"</span><span class="p">)</span>
 <span class="n">NOTE_HEADLINE</span> <span class="o">=</span> <span class="n">TextStyle</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mf">0.055</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">BOLD</span><span class="p">,</span> <span class="n">leading</span><span class="o">=</span><span class="mf">1.15</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">"left"</span><span class="p">)</span>
-<span class="n">NOTE_LINE</span> <span class="o">=</span> <span class="n">TextStyle</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mf">0.03</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">REGULAR</span><span class="p">,</span> <span class="n">leading</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">"left"</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.92</span><span class="p">)</span>
-<span class="n">ATTRIBUTION</span> <span class="o">=</span> <span class="n">TextStyle</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">REGULAR</span><span class="p">,</span> <span class="n">tracking</span><span class="o">=</span><span class="mf">0.03</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">"left"</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.85</span><span class="p">)</span>
+<span class="n">NOTE_LINE</span> <span class="o">=</span> <span class="n">TextStyle</span><span class="p">(</span>
+    <span class="n">size</span><span class="o">=</span><span class="mf">0.03</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">REGULAR</span><span class="p">,</span> <span class="n">leading</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">"left"</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.92</span>
+<span class="p">)</span>
+<span class="n">ATTRIBUTION</span> <span class="o">=</span> <span class="n">TextStyle</span><span class="p">(</span>
+    <span class="n">size</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">REGULAR</span><span class="p">,</span> <span class="n">tracking</span><span class="o">=</span><span class="mf">0.03</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">"left"</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.85</span>
+<span class="p">)</span>
 <span class="n">LOWER_THIRD_NAME</span> <span class="o">=</span> <span class="n">TextStyle</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mf">0.042</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">BOLD</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">"left"</span><span class="p">)</span>
-<span class="n">LOWER_THIRD_ROLE</span> <span class="o">=</span> <span class="n">TextStyle</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mf">0.026</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">REGULAR</span><span class="p">,</span> <span class="n">tracking</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">"left"</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+<span class="n">LOWER_THIRD_ROLE</span> <span class="o">=</span> <span class="n">TextStyle</span><span class="p">(</span>
+    <span class="n">size</span><span class="o">=</span><span class="mf">0.026</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">REGULAR</span><span class="p">,</span> <span class="n">tracking</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">"left"</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.9</span>
+<span class="p">)</span>
 
-<span class="n">CREDITS_HEADING</span> <span class="o">=</span> <span class="n">TextStyle</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mf">0.024</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">MEDIUM</span><span class="p">,</span> <span class="n">tracking</span><span class="o">=</span><span class="mf">0.22</span><span class="p">,</span> <span class="n">case</span><span class="o">=</span><span class="s2">"upper"</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
-<span class="n">CREDITS_ROLE</span> <span class="o">=</span> <span class="n">TextStyle</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mf">0.026</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">REGULAR</span><span class="p">,</span> <span class="n">tracking</span><span class="o">=</span><span class="mf">0.03</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">"right"</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">CREDITS_HEADING</span> <span class="o">=</span> <span class="n">TextStyle</span><span class="p">(</span>
+    <span class="n">size</span><span class="o">=</span><span class="mf">0.024</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">MEDIUM</span><span class="p">,</span> <span class="n">tracking</span><span class="o">=</span><span class="mf">0.22</span><span class="p">,</span> <span class="n">case</span><span class="o">=</span><span class="s2">"upper"</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.75</span>
+<span class="p">)</span>
+<span class="n">CREDITS_ROLE</span> <span class="o">=</span> <span class="n">TextStyle</span><span class="p">(</span>
+    <span class="n">size</span><span class="o">=</span><span class="mf">0.026</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">REGULAR</span><span class="p">,</span> <span class="n">tracking</span><span class="o">=</span><span class="mf">0.03</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">"right"</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.8</span>
+<span class="p">)</span>
 <span class="n">CREDITS_NAME</span> <span class="o">=</span> <span class="n">TextStyle</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mf">0.032</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">SEMIBOLD</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">"left"</span><span class="p">)</span>
 <span class="n">CREDITS_TITLE</span> <span class="o">=</span> <span class="n">TextStyle</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">BOLD</span><span class="p">,</span> <span class="n">tracking</span><span class="o">=-</span><span class="mf">0.005</span><span class="p">)</span>
 <span class="n">CREDITS_LINE</span> <span class="o">=</span> <span class="n">TextStyle</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mf">0.03</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">REGULAR</span><span class="p">,</span> <span class="n">leading</span><span class="o">=</span><span class="mf">1.4</span><span class="p">)</span>
