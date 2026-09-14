@@ -52,11 +52,31 @@ Homepage = "https://github.com/thorwhalen/tituli"
 Repository = "https://github.com/thorwhalen/tituli"
 Documentation = "https://thorwhalen.github.io/tituli"
 
+# Packaging. The shipped skill lives at tituli/data/skills/<name>/ with a
+# relative symlink from .claude/skills/. hatchling walks the tree with
+# followlinks and remembers each REAL directory it has visited, so the
+# `.claude/skills/tituli` symlink (walked first, alphabetically) marks the
+# real `tituli/data/skills/tituli` as seen and it is skipped — even when
+# `.claude` is excluded, because exclusion filters files after the walk.
+# `skip-excluded-dirs` stops the walk entering `.claude` at all. Without both
+# lines the sdist carries the symlink's path and drops the canonical copy, CI
+# builds the wheel from the sdist, and no skill ships (verified on the
+# published 0.0.3 wheel). tests/test_packaging.py builds sdist -> wheel.
+[tool.hatch.build]
+skip-excluded-dirs = true
+
+[tool.hatch.build.targets.sdist]
+exclude = [".claude", ".github", "scrap"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["tituli"]
+
 [project.optional-dependencies]
 dev = [
     "pytest>=7.0",
     "pytest-cov>=4.0",
     "ruff>=0.1.0",
+    "build",
 ]
 docs = [
     "sphinx>=6.0",

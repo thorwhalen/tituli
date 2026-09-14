@@ -7,3 +7,7 @@ First release. Frame-knowledge ladder (`Frame`), `Layout`/`Run`/`Plate` model, P
 ## 2026-09-14 — 0.0.3
 
 Credits: a wrapped role/name row now advances by its measured height (was one line height — wrapped roles collided with the row beneath); cards are balanced to an even fill instead of greedy-then-nearly-empty; `from_lines`/`from_dict` document that the caller owns presentable text. Review fixes before this: `video.overlay` renders payload-only overlays or raises naming them; `Panel` → `Span`; `note()`; truncate-then-check suppression shared by `schedule_labels` and `resolve`.
+
+## 2026-09-14 — 0.0.4
+
+Packaging: the shipped skill now actually ships. hatchling's followlinks walk marked the real `tituli/data/skills/tituli` as already seen via the `.claude/skills` symlink, so the published 0.0.2/0.0.3 wheels had no `tituli/data/` at all. `skip-excluded-dirs` + excluding `.claude` from the sdist fixes it; `tests/test_packaging.py` builds sdist → wheel to keep it fixed.
