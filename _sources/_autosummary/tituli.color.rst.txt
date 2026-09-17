@@ -1,0 +1,20 @@
+tituli.color
+============
+
+.. automodule:: tituli.color
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      contrast_from_luminance
+      contrast_ratio
+      ink_for
+      mean_luminance
+      mix
+      needs_scrim
+      parse_color
+      relative_luminance
+      with_alpha
+   

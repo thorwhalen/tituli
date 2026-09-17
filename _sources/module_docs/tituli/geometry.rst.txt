@@ -1,4 +1,0 @@
-tituli.geometry
-===============
-.. automodule:: tituli.geometry
-   :members:

@@ -1,4 +1,0 @@
-tituli.compose
-==============
-.. automodule:: tituli.compose
-   :members:

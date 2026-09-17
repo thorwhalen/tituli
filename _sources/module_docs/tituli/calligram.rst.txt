@@ -1,4 +1,0 @@
-tituli.calligram
-================
-.. automodule:: tituli.calligram
-   :members:

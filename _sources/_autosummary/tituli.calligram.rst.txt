@@ -1,0 +1,15 @@
+tituli.calligram
+================
+
+.. automodule:: tituli.calligram
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      on_path
+      rain
+      in_shape
+      resolve_shape
+   

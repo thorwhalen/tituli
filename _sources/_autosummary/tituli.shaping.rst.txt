@@ -1,0 +1,18 @@
+tituli.shaping
+==============
+
+.. automodule:: tituli.shaping
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      shape
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      HarfBuzzEngine
+   

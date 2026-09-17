@@ -1,4 +1,0 @@
-tituli.schedule
-===============
-.. automodule:: tituli.schedule
-   :members:

@@ -1,4 +1,0 @@
-tituli
-======
-.. automodule:: tituli
-   :members:

@@ -1,0 +1,24 @@
+tituli.compose
+==============
+
+.. automodule:: tituli.compose
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      decide_ink
+      truncate
+      title_card
+      caption
+      lower_third
+      note
+      intertitle
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      InkDecision
+   

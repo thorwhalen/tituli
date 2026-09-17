@@ -1,0 +1,20 @@
+tituli.geometry
+===============
+
+.. automodule:: tituli.geometry
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      anchor_box
+      safe_area
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Box
+      Path
+   

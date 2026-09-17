@@ -1,0 +1,23 @@
+tituli.fonts
+============
+
+.. automodule:: tituli.fonts
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      families
+      find_font
+      font_dirs
+      font_index
+      resolve_face
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Face
+      FontFile
+   

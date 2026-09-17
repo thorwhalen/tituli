@@ -1,4 +1,0 @@
-tituli.fonts
-============
-.. automodule:: tituli.fonts
-   :members:

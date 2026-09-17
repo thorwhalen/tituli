@@ -1,4 +1,0 @@
-tituli.video
-============
-.. automodule:: tituli.video
-   :members:

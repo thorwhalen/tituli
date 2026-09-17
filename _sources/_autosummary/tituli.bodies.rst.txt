@@ -1,0 +1,13 @@
+tituli.bodies
+=============
+
+.. automodule:: tituli.bodies
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      register
+      body_for
+   

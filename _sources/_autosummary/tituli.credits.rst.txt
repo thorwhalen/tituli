@@ -1,0 +1,23 @@
+tituli.credits
+==============
+
+.. automodule:: tituli.credits
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      credits_crawl
+      credits_cards
+      credits_frame
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Entry
+      Section
+      Credits
+      CreditsStyle
+   

@@ -1,4 +1,0 @@
-tituli.tools
-============
-.. automodule:: tituli.tools
-   :members:

@@ -1,0 +1,12 @@
+tituli.style
+============
+
+.. automodule:: tituli.style
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      TextStyle
+   

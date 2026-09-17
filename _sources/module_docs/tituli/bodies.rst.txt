@@ -1,4 +1,0 @@
-tituli.bodies
-=============
-.. automodule:: tituli.bodies
-   :members:

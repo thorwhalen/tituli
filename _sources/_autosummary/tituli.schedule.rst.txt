@@ -1,0 +1,21 @@
+tituli.schedule
+===============
+
+.. automodule:: tituli.schedule
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      schedule_labels
+      resolve
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Label
+      Span
+      TimedOverlay
+   

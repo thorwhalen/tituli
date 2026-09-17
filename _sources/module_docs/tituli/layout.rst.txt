@@ -1,4 +1,0 @@
-tituli.layout
-=============
-.. automodule:: tituli.layout
-   :members:

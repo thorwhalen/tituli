@@ -1,0 +1,19 @@
+tituli.frame
+============
+
+.. automodule:: tituli.frame
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      cover_fit
+      reserved_zones
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Frame
+   

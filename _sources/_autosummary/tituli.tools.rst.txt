@@ -1,0 +1,18 @@
+tituli.tools
+============
+
+.. automodule:: tituli.tools
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      calligram
+      caption
+      credits
+      fonts
+      lower_third
+      overlay_video
+      title_card
+   

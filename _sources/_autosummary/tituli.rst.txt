@@ -1,0 +1,92 @@
+﻿tituli
+======
+
+.. automodule:: tituli
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      title_card
+      caption
+      lower_third
+      note
+      intertitle
+      fit
+      truncate
+      decide_ink
+      credits_cards
+      credits_crawl
+      credits_frame
+      on_path
+      rain
+      in_shape
+      resolve_shape
+      block
+      along_path
+      wrap
+      measure
+      fit_size
+      render
+      render_overlay
+      frames
+      make_engine
+      schedule_labels
+      resolve
+      families
+      find_font
+      resolve_face
+      contrast_ratio
+      ink_for
+      parse_color
+      safe_area
+      reserved_zones
+      cover_fit
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Frame
+      Layout
+      Run
+      Plate
+      Box
+      Path
+      TextStyle
+      Face
+      Credits
+      CreditsStyle
+      Entry
+      Section
+      Label
+      Span
+      TimedOverlay
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+   
+      TextDoesNotFit
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   bodies
+   calligram
+   color
+   compose
+   credits
+   fonts
+   frame
+   geometry
+   layout
+   schedule
+   shaping
+   style
+   tools
+   video

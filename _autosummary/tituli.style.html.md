@@ -1,0 +1,57 @@
+# tituli.style
+
+Text styles and the tasteful presets.
+
+A [`TextStyle`](#tituli.style.TextStyle) is resolution-independent: `size` is a \*\*fraction of the
+frame height\*\* (`0.04` is 43 px at 1080p, 86 px at 4K) so the same style reads
+identically at any resolution. It is resolved to pixels by [`TextStyle.face()`](#tituli.style.TextStyle.face)
+once a frame is known.
+
+The presets encode the style research (see `misc/docs/style.md`): sans-serif
+working set, >= 36 px-equivalent at 1080p for anything meant to be read,
+title-safe margins, tracked small caps for labels, generous leading.
+
+```pycon
+>>> s = TITLE.with_(size=0.1)
+>>> s.size, s.weight
+(0.1, 700)
+>>> s.px(1080)
+108
+```
+
+### Classes
+
+| [`TextStyle`](#tituli.style.TextStyle)([family, size, weight, italic, ...])   | How a run of text looks.   |
+|---------------------------------------------------------------------------------------------------|----------------------------|
+
+### *class* tituli.style.TextStyle(family=('Helvetica Neue', 'Inter', 'Helvetica', 'Avenir Next', 'Roboto', 'Univers', 'Liberation Sans', 'DejaVu Sans', 'Arial'), size=0.04, weight=400, italic=False, condensed=False, color=(255, 255, 255), tracking=0.0, leading=1.2, case='as-is', align='center', opacity=1.0)
+
+Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
+
+How a run of text looks. All fields keyword-only; build variants with `with_`.
+
+#### face(frame_height)
+
+The resolved, sized font for this style.
+
+* **Return type:**
+  [`Face`](tituli.fonts.html.md#tituli.fonts.Face)
+
+#### px(frame_height)
+
+Font size in pixels for a frame of that height.
+
+* **Return type:**
+  [`int`](https://docs.python.org/3/builtins/functions.html#int)
+
+#### with_(\*\*changes)
+
+A copy with some fields replaced.
+
+* **Return type:**
+  [`TextStyle`](#tituli.style.TextStyle)
+
+```pycon
+>>> TextStyle().with_(weight=700).weight
+700
+```

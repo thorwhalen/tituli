@@ -1,0 +1,27 @@
+tituli.layout
+=============
+
+.. automodule:: tituli.layout
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      along_path
+      block
+      fill_shape
+      fit_size
+      glyph_columns
+      measure
+      merge
+      wrap
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Layout
+      Plate
+      Run
+   

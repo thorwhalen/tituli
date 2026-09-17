@@ -1,4 +1,0 @@
-tituli.credits
-==============
-.. automodule:: tituli.credits
-   :members:
