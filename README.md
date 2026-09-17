@@ -72,6 +72,8 @@ All sizes are fractions of frame height, so a style reads the same at 720p and 4
 
 ### Scheduling: tituli owns it, or you do — no middle
 
+A **reserved zone binds every anchor**, not just `anchor="auto"`: with `delivery="youtube"` a block that would land in the subtitle band is slid the shortest way clear of it, keeping the anchor you named. `anchor="bottom-left"` therefore means "as low as the platform allows".
+
 `schedule_labels` derives labels from a cut with the three rules built in. A label suppressed by a heavier overlay is *truncated* to the time before it, kept if what remains is readable, and otherwise skipped **without being recorded as shown** — so the portrait a cold viewer most needs named still gets labelled the next time it appears. `resolve()` applies the identical rule to hand-built overlays (one overlay per slot at a time; equal weights colliding raise). `label_for` returns a `Label` or the explicit `UNLABELLED`; `None` raises — "no caption" is a stated choice, never the cheap default, because an unlabelled still beside a labelled one is an implicit claim.
 
 ## Seams
