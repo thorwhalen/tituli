@@ -1,6 +1,6 @@
 ---
 name: tituli
-description: Put tasteful text on video or stills with the `tituli` Python package — title cards, end credits from structured data, captions with a tiny source attribution that stay off the subject, lower thirds, editorial context notes, and calligrams / concrete poems (text along a circle, wave, SVG path, or falling like Apollinaire's "Il pleut"). Use when asked to "add credits", "add a title card", "caption this image", "label these stills", "put a name and role on screen", "add context cards", "overlay text on this video", "make a calligram", "text on a path", or when a film needs on-screen text that looks designed rather than debug-dumped. Owns placement (title-safe, subject-avoiding, YouTube subtitle band reserved), ink/scrim by contrast, wrapping and truncation, scheduling of captions against heavier cards, and ffmpeg compositing. Not for SRT subtitles (use `mixing`).
+description: Put tasteful text on video or stills with the `tituli` Python package — title cards, end credits from structured data, captions with a tiny source attribution that stay off the subject, lower thirds, editorial context notes, and calligrams / concrete poems (text along a circle, wave, SVG path, or falling like Apollinaire's "Il pleut"). Use when asked to "add credits", "add a title card", "caption this image", "label these stills", "put a name and role on screen", "add context cards", "overlay text on this video", "make a calligram", "text on a path", or when a film needs on-screen text that looks designed rather than debug-dumped. Owns placement (title-safe, subject-avoiding, YouTube subtitle band reserved), ink/scrim by contrast, wrapping and shrink-to-fit, scheduling of captions against heavier cards, and ffmpeg compositing. Not for SRT subtitles (use `mixing`).
 license: MIT
 metadata:
   audience: users
@@ -41,7 +41,7 @@ render(title_card("The Apple", "a concrete poem", kicker="Episode 3", frame=f), 
 # video: tituli.video.still(image, "title.mp4", duration=4)
 ```
 
-**Caption + tiny attribution on a still** — text is wrapped and truncated for you; attribution is small on purpose:
+**Caption + tiny attribution on a still** — text is wrapped and *shrunk to fit* for you (never cut); attribution is small on purpose:
 ```python
 from tituli import Frame, caption, render
 
@@ -98,6 +98,39 @@ Rules built in: label on first appearance, again only after 150 s, truncated (no
 ## CLI
 
 `python -m tituli title_card "Title" "sub" --background "#101014" --out t.png` · `python -m tituli caption still.jpg "text" "source" --out c.png` · `python -m tituli credits spec.json --mode crawl --out credits.mp4` · `python -m tituli calligram "text" --shape circle --out c.png` · `python -m tituli overlay_video film.mp4 overlays.json --out out.mp4` · `python -m tituli fonts Helvetica`.
+
+## Your words are set complete, or not at all
+
+`caption`, `lower_third` and `note` never truncate text you wrote. They shrink the
+type until it fits, and if that would take it below legibility
+(`MIN_LEGIBLE_SIZE`, 2.2 % of frame height) they raise `TextDoesNotFit` instead.
+**The raise is the feature** — it is handing you a decision only you can make.
+
+The trap it closes: type is sized as a fraction of frame **height** but has to fit
+the frame's **width**. On 1920×1080 a lower third at 0.042 em is 45 px tall against
+1920 px of width and fits easily; on **1080×1920 the same call is 81 px tall against
+1080 px of width** and overflows. A short that shipped with `1981 · Centr…` burnt in
+had been checked on landscape. Test portrait, or trust the raise.
+
+When you catch `TextDoesNotFit`, pick one — in this order:
+
+```python
+try:
+    lay = lower_third("1981 · Central Park, live", frame=f)
+except TextDoesNotFit:
+    lay = lower_third("1981 · Central Park", frame=f)   # 1. shorter wording
+    # 2. more lines:  caption(text, frame=f, max_lines=4)
+    # 3. wider box:   caption(text, frame=f, max_width=0.9)
+    # 4. don't show it — an absent label beats a false one
+```
+
+Shortening is a judgement call about meaning, which is why the package will not
+make it for you: `1981 · Centr…` tells the viewer the recording is from somewhere
+called Centr. `1981` tells them less and lies about nothing.
+
+The one exception is text whose length you genuinely do **not** control — a licence
+template that some upstream pasted into an artist field. Ask for the old behaviour
+by name: `caption(blob, frame=f, on_overflow="truncate")`. Never for words you wrote.
 
 ## Taste rules the defaults already follow
 

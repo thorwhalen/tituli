@@ -25,7 +25,7 @@ from tituli import (
     title_card,
     truncate,
 )
-from tituli.compose import SCRIM_DARK, decide_ink
+from tituli.compose import SCRIM_DARK, TextDoesNotFit, decide_ink
 from tituli.credits import CreditsStyle, Entry, Section
 from tituli.geometry import Box
 from tituli.style import CAPTION, TextStyle
@@ -89,13 +89,34 @@ def test_title_card_over_picture_avoids_subject_and_scrims_if_needed():
 
 
 def test_caption_truncates_uncontrolled_text():
+    """Truncation survives, but only where it is asked for by name.
+
+    The default is now ``on_overflow="fit"`` — shrink, and raise rather than
+    ship a cut label. This call site is the case truncation was written for:
+    a licence template that some upstream pasted into an artist field, whose
+    length nobody controls and whose tail nobody needs.
+    """
     f = Frame.blank((1920, 1080))
     blob = (
         "This is an artist field that some template filled with far too many words " * 6
     )
-    lay = caption(blob, "credit", frame=f, max_lines=2)
+    lay = caption(blob, "credit", frame=f, max_lines=2, on_overflow="truncate")
     body = [r.text for r in lay.runs if r.face.size == CAPTION.px(1080)]
     assert len(body) == 2 and body[-1].endswith("…")
+
+
+def test_caption_refuses_uncontrolled_text_by_default():
+    f = Frame.blank((1920, 1080))
+    blob = (
+        "This is an artist field that some template filled with far too many words " * 6
+    )
+    with pytest.raises(TextDoesNotFit):
+        caption(blob, "credit", frame=f, max_lines=2)
+
+
+def test_an_unknown_overflow_policy_is_rejected():
+    with pytest.raises(ValueError, match="on_overflow"):
+        caption("hi", frame=Frame.blank((1920, 1080)), on_overflow="chop")
 
 
 def test_truncate_always_fits():

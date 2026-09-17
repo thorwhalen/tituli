@@ -28,6 +28,9 @@ from tituli.compose import (
     lower_third,
     note,
     title_card,
+    MIN_LEGIBLE_SIZE,
+    TextDoesNotFit,
+    fit,
     truncate,
 )
 from tituli.credits import (
@@ -77,6 +80,9 @@ __all__ = [
     "lower_third",
     "note",
     "intertitle",
+    "MIN_LEGIBLE_SIZE",
+    "TextDoesNotFit",
+    "fit",
     "truncate",
     "decide_ink",
     "Credits",
