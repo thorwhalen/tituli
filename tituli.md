@@ -1,4 +1,4 @@
-> built 2026-09-17 15:27 UTC from a7c9247 (main) · tituli 0.0.5. Details: build_info.json
+> built 2026-09-17 15:35 UTC from 595e076 (main) · tituli 0.0.5. Details: build_info.json
 
 # index.html.md
 
@@ -77,6 +77,8 @@ Every use case fills a `Layout` — placed `Run`s (a string, a baseline origin, 
 All sizes are fractions of frame height, so a style reads the same at 720p and 4K. The presets (`tituli.style`) are one type ramp shared by overlays and the end card, so a film is one design.
 
 ### Scheduling: tituli owns it, or you do — no middle
+
+A **reserved zone binds every anchor**, not just `anchor="auto"`: with `delivery="youtube"` a block that would land in the subtitle band is slid the shortest way clear of it, keeping the anchor you named. `anchor="bottom-left"` therefore means “as low as the platform allows”.
 
 `schedule_labels` derives labels from a cut with the three rules built in. A label suppressed by a heavier overlay is *truncated* to the time before it, kept if what remains is readable, and otherwise skipped **without being recorded as shown** — so the portrait a cold viewer most needs named still gets labelled the next time it appears. `resolve()` applies the identical rule to hand-built overlays (one overlay per slot at a time; equal weights colliding raise). `label_for` returns a `Label` or the explicit `UNLABELLED`; `None` raises — “no caption” is a stated choice, never the cheap default, because an unlabelled still beside a labelled one is an implicit claim.
 
@@ -2798,7 +2800,7 @@ Transparent PNGs are flattened onto black.
 
 # About this build
 
-This documentation was built on **2026-09-17 15:27 UTC** from commit <a href="https://github.com/thorwhalen/tituli/commit/a7c9247e03ec392f2bb16f2225594316a49a585c"><code>a7c9247</code></a> on branch <code>main</code>, for **tituli 0.0.5** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-09-17 15:35 UTC** from commit <a href="https://github.com/thorwhalen/tituli/commit/595e07681f59a1cc24530e8eea2705df0504350b"><code>595e076</code></a> on branch <code>main</code>, for **tituli 0.0.5** (from <code>pyproject.toml</code>).
 
 #### NOTE
 Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
@@ -2807,9 +2809,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 |                     |                                                                                                                                                          |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/tituli/commit/a7c9247e03ec392f2bb16f2225594316a49a585c"><code>a7c9247e03ec392f2bb16f2225594316a49a585c</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/tituli/commit/595e07681f59a1cc24530e8eea2705df0504350b"><code>595e07681f59a1cc24530e8eea2705df0504350b</code></a> |
 | Branch              | <code>main</code>                                                                                                                                        |
-| Tags at this commit | <code>0.0.5</code>                                                                                                                                       |
+| Tags at this commit | none                                                                                                                                                     |
 | Working tree        | clean                                                                                                                                                    |
 | Remote              | <code>https://github.com/thorwhalen/tituli</code>                                                                                                        |
 
@@ -2818,9 +2820,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/tituli</code>                                                             |
-| Run          | <a href="https://github.com/thorwhalen/tituli/actions/runs/35240016938">35240016938</a>    |
+| Run          | <a href="https://github.com/thorwhalen/tituli/actions/runs/35241004796">35241004796</a>    |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>be1fde7613a0ceaa10bdceb4148bdf0d67b8dc92</code> (in the history of the built commit) |
+| Event commit | <code>595e07681f59a1cc24530e8eea2705df0504350b</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -2851,7 +2853,7 @@ Latest release: <a href="https://pypi.org/project/tituli/0.0.5/">0.0.5</a>, the 
 
 ```bash
 git clone https://github.com/thorwhalen/tituli && cd tituli
-git checkout a7c9247e03ec392f2bb16f2225594316a49a585c
+git checkout 595e07681f59a1cc24530e8eea2705df0504350b
 pip install "epythet==0.2.12"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

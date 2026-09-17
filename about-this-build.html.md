@@ -2,7 +2,7 @@
 
 # About this build
 
-This documentation was built on **2026-09-17 15:27 UTC** from commit <a href="https://github.com/thorwhalen/tituli/commit/a7c9247e03ec392f2bb16f2225594316a49a585c"><code>a7c9247</code></a> on branch <code>main</code>, for **tituli 0.0.5** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-09-17 15:35 UTC** from commit <a href="https://github.com/thorwhalen/tituli/commit/595e07681f59a1cc24530e8eea2705df0504350b"><code>595e076</code></a> on branch <code>main</code>, for **tituli 0.0.5** (from <code>pyproject.toml</code>).
 
 #### NOTE
 Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
@@ -11,9 +11,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 |                     |                                                                                                                                                          |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/tituli/commit/a7c9247e03ec392f2bb16f2225594316a49a585c"><code>a7c9247e03ec392f2bb16f2225594316a49a585c</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/tituli/commit/595e07681f59a1cc24530e8eea2705df0504350b"><code>595e07681f59a1cc24530e8eea2705df0504350b</code></a> |
 | Branch              | <code>main</code>                                                                                                                                        |
-| Tags at this commit | <code>0.0.5</code>                                                                                                                                       |
+| Tags at this commit | none                                                                                                                                                     |
 | Working tree        | clean                                                                                                                                                    |
 | Remote              | <code>https://github.com/thorwhalen/tituli</code>                                                                                                        |
 
@@ -22,9 +22,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/tituli</code>                                                             |
-| Run          | <a href="https://github.com/thorwhalen/tituli/actions/runs/35240016938">35240016938</a>    |
+| Run          | <a href="https://github.com/thorwhalen/tituli/actions/runs/35241004796">35241004796</a>    |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>be1fde7613a0ceaa10bdceb4148bdf0d67b8dc92</code> (in the history of the built commit) |
+| Event commit | <code>595e07681f59a1cc24530e8eea2705df0504350b</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -55,7 +55,7 @@ Latest release: <a href="https://pypi.org/project/tituli/0.0.5/">0.0.5</a>, the 
 
 ```bash
 git clone https://github.com/thorwhalen/tituli && cd tituli
-git checkout a7c9247e03ec392f2bb16f2225594316a49a585c
+git checkout 595e07681f59a1cc24530e8eea2705df0504350b
 pip install "epythet==0.2.12"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
