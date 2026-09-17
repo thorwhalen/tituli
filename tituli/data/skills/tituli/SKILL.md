@@ -118,7 +118,7 @@ When you catch `TextDoesNotFit`, pick one — in this order:
 try:
     lay = lower_third("1981 · Central Park, live", frame=f)
 except TextDoesNotFit:
-    lay = lower_third("1981 · Central Park", frame=f)   # 1. shorter wording
+    lay = lower_third("1981 · Central Park", frame=f)  # 1. shorter wording
     # 2. more lines:  caption(text, frame=f, max_lines=4)
     # 3. wider box:   caption(text, frame=f, max_width=0.9)
     # 4. don't show it — an absent label beats a false one
