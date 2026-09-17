@@ -320,13 +320,15 @@ class Frame:
                 f"unknown anchor(s) {unknown}; choose from {sorted(ANCHORS)}"
             )
         candidates = [(a, anchor_box(region, size, a)) for a in order]
-        clear = [
-            c
-            for c in candidates
-            if not any(c[1].overlap_fraction(r) > 0 for r in self.reserved)
-        ]
+        clear = [c for c in candidates if not self._reserved_overlap(c[1])]
         if clear:
             candidates = clear
+        else:
+            # Every candidate lands in a reserved zone — which happens whenever
+            # the caller named a single anchor, since there is then nothing to
+            # choose between. Move each one out instead of placing it inside: a
+            # reserved zone that only binds on ``anchor="auto"`` does not bind.
+            candidates = [(a, self._clear_of_reserved(b)) for a, b in candidates]
         best = min(
             enumerate(candidates),
             key=lambda ic: (
@@ -336,6 +338,47 @@ class Frame:
             ),
         )
         return best[1]
+
+    def _reserved_overlap(self, box: Box) -> bool:
+        return any(box.overlap_fraction(r) > 0 for r in self.reserved)
+
+    def _clear_of_reserved(self, box: Box) -> Box:
+        """``box`` slid the shortest way out of every reserved zone.
+
+        Reserved zones are the platform's furniture — YouTube's subtitle track
+        and control bar along the bottom, a Short's title and action rail. They
+        are edge bands, so the way out is a translation along one axis, and the
+        cheapest one wins. If the block is too big to clear (a band taller than
+        the frame's free height), it is left where it was: shrinking or dropping
+        it is the caller's call, not a silent decision made here.
+        """
+        for _ in range(len(self.reserved) + 1):
+            hit = next((r for r in self.reserved if box.overlap_fraction(r) > 0), None)
+            if hit is None:
+                return box
+            moves = [
+                (hit.y0 - box.y1, 0.0, -1.0),  # up, above the band
+                (box.y0 - hit.y1, 0.0, 1.0),  # down, below it
+                (hit.x0 - box.x1, -1.0, 0.0),  # left
+                (box.x0 - hit.x1, 1.0, 0.0),  # right
+            ]
+            # `gap` is negative while they overlap; the smallest push is the
+            # least negative, and a move that would leave the frame is no move.
+            options = []
+            for gap, dx, dy in moves:
+                shift = -gap
+                moved = box.translate(dx * shift, dy * shift)
+                if (
+                    moved.x0 >= -0.5
+                    and moved.y0 >= -0.5
+                    and moved.x1 <= self.width + 0.5
+                    and moved.y1 <= self.height + 0.5
+                ):
+                    options.append((shift, moved))
+            if not options:
+                return box
+            box = min(options, key=lambda sm: sm[0])[1]
+        return box
 
     def _distance_from_subject(self, box: Box) -> float:
         """Tie-break for coarse avoid boxes: prefer the candidate farthest from their centres."""

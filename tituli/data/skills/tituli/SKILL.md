@@ -132,6 +132,19 @@ The one exception is text whose length you genuinely do **not** control — a li
 template that some upstream pasted into an artist field. Ask for the old behaviour
 by name: `caption(blob, frame=f, on_overflow="truncate")`. Never for words you wrote.
 
+## The bottom of the frame is not yours
+
+`Frame.with_delivery("youtube")` reserves the bottom ~22% — the subtitle track,
+the control bar, and on a vertical Short the title, channel line and action rail.
+That reservation now binds **whatever anchor you named**: a block that would land
+in the band is slid the shortest way out of it, keeping the anchor you asked for.
+Before this it only bound on `anchor="auto"`, so every `lower_third` (which names
+`"bottom-left"`) sat at 95% of frame height, under YouTube's own furniture.
+
+So `anchor="bottom-left"` means "as low as the platform allows", not "at the
+bottom edge". If you genuinely want the last pixel row, build the frame without a
+delivery target.
+
 ## Taste rules the defaults already follow
 
 Title-safe 90 %; WCAG 4.5:1 target; sans working set (Helvetica Neue → Inter → … → DejaVu Sans) with Pillow's Aileron as the last fallback; ≥ 36 px-equivalent at 1080p for anything meant to be read; attribution ~22 px and 85 % opacity; credits hold ≥ 3 s / crawl ≈ 97 px/s; reveals 0.4 s; corner-falloff scrim cut to the text block, only when contrast or busyness demands it. Sizes are fractions of frame height, so the same call is right at 720p and 4K. Don't override these unless asked.
