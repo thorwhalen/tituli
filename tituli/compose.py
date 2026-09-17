@@ -161,6 +161,137 @@ def truncate(
     return "\n".join(kept)
 
 
+#: Below this the type is present but not readable at viewing distance — a
+#: caption at 2% of frame height on a phone is a grey smudge. Expressed, like
+#: every other size here, as a fraction of frame height.
+MIN_LEGIBLE_SIZE = 0.022
+
+
+#: What to do when text will not fit the box it was given.
+#:
+#: ``"fit"`` shrinks the type until the words fit and raises
+#: :class:`TextDoesNotFit` if that would make them unreadable — the right
+#: default, because the caller is the only one who can choose between shorter
+#: wording, more lines and no overlay at all.
+#:
+#: ``"truncate"`` cuts with an ellipsis. Opt into it only for text whose length
+#: you genuinely do not control — a licence template pasted into an artist
+#: field — and never for words you wrote, where a cut label is a *wrong* label
+#: rather than a short one.
+OVERFLOW_POLICIES = ("fit", "truncate")
+
+
+def _set_within(
+    text: str,
+    style: TextStyle,
+    frame_height: float,
+    *,
+    max_width: float,
+    max_lines: int,
+    on_overflow: str,
+) -> tuple[str, TextStyle]:
+    """Apply an :data:`OVERFLOW_POLICIES` policy, returning (text, style)."""
+    if on_overflow not in OVERFLOW_POLICIES:
+        raise ValueError(
+            f"on_overflow must be one of {OVERFLOW_POLICIES}, got {on_overflow!r}"
+        )
+    if on_overflow == "truncate":
+        return (
+            truncate(
+                text, style, frame_height, max_width=max_width, max_lines=max_lines
+            ),
+            style,
+        )
+    return fit(text, style, frame_height, max_width=max_width, max_lines=max_lines)
+
+
+class TextDoesNotFit(ValueError):
+    """The text cannot be set completely without going below legibility.
+
+    Raised rather than truncating, because the caller is the only one who can
+    decide what to do: shorten the wording ("1981 · Central Park, live" ->
+    "1981 · Central Park", or "1981"), give it more lines, widen the box, or
+    drop the overlay. Silently ellipsising picks the one option nobody wants —
+    a label that is *wrong* rather than absent.
+
+    Attributes:
+        text: what could not be set.
+        tried_size: the smallest size attempted, as a fraction of frame height.
+        lines_at_min: how many lines it still needed there.
+        max_lines: how many were allowed.
+    """
+
+    def __init__(self, text, tried_size, lines_at_min, max_lines):
+        self.text = text
+        self.tried_size = tried_size
+        self.lines_at_min = lines_at_min
+        self.max_lines = max_lines
+        shown = text if len(text) <= 60 else text[:57] + "..."
+        super().__init__(
+            f"cannot set {shown!r} in {max_lines} line(s) without going below "
+            f"the legible minimum ({MIN_LEGIBLE_SIZE:g} of frame height): at "
+            f"{tried_size:g} it still needs {lines_at_min}. Shorten the text, "
+            f"allow more lines, widen max_width, or do not show it."
+        )
+
+
+def fit(
+    text: str,
+    style: TextStyle,
+    frame_height: float,
+    *,
+    max_width: float,
+    max_lines: int,
+    min_size: float = MIN_LEGIBLE_SIZE,
+) -> tuple[str, TextStyle]:
+    """Wrap ``text`` complete, shrinking the type until it fits — never cutting it.
+
+    Returns the wrapped text and the (possibly smaller) style to set it in.
+
+    **Why this exists rather than :func:`truncate`.** Type here is sized as a
+    fraction of frame *height* but has to fit the frame's *width*. On a portrait
+    frame those pull apart hard: a lower third at 0.042 of height is 81px tall on
+    a 1080x1920 frame and has to fit inside ~1080px of width, so a perfectly
+    ordinary line overflows. Truncating then produced a shipped caption reading
+    ``1981 · Centr…`` — which is not a shortened label, it is a wrong one.
+
+    Shrinking is tried first because it is invisible to the viewer and costs
+    nothing. Only when shrinking would make the text unreadable does this raise
+    :class:`TextDoesNotFit`, handing the decision back to whoever wrote the words.
+
+    Args:
+        text: the words, set in full or not at all.
+        style: the style to start from; its ``size`` is the ceiling.
+        frame_height: pixels, for resolving em sizes.
+        max_width: pixels available.
+        max_lines: how many lines the design allows.
+        min_size: legibility floor, as a fraction of frame height.
+
+    Raises:
+        TextDoesNotFit: when even ``min_size`` needs more than ``max_lines``.
+
+    Examples:
+        >>> from tituli.style import TextStyle
+        >>> st = TextStyle(size=0.05)
+        >>> body, used = fit("short", st, 1000.0, max_width=900, max_lines=1)
+        >>> body, used.size == st.size
+        ('short', True)
+    """
+    size = style.size
+    last_lines = 1
+    while True:
+        st = style.with_(size=size)
+        lines = wrap(text, st, frame_height, max_width=max_width)
+        last_lines = len(lines)
+        if last_lines <= max_lines:
+            return "\n".join(lines), st
+        if size <= min_size:
+            raise TextDoesNotFit(text, size, last_lines, max_lines)
+        # 6% steps: fine enough that the shrink is imperceptible, coarse enough
+        # to terminate quickly.
+        size = max(min_size, size * 0.94)
+
+
 def _stack(
     parts: Sequence[tuple[str, TextStyle]],
     frame: Frame,
@@ -243,24 +374,40 @@ def caption(
     ink: RGBA | None = None,
     scrim: bool | None = None,
     accent: bool = True,
+    on_overflow: str = "fit",
 ) -> Layout:
     """A museum label over a picture: what is on screen, plus a tiny credit line.
 
-    ``text`` is wrapped to ``max_width`` of the safe box and hard-truncated at
-    ``max_lines``; ``attribution`` is set small and slightly transparent — present
-    enough to credit, small enough not to compete. Placement avoids the
+    ``text`` is wrapped to ``max_width`` of the safe box and **shrunk to fit**
+    within ``max_lines`` rather than cut; ``attribution`` is set small and
+    slightly transparent — present enough to credit, small enough not to
+    compete. If the words cannot be set legibly this raises
+    :class:`TextDoesNotFit`; pass ``on_overflow="truncate"`` for text whose
+    length you do not control (see :data:`OVERFLOW_POLICIES`). Placement avoids the
     frame's ``avoid`` boxes and its delivery target's reserved zones; the
     scrim is a 2-D corner falloff cut to the measured block.
     """
     safe = frame.safe
     max_w = safe.width * max_width
-    body = truncate(text, style, frame.height, max_width=max_w, max_lines=max_lines)
-    credit = (
-        truncate(
-            attribution, attribution_style, frame.height, max_width=max_w, max_lines=1
+    body, style = _set_within(
+        text,
+        style,
+        frame.height,
+        max_width=max_w,
+        max_lines=max_lines,
+        on_overflow=on_overflow,
+    )
+    credit, attribution_style = (
+        _set_within(
+            attribution,
+            attribution_style,
+            frame.height,
+            max_width=max_w,
+            max_lines=2,
+            on_overflow=on_overflow,
         )
         if attribution
-        else ""
+        else ("", attribution_style)
     )
     # Try the layout at each candidate anchor's alignment; alignment follows the side.
     lay = _stack(
@@ -312,18 +459,38 @@ def lower_third(
     role_style: TextStyle = LOWER_THIRD_ROLE,
     ink: RGBA | None = None,
     scrim: bool | None = None,
+    on_overflow: str = "fit",
 ) -> Layout:
     """Who is speaking: a name and a role, left-anchored, scrimmed if needed.
 
     Respects the frame's delivery zones — with ``delivery="youtube"`` the block
     moves above the subtitle band rather than into it.
+
+    The name and role are **shrunk to fit** rather than cut, and
+    :class:`TextDoesNotFit` is raised if they cannot be set legibly. A lower
+    third reading ``1981 · Centr…`` once shipped in a finished film; that is not
+    a shortened label but a false one.
     """
     max_w = frame.safe.width * _LOWER_THIRD_MAX_WIDTH
-    name_t = truncate(name, name_style, frame.height, max_width=max_w, max_lines=1)
-    role_t = (
-        truncate(role, role_style, frame.height, max_width=max_w, max_lines=1)
+    name_t, name_style = _set_within(
+        name,
+        name_style,
+        frame.height,
+        max_width=max_w,
+        max_lines=1,
+        on_overflow=on_overflow,
+    )
+    role_t, role_style = (
+        _set_within(
+            role,
+            role_style,
+            frame.height,
+            max_width=max_w,
+            max_lines=1,
+            on_overflow=on_overflow,
+        )
         if role
-        else ""
+        else ("", role_style)
     )
     lay = _stack(
         [(name_t, name_style), (role_t, role_style)],
@@ -359,28 +526,41 @@ def note(
     ink: RGBA | None = None,
     scrim: bool | None = None,
     accent: bool = True,
+    on_overflow: str = "fit",
 ) -> Layout:
     """An editorial context card: an optional headline over equal-weight lines.
 
     The block for what the audio assumes and a cold viewer does not have
     ("what *Hamilton* is", "Philip died at 19"). Heavier than a caption —
     schedule it with a higher ``weight`` so the two never share a corner. Each
-    line wraps to ``max_width`` of the safe box and is truncated at
-    ``_NOTE_MAX_LINES`` rows; lines are laid out as written, so keep them short.
+    line wraps to ``max_width`` of the safe box, shrinking to fit within
+    ``_NOTE_MAX_LINES`` rows rather than being cut; every line shares the
+    smallest size any of them needed, so the block reads as one block.
+    Raises :class:`TextDoesNotFit` if a line cannot be set legibly.
     """
     if isinstance(lines, str):
         lines = [l for l in lines.split("\n") if l.strip()]
     max_w = frame.safe.width * max_width
-    body = [
-        truncate(
-            l, line_style, frame.height, max_width=max_w, max_lines=_NOTE_MAX_LINES
+
+    # One shared size for every line, so a long line does not end up set smaller
+    # than its neighbours — the block has to read as one block.
+    def _set(text, style, max_lines):
+        return _set_within(
+            text,
+            style,
+            frame.height,
+            max_width=max_w,
+            max_lines=max_lines,
+            on_overflow=on_overflow,
         )
-        for l in lines
-    ]
-    head = (
-        truncate(headline, headline_style, frame.height, max_width=max_w, max_lines=2)
-        if headline
-        else ""
+
+    fitted = [_set(l, line_style, _NOTE_MAX_LINES) for l in lines]
+    if fitted:
+        line_style = min((st for _, st in fitted), key=lambda st: st.size)
+        fitted = [_set(l, line_style, _NOTE_MAX_LINES) for l in lines]
+    body = [t for t, _ in fitted]
+    head, headline_style = (
+        _set(headline, headline_style, 2) if headline else ("", headline_style)
     )
     parts = [(head, headline_style)] + [(b, line_style) for b in body]
     align = "left"

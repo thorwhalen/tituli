@@ -50,7 +50,7 @@ Every use case fills a `Layout` — placed `Run`s (a string, a baseline origin, 
 
 ### Pipeline order (it matters)
 
-**shape/wrap → measure → decide ink → cut the scrim to the measured block → compose.** Text whose length you don't control (a licence template pasted into an artist field) is wrapped to a width fraction and hard-truncated with an ellipsis *inside the package*. And never burn text into stills that a camera move will pan and zoom — composite onto the finished motion video (`tituli.video.overlay`).
+**shape/wrap → fit → measure → decide ink → cut the scrim to the measured block → compose.** Your words are set complete or not at all: `caption`, `lower_third` and `note` shrink the type until it fits and raise `TextDoesNotFit` rather than ship a cut label — because `1981 · Centr…` is not a shortened label, it is a wrong one, and only the caller can choose between shorter wording, more lines and no overlay. Text whose length you genuinely don't control (a licence template pasted into an artist field) still truncates, asked for by name: `on_overflow="truncate"`. And never burn text into stills that a camera move will pan and zoom — composite onto the finished motion video (`tituli.video.overlay`).
 
 ## What you get
 
