@@ -23,6 +23,8 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <link href="tituli.fonts.html.md" rel="alternate" type="text/markdown"/>
 <link href="../llms.txt" rel="describedby" type="text/markdown"/>
+<link href="tituli.fonts.html.md" rel="alternate" type="text/markdown"/>
+<link href="llms.txt" rel="describedby"/>
 <title>tituli.fonts | tituli</title>
 <meta content="tituli.fonts | tituli" property="og:title"/>
 <meta content="tituli.fonts | tituli" name="twitter:title"/>
@@ -90,6 +92,7 @@
 <li class="toctree-l3"><a class="reference internal" href="tituli.frame.html">tituli.frame</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tituli.geometry.html">tituli.geometry</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tituli.layout.html">tituli.layout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tituli.outlines.html">tituli.outlines</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tituli.schedule.html">tituli.schedule</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tituli.shaping.html">tituli.shaping</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tituli.style.html">tituli.style</a></li>
@@ -140,9 +143,23 @@ runner; it just looks better on a machine with Helvetica Neue.</p>
 </span><span id="line-5"><span class="go">True</span>
 </span></code></pre></div>
 </div>
+<p class="rubric">Module Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tituli.fonts.EMBEDDED" title="tituli.fonts.EMBEDDED"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EMBEDDED</span></code></a></p></td>
+<td><p>A family request that means <em>Pillow's embedded face, and never the system</em>.</p></td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Functions</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tituli.fonts.face_bytes" title="tituli.fonts.face_bytes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_bytes</span></code></a>(face)</p></td>
+<td><p>The bytes of the font file behind <code class="docutils literal notranslate"><span class="pre">face</span></code> — the embedded face's too.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tituli.fonts.face_digest" title="tituli.fonts.face_digest"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_digest</span></code></a>(face)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">sha256</span></code> of <a class="reference internal" href="#tituli.fonts.face_bytes" title="tituli.fonts.face_bytes"><code class="xref py py-func docutils literal notranslate"><span class="pre">face_bytes()</span></code></a> — what makes two faces the same face.</p></td>
+</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tituli.fonts.families" title="tituli.fonts.families"><code class="xref py py-obj docutils literal notranslate"><span class="pre">families</span></code></a>()</p></td>
 <td><p>Sorted family names installed on this machine.</p></td>
 </tr>
@@ -171,6 +188,18 @@ runner; it just looks better on a machine with Helvetica Neue.</p>
 </tr>
 </tbody>
 </table>
+<dl class="py data">
+<dt class="sig sig-object py" id="tituli.fonts.EMBEDDED">
+<span class="sig-prename descclassname"><span class="pre">tituli.fonts.</span></span><span class="sig-name descname"><span class="pre">EMBEDDED</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'tituli:embedded'</span></span><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#tituli.fonts.EMBEDDED" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#tituli.fonts.EMBEDDED'">¶</a></dt>
+<dd><p>A family request that means <em>Pillow’s embedded face, and never the system</em>.
+In a preference list it is a stop: the names before it are looked up as
+usual, and if none is installed the embedded face is used without scanning
+further. Alone (or first) it never scans the system at all, so the result is
+the same bytes on every machine with the same Pillow — the deterministic
+choice for a caller whose output must not depend on the installed fonts.
+(Asking for <code class="docutils literal notranslate"><span class="pre">"Aileron"</span></code> by name is not the same thing: a machine that has
+Aileron installed would resolve to <em>that</em> file.)</p>
+</dd></dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="tituli.fonts.Face">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">tituli.fonts.</span></span><span class="sig-name descname"><span class="pre">Face</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">family</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tituli/fonts.html#Face"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#tituli.fonts.Face" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#tituli.fonts.Face'">¶</a></dt>
@@ -243,6 +272,34 @@ runner; it just looks better on a machine with Helvetica Neue.</p>
 </dd></dl>
 </dd></dl>
 <dl class="py function">
+<dt class="sig sig-object py" id="tituli.fonts.face_bytes">
+<span class="sig-prename descclassname"><span class="pre">tituli.fonts.</span></span><span class="sig-name descname"><span class="pre">face_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">face</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tituli/fonts.html#face_bytes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#tituli.fonts.face_bytes" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#tituli.fonts.face_bytes'">¶</a></dt>
+<dd><p>The bytes of the font file behind <code class="docutils literal notranslate"><span class="pre">face</span></code> — the embedded face’s too.</p>
+<p>Pillow keeps the embedded face’s bytes on the font object it builds
+(<code class="docutils literal notranslate"><span class="pre">font_bytes</span></code>), so the fallback has an identity like any file does.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#bytes" rel="nofollow noopener" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">face_bytes</span><span class="p">(</span><span class="n">resolve_face</span><span class="p">(</span><span class="n">EMBEDDED</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">))[:</span><span class="mi">4</span><span class="p">]</span> <span class="ow">in</span> <span class="p">(</span><span class="sa">b</span><span class="s2">"</span><span class="se">\x00\x01\x00\x00</span><span class="s2">"</span><span class="p">,</span> <span class="sa">b</span><span class="s2">"true"</span><span class="p">,</span> <span class="sa">b</span><span class="s2">"OTTO"</span><span class="p">)</span>
+</span><span id="line-2"><span class="go">True</span>
+</span></code></pre></div>
+</div>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="tituli.fonts.face_digest">
+<span class="sig-prename descclassname"><span class="pre">tituli.fonts.</span></span><span class="sig-name descname"><span class="pre">face_digest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">face</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tituli/fonts.html#face_digest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#tituli.fonts.face_digest" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#tituli.fonts.face_digest'">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">sha256</span></code> of <a class="reference internal" href="#tituli.fonts.face_bytes" title="tituli.fonts.face_bytes"><code class="xref py py-func docutils literal notranslate"><span class="pre">face_bytes()</span></code></a> — what makes two faces the same face.</p>
+<p>A family name is not an identity (two machines can install different files
+under one name, and the embedded face can change with Pillow); the bytes are.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" rel="nofollow noopener" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
 <dt class="sig sig-object py" id="tituli.fonts.families">
 <span class="sig-prename descclassname"><span class="pre">tituli.fonts.</span></span><span class="sig-name descname"><span class="pre">families</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tituli/fonts.html#families"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#tituli.fonts.families" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#tituli.fonts.families'">¶</a></dt>
 <dd><p>Sorted family names installed on this machine.</p>
@@ -300,17 +357,25 @@ separated), which is also how a project supplies its own licensed fonts.</p>
 <span class="sig-prename descclassname"><span class="pre">tituli.fonts.</span></span><span class="sig-name descname"><span class="pre">resolve_face</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">family</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">('Helvetica</span> <span class="pre">Neue',</span> <span class="pre">'Inter',</span> <span class="pre">'Helvetica',</span> <span class="pre">'Avenir</span> <span class="pre">Next',</span> <span class="pre">'Roboto',</span> <span class="pre">'Univers',</span> <span class="pre">'Liberation</span> <span class="pre">Sans',</span> <span class="pre">'DejaVu</span> <span class="pre">Sans',</span> <span class="pre">'Arial')</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">400</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">italic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">condensed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tituli/fonts.html#resolve_face"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#tituli.fonts.resolve_face" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#tituli.fonts.resolve_face'">¶</a></dt>
 <dd><p>Resolve a typeface request to a sized <code class="docutils literal notranslate"><span class="pre">Face</span></code>; never fails.</p>
 <p>Falls back to Pillow’s embedded Aileron when nothing in the list is installed,
-so a render on a fontless CI box still produces a real (if plainer) result.</p>
+so a render on a fontless CI box still produces a real (if plainer) result.
+<a class="reference internal" href="#tituli.fonts.EMBEDDED" title="tituli.fonts.EMBEDDED"><code class="xref py py-data docutils literal notranslate"><span class="pre">EMBEDDED</span></code></a> in the list stops the search there (see its comment):</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tituli.fonts.Face" title="tituli.fonts.Face"><code class="xref py py-class docutils literal notranslate"><span class="pre">Face</span></code></a></span></p>
 </dd>
 </dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">resolve_face</span><span class="p">(</span><span class="n">EMBEDDED</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span>
+</span><span id="line-2"><span class="go">True</span>
+</span><span id="line-3"><span class="gp">&gt;&gt;&gt; </span><span class="n">resolve_face</span><span class="p">([</span><span class="s2">"definitely-not-installed-xyz"</span><span class="p">,</span> <span class="n">EMBEDDED</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">family</span>
+</span><span id="line-4"><span class="go">'Aileron'</span>
+</span></code></pre></div>
+</div>
 </dd></dl>
 </section>
 </div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
 <div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] h-full overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
 <ul>
+<li><a :data-current="activeSection === '#tituli.fonts.EMBEDDED'" class="reference internal" href="#tituli.fonts.EMBEDDED"><code class="docutils literal notranslate"><span class="pre">EMBEDDED</span></code></a></li>
 <li><a :data-current="activeSection === '#tituli.fonts.Face'" class="reference internal" href="#tituli.fonts.Face"><code class="docutils literal notranslate"><span class="pre">Face</span></code></a><ul>
 <li><a :data-current="activeSection === '#tituli.fonts.Face.ascent'" class="reference internal" href="#tituli.fonts.Face.ascent"><code class="docutils literal notranslate"><span class="pre">Face.ascent</span></code></a></li>
 <li><a :data-current="activeSection === '#tituli.fonts.Face.descent'" class="reference internal" href="#tituli.fonts.Face.descent"><code class="docutils literal notranslate"><span class="pre">Face.descent</span></code></a></li>
@@ -326,6 +391,8 @@ so a render on a fontless CI box still produces a real (if plainer) result.</p>
 <li><a :data-current="activeSection === '#tituli.fonts.FontFile.weight'" class="reference internal" href="#tituli.fonts.FontFile.weight"><code class="docutils literal notranslate"><span class="pre">FontFile.weight</span></code></a></li>
 </ul>
 </li>
+<li><a :data-current="activeSection === '#tituli.fonts.face_bytes'" class="reference internal" href="#tituli.fonts.face_bytes"><code class="docutils literal notranslate"><span class="pre">face_bytes()</span></code></a></li>
+<li><a :data-current="activeSection === '#tituli.fonts.face_digest'" class="reference internal" href="#tituli.fonts.face_digest"><code class="docutils literal notranslate"><span class="pre">face_digest()</span></code></a></li>
 <li><a :data-current="activeSection === '#tituli.fonts.families'" class="reference internal" href="#tituli.fonts.families"><code class="docutils literal notranslate"><span class="pre">families()</span></code></a></li>
 <li><a :data-current="activeSection === '#tituli.fonts.find_font'" class="reference internal" href="#tituli.fonts.find_font"><code class="docutils literal notranslate"><span class="pre">find_font()</span></code></a></li>
 <li><a :data-current="activeSection === '#tituli.fonts.font_dirs'" class="reference internal" href="#tituli.fonts.font_dirs"><code class="docutils literal notranslate"><span class="pre">font_dirs()</span></code></a></li>
@@ -344,7 +411,7 @@ so a render on a fontless CI box still produces a real (if plainer) result.</p>
 </div>
 </footer>
 </div>
-<script src="../_static/documentation_options.js?v=282f96c0"></script>
+<script src="../_static/documentation_options.js?v=bbaf98b3"></script>
 <script src="../_static/doctools.js?v=fd6eb6e6"></script>
 <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
 <script src="../_static/clipboard.min.js?v=a7894cd8"></script>

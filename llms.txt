@@ -5,10 +5,10 @@
 
 ## Pages
 
-- [tituli](index.html.md): Text in video, with tasteful defaults: **title cards**, **credits**, **captions with a tiny attribut...
-- [API reference](api.html.md): | [`tituli`](_autosummary/tituli.html.md#module-tituli)   | tituli — text in video: title cards, cre...
+- [tituli](index.html.md): Text in video, with tasteful defaults: &#42;&#42;title cards&#42;&#42;, &#42;&#42;credits&#42;&#42;, &#42;&#42;captions with a tiny attribut...
+- [API reference](api.html.md): | &#96;tituli&#96;   | tituli — text in video: title cards, credits, captions and calligrams.   |
 - [tituli](_autosummary/tituli.html.md): tituli — text in video: title cards, credits, captions and calligrams.
-- [tituli.bodies](_autosummary/tituli.bodies.html.md): A lacing body schema for a rendered caption (`pip install tituli[lacing]`).
+- [tituli.bodies](_autosummary/tituli.bodies.html.md): A lacing body schema for a rendered caption (&#96;pip install tituli&#91;lacing&#93;&#96;).
 - [tituli.calligram](_autosummary/tituli.calligram.html.md): Calligrams and concrete poems: text whose shape is part of the meaning.
 - [tituli.color](_autosummary/tituli.color.html.md): Colours, WCAG contrast, and the ink-for-this-background decision.
 - [tituli.compose](_autosummary/tituli.compose.html.md): The composed pieces: title cards, captions with attribution, lower thirds.
@@ -17,17 +17,18 @@
 - [tituli.frame](_autosummary/tituli.frame.html.md): The frame: what the layout engine is allowed to know about the picture.
 - [tituli.geometry](_autosummary/tituli.geometry.html.md): Boxes, anchors, safe areas and parametric paths — the coordinate vocabulary.
 - [tituli.layout](_autosummary/tituli.layout.html.md): The layout model: placed runs of text, and the engines that place them.
+- [tituli.outlines](_autosummary/tituli.outlines.html.md): Glyph outlines as SVG path data — the vector form of a placed &#96;Run&#96;.
 - [tituli.schedule](_autosummary/tituli.schedule.html.md): When overlays appear: timed overlays, and a scheduler that owns the rules.
-- [tituli.shaping](_autosummary/tituli.shaping.html.md): Optional engine: HarfBuzz shaping + FreeType rendering (`pip install tituli[shaping]`).
+- [tituli.shaping](_autosummary/tituli.shaping.html.md): Optional engine: HarfBuzz shaping + FreeType rendering (&#96;pip install tituli&#91;shaping&#93;&#96;).
 - [tituli.style](_autosummary/tituli.style.html.md): Text styles and the tasteful presets.
 - [tituli.tools](_autosummary/tituli.tools.html.md): The SSOT of dispatchable operations: flat, JSON-able in, JSON-able out.
 - [tituli.video](_autosummary/tituli.video.html.md): Video output through ffmpeg: stills to clips, overlays onto footage, crawls.
-- [For AI agents](ai-agents.html.md): `tituli` ships artifacts for coding agents alongside its code. This page lists
-- [About this build](about-this-build.html.md): This documentation was built on **2026-09-17 15:35 UTC** from commit <a href="https://github.com/tho...
+- [For AI agents](ai-agents.html.md): &#96;tituli&#96; ships artifacts for coding agents alongside its code. This page lists
+- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-09-30 01:19 UTC&#42;&#42; from commit &lt;a href="https://github.com/tho...
 
----
+## Optional
 
-For more comprehensive documentation, see [tituli.md](tituli.md)
+- [tituli.md](tituli.md): Complete documentation in a single file.
 
 ## Build
 

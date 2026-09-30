@@ -1,0 +1,30 @@
+tituli.outlines
+===============
+
+.. automodule:: tituli.outlines
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      DFLT_PRECISION
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      run_outline
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Outline
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+   
+      MissingGlyphError
+   

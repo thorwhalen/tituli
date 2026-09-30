@@ -1,0 +1,27 @@
+# tituli
+
+> Text in video: title cards, credits, captions and calligrams with tasteful defaults
+
+
+## Pages in this subsection
+
+- [tituli](tituli.html.md): tituli — text in video: title cards, credits, captions and calligrams.
+- [tituli.bodies](tituli.bodies.html.md): A lacing body schema for a rendered caption (&#96;pip install tituli&#91;lacing&#93;&#96;).
+- [tituli.calligram](tituli.calligram.html.md): Calligrams and concrete poems: text whose shape is part of the meaning.
+- [tituli.color](tituli.color.html.md): Colours, WCAG contrast, and the ink-for-this-background decision.
+- [tituli.compose](tituli.compose.html.md): The composed pieces: title cards, captions with attribution, lower thirds.
+- [tituli.credits](tituli.credits.html.md): Credits: structured data in, designed cards or a crawl out.
+- [tituli.fonts](tituli.fonts.html.md): Font discovery with no bundled fonts.
+- [tituli.frame](tituli.frame.html.md): The frame: what the layout engine is allowed to know about the picture.
+- [tituli.geometry](tituli.geometry.html.md): Boxes, anchors, safe areas and parametric paths — the coordinate vocabulary.
+- [tituli.layout](tituli.layout.html.md): The layout model: placed runs of text, and the engines that place them.
+- [tituli.outlines](tituli.outlines.html.md): Glyph outlines as SVG path data — the vector form of a placed &#96;Run&#96;.
+- [tituli.schedule](tituli.schedule.html.md): When overlays appear: timed overlays, and a scheduler that owns the rules.
+- [tituli.shaping](tituli.shaping.html.md): Optional engine: HarfBuzz shaping + FreeType rendering (&#96;pip install tituli&#91;shaping&#93;&#96;).
+- [tituli.style](tituli.style.html.md): Text styles and the tasteful presets.
+- [tituli.tools](tituli.tools.html.md): The SSOT of dispatchable operations: flat, JSON-able in, JSON-able out.
+- [tituli.video](tituli.video.html.md): Video output through ffmpeg: stills to clips, overlays onto footage, crawls.
+
+## Optional
+
+- [Top-level llms.txt](../llms.txt): Complete documentation index.

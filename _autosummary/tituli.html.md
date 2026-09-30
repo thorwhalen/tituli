@@ -18,7 +18,8 @@ frame = Frame.from_image("still.jpg", delivery="youtube")   # add avoid=burns.sa
 render(caption("Eliza Hamilton", "Ralph Earl, 1787 · public domain", frame=frame), frame).save("cap.png")
 ```
 
-Optional layers, none imported here: `tituli[shaping]` (HarfBuzz engine),
+Optional layers, none imported here: `tituli[outlines]` (fontTools, for
+[`run_outline()`](#tituli.run_outline) — glyph contours as SVG path data), `tituli[shaping]` (HarfBuzz engine),
 `tituli[saliency]` (`burns` subject avoidance), `tituli[lacing]` (the
 text-overlay body schema), `tituli[cli]` (`python -m tituli`).
 
@@ -54,6 +55,8 @@ text-overlay body schema), `tituli[cli]` (`python -m tituli`).
 | [`families`](#tituli.families)()                                         | Sorted family names installed on this machine.                                                                                                 |
 | [`find_font`](#tituli.find_font)(family, \*[, weight, italic, condensed]) | First installed family in the preference list, at the closest style.                                                                           |
 | [`resolve_face`](#tituli.resolve_face)([family, weight, italic, condensed])  | Resolve a typeface request to a sized `Face`; never fails.                                                                                     |
+| [`face_digest`](#tituli.face_digest)(face)                                  | `sha256` of `face_bytes()` — what makes two faces the same face.                                                                               |
+| [`run_outline`](#tituli.run_outline)(run, \*[, precision])                  | The contours of `run` as one SVG path, placed where the run is drawn.                                                                          |
 | [`contrast_ratio`](#tituli.contrast_ratio)(a, b)                               | WCAG contrast ratio between two colours (1..21).                                                                                               |
 | [`ink_for`](#tituli.ink_for)(\*, luminance[, light, dark])              | Pick the ink (light or dark) with more contrast against `luminance`.                                                                           |
 | [`parse_color`](#tituli.parse_color)(color)                                 | Accept `"#rgb"`, `"#rrggbb"`, `"#rrggbbaa"`, a Pillow name or a tuple.                                                                         |
@@ -79,11 +82,13 @@ text-overlay body schema), `tituli[cli]` (`python -m tituli`).
 | [`Label`](#tituli.Label)(text[, attribution, key])                    | What goes on a museum label: the thing, and where it came from.        |
 | [`Span`](#tituli.Span)(start, end, key[, data])                      | A time range of the cut showing one picture.                           |
 | [`TimedOverlay`](#tituli.TimedOverlay)(layout, start, end[, slot, ...])      | A layout (or a thing to lay out) on screen from `start` to `end`.      |
+| [`Outline`](#tituli.Outline)(d, bbox)                                   | A run's contours as SVG path data, in frame pixels.                    |
 
 ### Exceptions
 
 | [`TextDoesNotFit`](#tituli.TextDoesNotFit)(text, tried_size, ...)   | The text cannot be set completely without going below legibility.   |
 |------------------------------------------------------------------------------------------|---------------------------------------------------------------------|
+| [`MissingGlyphError`](#tituli.MissingGlyphError)                       | The run's face has no glyph for one of its characters.              |
 
 ### *class* tituli.Box(x0, y0, x1, y1)
 
@@ -357,6 +362,20 @@ Give every run the same reveal envelope.
 
 * **Return type:**
   [`Layout`](tituli.layout.html.md#tituli.layout.Layout)
+
+### *exception* tituli.MissingGlyphError
+
+Bases: [`ValueError`](https://docs.python.org/3/builtins/exceptions.html#ValueError)
+
+The run’s face has no glyph for one of its characters.
+
+### *class* tituli.Outline(d, bbox)
+
+Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
+
+A run’s contours as SVG path data, in frame pixels.
+
+`bbox` is the ink’s bounds (`None` when nothing is inked, e.g. a space).
 
 ### *class* tituli.Path(points)
 
@@ -667,6 +686,16 @@ already has enough contrast.
 * **Return type:**
   [`InkDecision`](tituli.compose.html.md#tituli.compose.InkDecision)
 
+### tituli.face_digest(face)
+
+`sha256` of `face_bytes()` — what makes two faces the same face.
+
+A family name is not an identity (two machines can install different files
+under one name, and the embedded face can change with Pillow); the bytes are.
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 ### tituli.families()
 
 Sorted family names installed on this machine.
@@ -898,9 +927,17 @@ Resolve a typeface request to a sized `Face`; never fails.
 
 Falls back to Pillow’s embedded Aileron when nothing in the list is installed,
 so a render on a fontless CI box still produces a real (if plainer) result.
+`EMBEDDED` in the list stops the search there (see its comment):
 
 * **Return type:**
   [`Face`](tituli.fonts.html.md#tituli.fonts.Face)
+
+```pycon
+>>> resolve_face(EMBEDDED, size=20).path is None
+True
+>>> resolve_face(["definitely-not-installed-xyz", EMBEDDED], size=20).family
+'Aileron'
+```
 
 ### tituli.resolve_shape(shape, box)
 
@@ -911,6 +948,17 @@ Names: `"line"`, `"circle"`, `"arc"`, `"wave"`, `"diagonal"`,
 
 * **Return type:**
   [`Path`](tituli.geometry.html.md#tituli.geometry.Path)
+
+### tituli.run_outline(run, , precision=2)
+
+The contours of `run` as one SVG path, placed where the run is drawn.
+
+Glyph `i` starts at `face.length(text[:i]) + i * tracking` along the
+baseline — the same advances the layout measured with, kerning included,
+so the outline and the layout cannot disagree about where a glyph is.
+
+* **Return type:**
+  [`Outline`](tituli.outlines.html.md#tituli.outlines.Outline)
 
 ### tituli.safe_area(width, height, , fraction=0.9)
 
@@ -978,18 +1026,19 @@ True
 
 ### Modules
 
-| [`bodies`](tituli.bodies.html.md#module-tituli.bodies)       | A lacing body schema for a rendered caption (`pip install tituli[lacing]`).             |
-|------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|
-| [`calligram`](tituli.calligram.html.md#module-tituli.calligram) | Calligrams and concrete poems: text whose shape is part of the meaning.                 |
-| [`color`](tituli.color.html.md#module-tituli.color)         | Colours, WCAG contrast, and the ink-for-this-background decision.                       |
-| [`compose`](tituli.compose.html.md#module-tituli.compose)     | The composed pieces: title cards, captions with attribution, lower thirds.              |
-| [`credits`](tituli.credits.html.md#module-tituli.credits)     | Credits: structured data in, designed cards or a crawl out.                             |
-| [`fonts`](tituli.fonts.html.md#module-tituli.fonts)         | Font discovery with no bundled fonts.                                                   |
-| [`frame`](tituli.frame.html.md#module-tituli.frame)         | The frame: what the layout engine is allowed to know about the picture.                 |
-| [`geometry`](tituli.geometry.html.md#module-tituli.geometry)   | Boxes, anchors, safe areas and parametric paths — the coordinate vocabulary.            |
-| [`layout`](tituli.layout.html.md#module-tituli.layout)       | The layout model: placed runs of text, and the engines that place them.                 |
-| [`schedule`](tituli.schedule.html.md#module-tituli.schedule)   | When overlays appear: timed overlays, and a scheduler that owns the rules.              |
-| [`shaping`](tituli.shaping.html.md#module-tituli.shaping)     | Optional engine: HarfBuzz shaping + FreeType rendering (`pip install tituli[shaping]`). |
-| [`style`](tituli.style.html.md#module-tituli.style)         | Text styles and the tasteful presets.                                                   |
-| [`tools`](tituli.tools.html.md#module-tituli.tools)         | The SSOT of dispatchable operations: flat, JSON-able in, JSON-able out.                 |
-| [`video`](tituli.video.html.md#module-tituli.video)         | Video output through ffmpeg: stills to clips, overlays onto footage, crawls.            |
+| [`bodies`](tituli.bodies.html.md#module-tituli.bodies)       | A lacing body schema for a rendered caption (`pip install tituli[lacing]`).                                         |
+|------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
+| [`calligram`](tituli.calligram.html.md#module-tituli.calligram) | Calligrams and concrete poems: text whose shape is part of the meaning.                                             |
+| [`color`](tituli.color.html.md#module-tituli.color)         | Colours, WCAG contrast, and the ink-for-this-background decision.                                                   |
+| [`compose`](tituli.compose.html.md#module-tituli.compose)     | The composed pieces: title cards, captions with attribution, lower thirds.                                          |
+| [`credits`](tituli.credits.html.md#module-tituli.credits)     | Credits: structured data in, designed cards or a crawl out.                                                         |
+| [`fonts`](tituli.fonts.html.md#module-tituli.fonts)         | Font discovery with no bundled fonts.                                                                               |
+| [`frame`](tituli.frame.html.md#module-tituli.frame)         | The frame: what the layout engine is allowed to know about the picture.                                             |
+| [`geometry`](tituli.geometry.html.md#module-tituli.geometry)   | Boxes, anchors, safe areas and parametric paths — the coordinate vocabulary.                                        |
+| [`layout`](tituli.layout.html.md#module-tituli.layout)       | The layout model: placed runs of text, and the engines that place them.                                             |
+| [`outlines`](tituli.outlines.html.md#module-tituli.outlines)   | Glyph outlines as SVG path data — the vector form of a placed [`Run`](#tituli.Run). |
+| [`schedule`](tituli.schedule.html.md#module-tituli.schedule)   | When overlays appear: timed overlays, and a scheduler that owns the rules.                                          |
+| [`shaping`](tituli.shaping.html.md#module-tituli.shaping)     | Optional engine: HarfBuzz shaping + FreeType rendering (`pip install tituli[shaping]`).                             |
+| [`style`](tituli.style.html.md#module-tituli.style)         | Text styles and the tasteful presets.                                                                               |
+| [`tools`](tituli.tools.html.md#module-tituli.tools)         | The SSOT of dispatchable operations: flat, JSON-able in, JSON-able out.                                             |
+| [`video`](tituli.video.html.md#module-tituli.video)         | Video output through ffmpeg: stills to clips, overlays onto footage, crawls.                                        |

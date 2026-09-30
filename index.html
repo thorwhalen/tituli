@@ -23,6 +23,8 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <link href="index.html.md" rel="alternate" type="text/markdown"/>
 <link href="llms.txt" rel="describedby" type="text/markdown"/>
+<link href="index.html.md" rel="alternate" type="text/markdown"/>
+<link href="llms.txt" rel="describedby"/>
 <title>tituli</title>
 <meta content="tituli" property="og:title"/>
 <meta content="tituli" name="twitter:title"/>
@@ -89,6 +91,7 @@
 <li class="toctree-l3"><a class="reference internal" href="_autosummary/tituli.frame.html">tituli.frame</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_autosummary/tituli.geometry.html">tituli.geometry</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_autosummary/tituli.layout.html">tituli.layout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/tituli.outlines.html">tituli.outlines</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_autosummary/tituli.schedule.html">tituli.schedule</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_autosummary/tituli.shaping.html">tituli.shaping</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_autosummary/tituli.style.html">tituli.style</a></li>
@@ -219,7 +222,10 @@
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">schedule_labels(spans,</span> <span class="pre">label_for,</span> <span class="pre">suppressed_by=cards)</span></code></p></td>
 <td><p>one label per shot with first-appearance, repeat-gap and suppression rules <strong>inside</strong> the loop</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">tituli.video.still</span> <span class="pre">/</span> <span class="pre">overlay</span> <span class="pre">/</span> <span class="pre">crawl</span> <span class="pre">/</span> <span class="pre">frames_to_video</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">run_outline(run)</span></code></p></td>
+<td><p>a placed run’s glyph contours as one SVG <code class="docutils literal notranslate"><span class="pre">d</span></code> string in frame pixels (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">tituli[outlines]</span></code>) — text drawn with no font engine; a missing glyph raises <code class="docutils literal notranslate"><span class="pre">MissingGlyphError</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">tituli.video.still</span> <span class="pre">/</span> <span class="pre">overlay</span> <span class="pre">/</span> <span class="pre">crawl</span> <span class="pre">/</span> <span class="pre">frames_to_video</span></code></p></td>
 <td><p>ffmpeg output; only <code class="docutils literal notranslate"><span class="pre">overlay</span></code>/<code class="docutils literal notranslate"><span class="pre">fade</span></code>/<code class="docutils literal notranslate"><span class="pre">crop</span></code> needed — never <code class="docutils literal notranslate"><span class="pre">drawtext</span></code>/<code class="docutils literal notranslate"><span class="pre">libass</span></code></p></td>
 </tr>
 </tbody>
@@ -275,7 +281,7 @@ NOT seams: the scrim design, the anchor grid, the type ramp, the ffmpeg encode a
 <section id="where-this-sits-in-the-fleet">
 <h2>Where this sits in the fleet<a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#where-this-sits-in-the-fleet" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#where-this-sits-in-the-fleet'">¶</a></h2>
 <ul class="simple">
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">an</span></code> — <a class="reference external" href="https://github.com/thorwhalen/an/issues/155" rel="nofollow noopener">thorwhalen/an#155<svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></strong> asked whether per-glyph text belongs in <code class="docutils literal notranslate"><span class="pre">an</span></code> or a sibling package. tituli is the sibling: it owns <em>typesetting for video</em> (shaping, metrics, wrap, contrast, safe area, reserved zones, path placement, the title/credits/caption conventions) and emits placed glyphs (<code class="docutils literal notranslate"><span class="pre">Run</span></code> with <code class="docutils literal notranslate"><span class="pre">unit=glyph|word|line</span></code> and an <code class="docutils literal notranslate"><span class="pre">index</span></code>). <code class="docutils literal notranslate"><span class="pre">an</span></code> keeps <em>motion as structure</em> and can consume those placements as its option-2 “svg_sprite per glyph, converted at compile time”. tituli’s own time envelope is deliberately small (fades, stagger, crawl).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">an</span></code> — <a class="reference external" href="https://github.com/thorwhalen/an/issues/155" rel="nofollow noopener">thorwhalen/an#155<svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></strong> asked whether per-glyph text belongs in <code class="docutils literal notranslate"><span class="pre">an</span></code> or a sibling package. tituli is the sibling: it owns <em>typesetting for video</em> (shaping, metrics, wrap, contrast, safe area, reserved zones, path placement, the title/credits/caption conventions) and emits placed glyphs (<code class="docutils literal notranslate"><span class="pre">Run</span></code> with <code class="docutils literal notranslate"><span class="pre">unit=glyph|word|line</span></code> and an <code class="docutils literal notranslate"><span class="pre">index</span></code>). <code class="docutils literal notranslate"><span class="pre">an</span></code> keeps <em>motion as structure</em> and consumes those placements as its option-2 “svg_sprite per glyph, converted at compile time”: <code class="docutils literal notranslate"><span class="pre">run_outline</span></code> turns each run into SVG path data, so an’s runtime never learns what text is. tituli’s own time envelope is deliberately small (fades, stagger, crawl).</p></li>
 <li><p><strong><code class="docutils literal notranslate"><span class="pre">muvid</span></code></strong> keeps its lyric-video vocabulary and ASS burn-in; its <code class="docutils literal notranslate"><span class="pre">calligram</span></code> archetype’s streak solver is <code class="docutils literal notranslate"><span class="pre">tituli.rain</span></code>, generalised over real glyph metrics and any frame, and <code class="docutils literal notranslate"><span class="pre">text_on_path</span></code> / <code class="docutils literal notranslate"><span class="pre">concrete_page</span></code> ceilings (a hardcoded sine; centred rows only; a 0.62-em character estimate) are what <code class="docutils literal notranslate"><span class="pre">on_path</span></code> / <code class="docutils literal notranslate"><span class="pre">in_shape</span></code> / real <code class="docutils literal notranslate"><span class="pre">Face.length</span></code> remove.</p></li>
 <li><p><strong><code class="docutils literal notranslate"><span class="pre">braidio.video.credits_card</span></code></strong> is the plain-list case: <code class="docutils literal notranslate"><span class="pre">Credits.from_lines(lines)</span></code> → <code class="docutils literal notranslate"><span class="pre">credits_cards</span></code>, same never-truncate rule, designed type.</p></li>
 <li><p><strong><code class="docutils literal notranslate"><span class="pre">burns</span></code></strong> owns saliency and the Ken Burns move; tituli only consumes <code class="docutils literal notranslate"><span class="pre">salient_box</span></code>.</p></li>
@@ -289,7 +295,7 @@ NOT seams: the scrim design, the anchor grid, the type ramp, the ffmpeg encode a
 </section>
 <section id="style-defaults-why-they-look-right">
 <h2>Style defaults (why they look right)<a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#style-defaults-why-they-look-right" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#style-defaults-why-they-look-right'">¶</a></h2>
-<p>Title-safe 90 % (SMPTE ST 2046-1); WCAG 4.5:1 aimed for, 3:1 floor; sans working set Helvetica Neue → Inter → Helvetica → Avenir Next → Roboto → … → DejaVu Sans; ≥ 36 px-equivalent at 1080p for anything meant to be read; credits cards hold ≥ 3 s, crawls ≈ 97 px/s at 1080p; reveals 300–500 ms. Sources and the full rationale: <a class="reference internal" href="#misc/docs/style.md"><span class="xref myst"><code class="docutils literal notranslate"><span class="pre">misc/docs/style.md</span></code></span></a>. No fonts ship in the package — system discovery with Pillow’s embedded Aileron as the fallback, so a bare CI box still renders.</p>
+<p>Title-safe 90 % (SMPTE ST 2046-1); WCAG 4.5:1 aimed for, 3:1 floor; sans working set Helvetica Neue → Inter → Helvetica → Avenir Next → Roboto → … → DejaVu Sans; ≥ 36 px-equivalent at 1080p for anything meant to be read; credits cards hold ≥ 3 s, crawls ≈ 97 px/s at 1080p; reveals 300–500 ms. Sources and the full rationale: <a class="reference internal" href="#misc/docs/style.md"><span class="xref myst"><code class="docutils literal notranslate"><span class="pre">misc/docs/style.md</span></code></span></a>. No fonts ship in the package — system discovery with Pillow’s embedded Aileron as the fallback, so a bare CI box still renders. When output must not depend on what is installed, ask for <code class="docutils literal notranslate"><span class="pre">family=(EMBEDDED,)</span></code>: it never scans the system, and <code class="docutils literal notranslate"><span class="pre">face_digest(face)</span></code> (sha256 of the font’s bytes) is the identity to record.</p>
 </section>
 <section id="optional-extras">
 <h2>Optional extras<a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#optional-extras" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#optional-extras'">¶</a></h2>
@@ -306,10 +312,13 @@ NOT seams: the scrim design, the anchor grid, the type ramp, the ffmpeg encode a
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">saliency</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">burns</span></code> for <code class="docutils literal notranslate"><span class="pre">avoid=salient_box</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">lacing</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">outlines</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">fonttools</span></code>: <code class="docutils literal notranslate"><span class="pre">run_outline</span></code> (glyph contours as SVG path data)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">lacing</span></code></p></td>
 <td><p>the body schema</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cli</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cli</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">cw</span></code> for <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">tituli</span></code></p></td>
 </tr>
 </tbody>
@@ -322,7 +331,7 @@ NOT seams: the scrim design, the anchor grid, the type ramp, the ffmpeg encode a
 
 </section>
 </section>
-<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-09-17 15:35 UTC from <a href="https://github.com/thorwhalen/tituli/commit/595e07681f59a1cc24530e8eea2705df0504350b">595e076</a> (main) · tituli 0.0.5 · <a href="about-this-build.html">about this build</a></p>
+<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-09-30 01:19 UTC from <a href="https://github.com/thorwhalen/tituli/commit/bc9b52369e54e89f643ebaefcb3f7914cdcf9d04">bc9b523</a> (main) · tituli 0.0.7 · <a href="about-this-build.html">about this build</a></p>
 </div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
 <div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] h-full overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
 <ul>
@@ -356,7 +365,7 @@ NOT seams: the scrim design, the anchor grid, the type ramp, the ffmpeg encode a
 </div>
 </footer>
 </div>
-<script src="_static/documentation_options.js?v=282f96c0"></script>
+<script src="_static/documentation_options.js?v=bbaf98b3"></script>
 <script src="_static/doctools.js?v=fd6eb6e6"></script>
 <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
 <script src="_static/clipboard.min.js?v=a7894cd8"></script>

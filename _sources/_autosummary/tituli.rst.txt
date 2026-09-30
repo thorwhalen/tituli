@@ -37,6 +37,8 @@
       families
       find_font
       resolve_face
+      face_digest
+      run_outline
       contrast_ratio
       ink_for
       parse_color
@@ -63,12 +65,14 @@
       Label
       Span
       TimedOverlay
+      Outline
    
    .. rubric:: Exceptions
 
    .. autosummary::
    
       TextDoesNotFit
+      MissingGlyphError
    
 .. rubric:: Modules
 
@@ -85,6 +89,7 @@
    frame
    geometry
    layout
+   outlines
    schedule
    shaping
    style
