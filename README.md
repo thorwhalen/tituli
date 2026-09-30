@@ -66,6 +66,7 @@ Every use case fills a `Layout` — placed `Run`s (a string, a baseline origin, 
 | `rain(lines)` | Apollinaire's *Il pleut*: upright letters stepping down fanning streaks (the 1918 measurements as defaults) |
 | `in_shape(text, mask)` | prose poured into a silhouette |
 | `schedule_labels(spans, label_for, suppressed_by=cards)` | one label per shot with first-appearance, repeat-gap and suppression rules **inside** the loop |
+| `run_outline(run)` | a placed run's glyph contours as one SVG `d` string in frame pixels (`pip install tituli[outlines]`) — text drawn with no font engine; a missing glyph raises `MissingGlyphError` |
 | `tituli.video.still / overlay / crawl / frames_to_video` | ffmpeg output; only `overlay`/`fade`/`crop` needed — never `drawtext`/`libass` |
 
 All sizes are fractions of frame height, so a style reads the same at 720p and 4K. The presets (`tituli.style`) are one type ramp shared by overlays and the end card, so a film is one design.
@@ -91,7 +92,7 @@ NOT seams: the scrim design, the anchor grid, the type ramp, the ffmpeg encode a
 
 ## Where this sits in the fleet
 
-- **`an` — [thorwhalen/an#155](https://github.com/thorwhalen/an/issues/155)** asked whether per-glyph text belongs in `an` or a sibling package. tituli is the sibling: it owns *typesetting for video* (shaping, metrics, wrap, contrast, safe area, reserved zones, path placement, the title/credits/caption conventions) and emits placed glyphs (`Run` with `unit=glyph|word|line` and an `index`). `an` keeps *motion as structure* and can consume those placements as its option-2 "svg_sprite per glyph, converted at compile time". tituli's own time envelope is deliberately small (fades, stagger, crawl).
+- **`an` — [thorwhalen/an#155](https://github.com/thorwhalen/an/issues/155)** asked whether per-glyph text belongs in `an` or a sibling package. tituli is the sibling: it owns *typesetting for video* (shaping, metrics, wrap, contrast, safe area, reserved zones, path placement, the title/credits/caption conventions) and emits placed glyphs (`Run` with `unit=glyph|word|line` and an `index`). `an` keeps *motion as structure* and consumes those placements as its option-2 "svg_sprite per glyph, converted at compile time": `run_outline` turns each run into SVG path data, so an's runtime never learns what text is. tituli's own time envelope is deliberately small (fades, stagger, crawl).
 - **`muvid`** keeps its lyric-video vocabulary and ASS burn-in; its `calligram` archetype's streak solver is `tituli.rain`, generalised over real glyph metrics and any frame, and `text_on_path` / `concrete_page` ceilings (a hardcoded sine; centred rows only; a 0.62-em character estimate) are what `on_path` / `in_shape` / real `Face.length` remove.
 - **`braidio.video.credits_card`** is the plain-list case: `Credits.from_lines(lines)` → `credits_cards`, same never-truncate rule, designed type.
 - **`burns`** owns saliency and the Ken Burns move; tituli only consumes `salient_box`.
@@ -104,7 +105,7 @@ A caption is an annotation **on the image**: `reference = MediaRef(asset_id=<ima
 
 ## Style defaults (why they look right)
 
-Title-safe 90 % (SMPTE ST 2046-1); WCAG 4.5:1 aimed for, 3:1 floor; sans working set Helvetica Neue → Inter → Helvetica → Avenir Next → Roboto → … → DejaVu Sans; ≥ 36 px-equivalent at 1080p for anything meant to be read; credits cards hold ≥ 3 s, crawls ≈ 97 px/s at 1080p; reveals 300–500 ms. Sources and the full rationale: [`misc/docs/style.md`](misc/docs/style.md). No fonts ship in the package — system discovery with Pillow's embedded Aileron as the fallback, so a bare CI box still renders.
+Title-safe 90 % (SMPTE ST 2046-1); WCAG 4.5:1 aimed for, 3:1 floor; sans working set Helvetica Neue → Inter → Helvetica → Avenir Next → Roboto → … → DejaVu Sans; ≥ 36 px-equivalent at 1080p for anything meant to be read; credits cards hold ≥ 3 s, crawls ≈ 97 px/s at 1080p; reveals 300–500 ms. Sources and the full rationale: [`misc/docs/style.md`](misc/docs/style.md). No fonts ship in the package — system discovery with Pillow's embedded Aileron as the fallback, so a bare CI box still renders. When output must not depend on what is installed, ask for `family=(EMBEDDED,)`: it never scans the system, and `face_digest(face)` (sha256 of the font's bytes) is the identity to record.
 
 ## Optional extras
 
@@ -112,6 +113,7 @@ Title-safe 90 % (SMPTE ST 2046-1); WCAG 4.5:1 aimed for, 3:1 floor; sans working
 |---|---|
 | `shaping` | `uharfbuzz` + `freetype-py`: ligatures, kerning, complex scripts, outline rotation |
 | `saliency` | `burns` for `avoid=salient_box` |
+| `outlines` | `fonttools`: `run_outline` (glyph contours as SVG path data) |
 | `lacing` | the body schema |
 | `cli` | `cw` for `python -m tituli` |
 

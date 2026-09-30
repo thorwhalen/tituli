@@ -91,6 +91,10 @@ shaping = ["uharfbuzz", "freetype-py"]
 saliency = ["burns>=0.0.11"]
 # The lacing body schema for captions-as-linked-artifacts (`tituli.bodies`).
 lacing = ["lacing"]
+# Glyph contours as SVG path data (`tituli.outlines.run_outline`): what lets a
+# caller draw text with no font engine — an animation runtime that only draws
+# SVG. fontTools is MIT and pure Python.
+outlines = ["fonttools"]
 # `python -m tituli ...` (cw is stdlib-only).
 cli = ["cw>=0.1.1,<0.2"]
 
@@ -161,7 +165,7 @@ install.windows = "choco install ffmpeg -y --no-progress"
 project_name = ""
 
 [tool.wads.ci.install]
-extras = "cli,shaping"
+extras = "cli,shaping,outlines"
 
 [tool.wads.ci.commands]
 pre_test = []

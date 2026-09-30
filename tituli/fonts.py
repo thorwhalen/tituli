@@ -29,6 +29,7 @@ from PIL import ImageFont
 _FONT_SUFFIXES = (".ttf", ".ttc", ".otf")
 _MAX_TTC_INDEX = 32  # sanity bound when probing a collection's faces
 _TTC_FIRST_INDEX = 0
+_EMBEDDED_PROBE_SIZE = 12  # any size: the bytes do not depend on it
 
 # The working set the style research settled on, most-preferred first. Every
 # entry is a family name as the font's own ``name`` table reports it.
@@ -60,6 +61,16 @@ MONO_STACK: tuple[str, ...] = (
 )
 
 FALLBACK_FAMILY = "Aileron"  # what Pillow's embedded ``load_default`` reports
+
+#: A family request that means *Pillow's embedded face, and never the system*.
+#: In a preference list it is a stop: the names before it are looked up as
+#: usual, and if none is installed the embedded face is used without scanning
+#: further. Alone (or first) it never scans the system at all, so the result is
+#: the same bytes on every machine with the same Pillow — the deterministic
+#: choice for a caller whose output must not depend on the installed fonts.
+#: (Asking for ``"Aileron"`` by name is not the same thing: a machine that has
+#: Aileron installed would resolve to *that* file.)
+EMBEDDED = "tituli:embedded"
 
 _WEIGHT_WORDS = {
     "thin": 100,
@@ -295,11 +306,60 @@ def resolve_face(
 
     Falls back to Pillow's embedded Aileron when nothing in the list is installed,
     so a render on a fontless CI box still produces a real (if plainer) result.
+    :data:`EMBEDDED` in the list stops the search there (see its comment):
+
+    >>> resolve_face(EMBEDDED, size=20).path is None
+    True
+    >>> resolve_face(["definitely-not-installed-xyz", EMBEDDED], size=20).family
+    'Aileron'
     """
-    ff = find_font(family, weight=weight, italic=italic, condensed=condensed)
+    names = [family] if isinstance(family, str) else list(family)
+    if EMBEDDED in names:
+        names = names[: names.index(EMBEDDED)]
+    ff = (
+        find_font(names, weight=weight, italic=italic, condensed=condensed)
+        if names
+        else None
+    )
     if ff is None:
         return Face(FALLBACK_FAMILY, "Regular", int(size), None, 0)
     return Face(ff.family, ff.style, int(size), ff.path, ff.index)
+
+
+def face_bytes(face: Face) -> bytes:
+    """The bytes of the font file behind ``face`` — the embedded face's too.
+
+    Pillow keeps the embedded face's bytes on the font object it builds
+    (``font_bytes``), so the fallback has an identity like any file does.
+
+    >>> face_bytes(resolve_face(EMBEDDED, size=12))[:4] in (b"\\x00\\x01\\x00\\x00", b"true", b"OTTO")
+    True
+    """
+    if face.path is None:
+        return _embedded_bytes()
+    return Path(face.path).read_bytes()
+
+
+def face_digest(face: Face) -> str:
+    """``sha256`` of :func:`face_bytes` — what makes two faces the same face.
+
+    A family name is not an identity (two machines can install different files
+    under one name, and the embedded face can change with Pillow); the bytes are.
+    """
+    import hashlib
+
+    return hashlib.sha256(face_bytes(face)).hexdigest()
+
+
+@lru_cache(maxsize=1)
+def _embedded_bytes() -> bytes:
+    font = ImageFont.load_default(size=_EMBEDDED_PROBE_SIZE)
+    data = getattr(font, "font_bytes", None)
+    if not data:  # pragma: no cover - Pillow < 10.1 has no scalable default
+        raise RuntimeError(
+            "this Pillow has no embedded scalable font (Pillow >= 10.1 does)"
+        )
+    return data
 
 
 @lru_cache(maxsize=256)

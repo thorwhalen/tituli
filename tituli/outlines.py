@@ -1,0 +1,142 @@
+"""Glyph outlines as SVG path data — the vector form of a placed :class:`Run`.
+
+A :class:`~tituli.layout.Layout` says *where* each run goes; this module says
+*what it looks like as geometry*: the font's own contours, scaled to the run's
+face size, advanced along the run exactly as :meth:`Face.length` measures it,
+rotated by the run's angle and translated to its baseline origin. The result is
+an SVG ``d`` string in frame pixels (y down), so a caller can draw text with no
+font engine at all — an animation runtime that only knows how to draw SVG, for
+instance (thorwhalen/an#155: *glyphs as SVG sprites, converted at compile
+time*).
+
+>>> from tituli.fonts import EMBEDDED, resolve_face
+>>> from tituli.layout import Run
+>>> run = Run("Hi", 10.0, 50.0, resolve_face(EMBEDDED, size=40), (0, 0, 0, 255))
+>>> out = run_outline(run)
+>>> out.d.startswith("M")
+True
+>>> out.bbox.y1 <= 50.0 + 1 and out.bbox.y0 < 50.0   # ink sits on the baseline
+True
+
+Missing glyphs **raise** rather than drawing a box or nothing: a string the
+face cannot set is the caller's decision (another face, other words), never a
+silent substitution.
+
+>>> run_outline(Run("é", 0, 0, resolve_face(EMBEDDED, size=40), (0, 0, 0, 255)))
+Traceback (most recent call last):
+...
+tituli.outlines.MissingGlyphError: 'Aileron' Regular has no glyph for 'é' (U+00E9)
+
+Needs ``fontTools`` (``pip install tituli[outlines]``); imported lazily, so the
+rest of the package never pays for it.
+"""
+
+from __future__ import annotations
+
+import io
+import math
+from dataclasses import dataclass
+from functools import lru_cache
+
+from tituli.fonts import Face, face_bytes
+from tituli.geometry import Box
+from tituli.layout import Run
+
+#: Decimal places kept in the path data. Two is a hundredth of a pixel —
+#: invisible, and it keeps the string short and byte-stable.
+DFLT_PRECISION = 2
+
+
+class MissingGlyphError(ValueError):
+    """The run's face has no glyph for one of its characters."""
+
+
+@dataclass(frozen=True)
+class Outline:
+    """A run's contours as SVG path data, in frame pixels.
+
+    ``bbox`` is the ink's bounds (``None`` when nothing is inked, e.g. a space).
+    """
+
+    d: str
+    bbox: Box | None
+
+
+def _require():
+    try:
+        import fontTools  # noqa: F401
+    except ImportError as e:  # pragma: no cover - depends on the extra
+        raise ImportError(
+            "glyph outlines need fontTools: `pip install tituli[outlines]`"
+        ) from e
+
+
+@lru_cache(maxsize=32)
+def _font(path: str | None, index: int):
+    """The parsed font behind a face, cached per file (not per size)."""
+    _require()
+    from fontTools.ttLib import TTFont
+
+    probe = Face("", "", 1, path, index)
+    return TTFont(io.BytesIO(face_bytes(probe)), fontNumber=index, lazy=True)
+
+
+def _number_formatter(precision: int):
+    def ntos(v: float) -> str:
+        s = f"{v:.{precision}f}".rstrip("0").rstrip(".")
+        return "0" if s in ("", "-0") else s
+
+    return ntos
+
+
+def run_outline(run: Run, *, precision: int = DFLT_PRECISION) -> Outline:
+    """The contours of ``run`` as one SVG path, placed where the run is drawn.
+
+    Glyph ``i`` starts at ``face.length(text[:i]) + i * tracking`` along the
+    baseline — the same advances the layout measured with, kerning included,
+    so the outline and the layout cannot disagree about where a glyph is.
+    """
+    _require()
+    from fontTools.pens.boundsPen import BoundsPen
+    from fontTools.pens.recordingPen import DecomposingRecordingPen
+    from fontTools.pens.svgPathPen import SVGPathPen
+    from fontTools.pens.transformPen import TransformPen
+
+    face = run.face
+    font = _font(face.path, face.index)
+    cmap = font.getBestCmap() or {}
+    glyphs = font.getGlyphSet()
+    scale = face.size / font["head"].unitsPerEm
+    a = math.radians(run.angle)
+    cos, sin = math.cos(a), math.sin(a)
+
+    recording = DecomposingRecordingPen(glyphs)
+    for i, ch in enumerate(run.text):
+        name = cmap.get(ord(ch))
+        if name is None:
+            raise MissingGlyphError(
+                f"{face.family!r} {face.style} has no glyph for {ch!r} "
+                f"(U+{ord(ch):04X})"
+            )
+        pen_x = face.length(run.text[:i]) + run.tracking * i
+        # Font units are y-up; the frame is y-down and the run is rotated
+        # clockwise on screen by `angle` about its baseline origin.
+        transform = (
+            cos * scale,
+            sin * scale,
+            sin * scale,
+            -cos * scale,
+            run.x + cos * pen_x,
+            run.y + sin * pen_x,
+        )
+        glyphs[name].draw(TransformPen(recording, transform))
+
+    svg = SVGPathPen(None, ntos=_number_formatter(precision))
+    bounds = BoundsPen(None)
+    recording.replay(svg)
+    recording.replay(bounds)
+    bbox = Box(*bounds.bounds) if bounds.bounds else None
+    return Outline(svg.getCommands(), bbox)
+
+
+__all__ = ["DFLT_PRECISION", "MissingGlyphError", "Outline", "run_outline"]

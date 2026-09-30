@@ -14,7 +14,8 @@ Quick start::
     frame = Frame.from_image("still.jpg", delivery="youtube")   # add avoid=burns.salient_box
     render(caption("Eliza Hamilton", "Ralph Earl, 1787 · public domain", frame=frame), frame).save("cap.png")
 
-Optional layers, none imported here: ``tituli[shaping]`` (HarfBuzz engine),
+Optional layers, none imported here: ``tituli[outlines]`` (fontTools, for
+:func:`run_outline` — glyph contours as SVG path data), ``tituli[shaping]`` (HarfBuzz engine),
 ``tituli[saliency]`` (``burns`` subject avoidance), ``tituli[lacing]`` (the
 text-overlay body schema), ``tituli[cli]`` (``python -m tituli``).
 """
@@ -42,10 +43,11 @@ from tituli.credits import (
     credits_crawl,
     credits_frame,
 )
-from tituli.fonts import Face, families, find_font, resolve_face
+from tituli.fonts import EMBEDDED, Face, face_digest, families, find_font, resolve_face
 from tituli.frame import DELIVERY_RESERVED, Frame, cover_fit, reserved_zones
 from tituli.geometry import ANCHORS, TITLE_SAFE, Box, Path, safe_area
 from tituli.layout import Layout, Plate, Run, along_path, block, fit_size, measure, wrap
+from tituli.outlines import MissingGlyphError, Outline, run_outline
 from tituli.render import frames, make_engine, render, render_overlay
 from tituli.schedule import (
     UNLABELLED,
@@ -114,6 +116,11 @@ __all__ = [
     "families",
     "find_font",
     "resolve_face",
+    "EMBEDDED",
+    "face_digest",
+    "run_outline",
+    "Outline",
+    "MissingGlyphError",
     "contrast_ratio",
     "ink_for",
     "parse_color",
