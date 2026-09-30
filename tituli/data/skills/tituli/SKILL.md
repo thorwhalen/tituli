@@ -34,8 +34,12 @@ Frame.over(
 ```python
 from tituli import EMBEDDED, TextStyle, block, face_digest, run_outline
 
-lay = block("Words on screen", TextStyle(family=(EMBEDDED,), size=0.08), 1080, unit="word")
-paths = [run_outline(r).d for r in lay.runs]  # SVG `d`, frame pixels; needs tituli[outlines]
+lay = block(
+    "Words on screen", TextStyle(family=(EMBEDDED,), size=0.08), 1080, unit="word"
+)
+paths = [
+    run_outline(r).d for r in lay.runs
+]  # SVG `d`, frame pixels; needs tituli[outlines]
 font_id = face_digest(lay.runs[0].face)  # sha256 of the font bytes: record it
 ```
 `EMBEDDED` never scans installed fonts (same bytes on every machine with the same Pillow); a font-file path in `family` works too. A character the face lacks raises `MissingGlyphError`.
