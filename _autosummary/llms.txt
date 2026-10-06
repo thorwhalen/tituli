@@ -11,6 +11,7 @@
 - [tituli.color](tituli.color.html.md): Colours, WCAG contrast, and the ink-for-this-background decision.
 - [tituli.compose](tituli.compose.html.md): The composed pieces: title cards, captions with attribution, lower thirds.
 - [tituli.credits](tituli.credits.html.md): Credits: structured data in, designed cards or a crawl out.
+- [tituli.features](tituli.features.html.md): OpenType features a style asks for, applied without a shaper where they can be (tituli#4).
 - [tituli.fonts](tituli.fonts.html.md): Font discovery with no bundled fonts.
 - [tituli.frame](tituli.frame.html.md): The frame: what the layout engine is allowed to know about the picture.
 - [tituli.geometry](tituli.geometry.html.md): Boxes, anchors, safe areas and parametric paths — the coordinate vocabulary.

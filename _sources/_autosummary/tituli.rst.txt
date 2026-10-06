@@ -85,6 +85,7 @@
    color
    compose
    credits
+   features
    fonts
    frame
    geometry

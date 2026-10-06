@@ -24,7 +24,7 @@ title-safe margins, tracked small caps for labels, generous leading.
 | [`TextStyle`](#tituli.style.TextStyle)([family, size, weight, italic, ...])   | How a run of text looks.   |
 |---------------------------------------------------------------------------------------------------|----------------------------|
 
-### *class* tituli.style.TextStyle(family=('Helvetica Neue', 'Inter', 'Helvetica', 'Avenir Next', 'Roboto', 'Univers', 'Liberation Sans', 'DejaVu Sans', 'Arial'), size=0.04, weight=400, italic=False, condensed=False, color=(255, 255, 255), tracking=0.0, leading=1.2, case='as-is', align='center', opacity=1.0)
+### *class* tituli.style.TextStyle(family=('Helvetica Neue', 'Inter', 'Helvetica', 'Avenir Next', 'Roboto', 'Univers', 'Liberation Sans', 'DejaVu Sans', 'Arial'), size=0.04, weight=400, italic=False, condensed=False, color=(255, 255, 255), tracking=0.0, leading=1.2, case='as-is', align='center', opacity=1.0, features=())
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -36,6 +36,15 @@ The resolved, sized font for this style.
 
 * **Return type:**
   [`Face`](tituli.fonts.html.md#tituli.fonts.Face)
+
+#### features *: [Sequence](https://docs.python.org/3/library/typing.html#typing.Sequence)[[str](https://docs.python.org/3/builtins/stdtypes.html#str)] | [Mapping](https://docs.python.org/3/library/typing.html#typing.Mapping)[[str](https://docs.python.org/3/builtins/stdtypes.html#str), [bool](https://docs.python.org/3/builtins/functions.html#bool)]* *= ()*
+
+`("tnum",)` or `{"tnum": True}`
+(tituli#4). Kept as a tuple of tags; `fonts.Face.applied_features`
+says which ones the resolved font has.
+
+* **Type:**
+  OpenType features to apply, by tag
 
 #### px(frame_height)
 

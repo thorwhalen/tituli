@@ -32,13 +32,13 @@ True
 | [`find_font`](#tituli.fonts.find_font)(family, \*[, weight, italic, condensed]) | First installed family in the preference list, at the closest style.                                            |
 | [`font_dirs`](#tituli.fonts.font_dirs)()                                        | Platform font directories that exist on this machine.                                                           |
 | [`font_index`](#tituli.fonts.font_index)()                                       | Installed faces grouped by family name.                                                                         |
-| [`resolve_face`](#tituli.fonts.resolve_face)([family, weight, italic, condensed])  | Resolve a typeface request to a sized `Face`; never fails.                                                      |
+| [`resolve_face`](#tituli.fonts.resolve_face)([family, weight, italic, ...])        | Resolve a typeface request to a sized `Face`; never fails.                                                      |
 
 ### Classes
 
-| [`Face`](#tituli.fonts.Face)(family, style, size, path[, index])   | A resolved, sized font ready to measure and draw with Pillow.   |
-|---------------------------------------------------------------------------------------------|-----------------------------------------------------------------|
-| [`FontFile`](#tituli.fonts.FontFile)(path, index, family, style)       | One face inside a font file (a `.ttc` holds several).           |
+| [`Face`](#tituli.fonts.Face)(family, style, size, path[, index, ...])   | A resolved, sized font ready to measure and draw with Pillow.   |
+|--------------------------------------------------------------------------------------------------|-----------------------------------------------------------------|
+| [`FontFile`](#tituli.fonts.FontFile)(path, index, family, style)            | One face inside a font file (a `.ttc` holds several).           |
 
 ### tituli.fonts.EMBEDDED *= 'tituli:embedded'*
 
@@ -51,11 +51,21 @@ choice for a caller whose output must not depend on the installed fonts.
 (Asking for `"Aileron"` by name is not the same thing: a machine that has
 Aileron installed would resolve to *that* file.)
 
-### *class* tituli.fonts.Face(family, style, size, path, index=0)
+### *class* tituli.fonts.Face(family, style, size, path, index=0, features=())
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
 A resolved, sized font ready to measure and draw with Pillow.
+
+#### *property* applied_features *: [tuple](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[str](https://docs.python.org/3/builtins/stdtypes.html#str), ...]*
+
+The requested [`features`](#tituli.fonts.Face.features) this font has, so the ones measured and
+outlined with; a requested tag missing here was not applied.
+
+```pycon
+>>> resolve_face(EMBEDDED, size=12).applied_features
+()
+```
 
 #### *property* ascent *: [int](https://docs.python.org/3/builtins/functions.html#int)*
 
@@ -65,9 +75,18 @@ Ascent in pixels.
 
 Descent in pixels.
 
+#### features *: [tuple](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[str](https://docs.python.org/3/builtins/stdtypes.html#str), ...]* *= ()*
+
+OpenType feature tags the style asked for (tituli#4); which of them the
+font has is [`applied_features`](#tituli.fonts.Face.applied_features).
+
 #### length(text)
 
 Advance width of `text` in pixels.
+
+With [`applied_features`](#tituli.fonts.Face.applied_features), the advances of the substituted glyphs
+([`tituli.features.featured_length()`](tituli.features.html.md#tituli.features.featured_length)): the font’s design advances,
+without hinting or kerning, which is what tabular figures are for.
 
 * **Return type:**
   [`float`](https://docs.python.org/3/builtins/functions.html#float)
@@ -175,9 +194,12 @@ Installed faces grouped by family name. Scanned once per process.
 True
 ```
 
-### tituli.fonts.resolve_face(family=('Helvetica Neue', 'Inter', 'Helvetica', 'Avenir Next', 'Roboto', 'Univers', 'Liberation Sans', 'DejaVu Sans', 'Arial'), , size, weight=400, italic=False, condensed=False)
+### tituli.fonts.resolve_face(family=('Helvetica Neue', 'Inter', 'Helvetica', 'Avenir Next', 'Roboto', 'Univers', 'Liberation Sans', 'DejaVu Sans', 'Arial'), , size, weight=400, italic=False, condensed=False, features=())
 
 Resolve a typeface request to a sized `Face`; never fails.
+
+`features` are OpenType feature tags to apply (`("tnum",)`), carried by
+the face; see [`Face.applied_features`](#tituli.fonts.Face.applied_features) for which the font has.
 
 Falls back to Pillow’s embedded Aileron when nothing in the list is installed,
 so a render on a fontless CI box still produces a real (if plainer) result.

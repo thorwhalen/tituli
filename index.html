@@ -87,6 +87,7 @@
 <li class="toctree-l3"><a class="reference internal" href="_autosummary/tituli.color.html">tituli.color</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_autosummary/tituli.compose.html">tituli.compose</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_autosummary/tituli.credits.html">tituli.credits</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/tituli.features.html">tituli.features</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_autosummary/tituli.fonts.html">tituli.fonts</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_autosummary/tituli.frame.html">tituli.frame</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_autosummary/tituli.geometry.html">tituli.geometry</a></li>
@@ -225,7 +226,10 @@
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">run_outline(run)</span></code></p></td>
 <td><p>a placed run’s glyph contours as one SVG <code class="docutils literal notranslate"><span class="pre">d</span></code> string in frame pixels (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">tituli[outlines]</span></code>) — text drawn with no font engine; a missing glyph raises <code class="docutils literal notranslate"><span class="pre">MissingGlyphError</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">tituli.video.still</span> <span class="pre">/</span> <span class="pre">overlay</span> <span class="pre">/</span> <span class="pre">crawl</span> <span class="pre">/</span> <span class="pre">frames_to_video</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">TextStyle(features=("tnum",))</span></code></p></td>
+<td><p>OpenType features by tag; <code class="docutils literal notranslate"><span class="pre">face.applied_features</span></code> says which the font has. One-for-one substitutions (<code class="docutils literal notranslate"><span class="pre">tnum</span></code>, <code class="docutils literal notranslate"><span class="pre">lnum</span></code>, <code class="docutils literal notranslate"><span class="pre">zero</span></code>, <code class="docutils literal notranslate"><span class="pre">smcp</span></code> …) are applied by measurement and <code class="docutils literal notranslate"><span class="pre">run_outline</span></code> from the font’s tables (<code class="docutils literal notranslate"><span class="pre">tituli[outlines]</span></code>); the Pillow engine refuses a run they change (it would draw other glyphs), <code class="docutils literal notranslate"><span class="pre">HarfBuzzEngine</span></code> draws them</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">tituli.video.still</span> <span class="pre">/</span> <span class="pre">overlay</span> <span class="pre">/</span> <span class="pre">crawl</span> <span class="pre">/</span> <span class="pre">frames_to_video</span></code></p></td>
 <td><p>ffmpeg output; only <code class="docutils literal notranslate"><span class="pre">overlay</span></code>/<code class="docutils literal notranslate"><span class="pre">fade</span></code>/<code class="docutils literal notranslate"><span class="pre">crop</span></code> needed — never <code class="docutils literal notranslate"><span class="pre">drawtext</span></code>/<code class="docutils literal notranslate"><span class="pre">libass</span></code></p></td>
 </tr>
 </tbody>
@@ -331,7 +335,7 @@ NOT seams: the scrim design, the anchor grid, the type ramp, the ffmpeg encode a
 
 </section>
 </section>
-<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-09-30 01:19 UTC from <a href="https://github.com/thorwhalen/tituli/commit/bc9b52369e54e89f643ebaefcb3f7914cdcf9d04">bc9b523</a> (main) · tituli 0.0.7 · <a href="about-this-build.html">about this build</a></p>
+<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-10-06 14:51 UTC from <a href="https://github.com/thorwhalen/tituli/commit/532e80215bcc0be06671cc488408c9764c513353">532e802</a> (main) · tituli 0.0.8 · <a href="about-this-build.html">about this build</a></p>
 </div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
 <div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] h-full overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
 <ul>
@@ -365,7 +369,7 @@ NOT seams: the scrim design, the anchor grid, the type ramp, the ffmpeg encode a
 </div>
 </footer>
 </div>
-<script src="_static/documentation_options.js?v=bbaf98b3"></script>
+<script src="_static/documentation_options.js?v=53b53b71"></script>
 <script src="_static/doctools.js?v=fd6eb6e6"></script>
 <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
 <script src="_static/clipboard.min.js?v=a7894cd8"></script>

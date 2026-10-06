@@ -13,6 +13,7 @@
 - [tituli.color](_autosummary/tituli.color.html.md): Colours, WCAG contrast, and the ink-for-this-background decision.
 - [tituli.compose](_autosummary/tituli.compose.html.md): The composed pieces: title cards, captions with attribution, lower thirds.
 - [tituli.credits](_autosummary/tituli.credits.html.md): Credits: structured data in, designed cards or a crawl out.
+- [tituli.features](_autosummary/tituli.features.html.md): OpenType features a style asks for, applied without a shaper where they can be (tituli#4).
 - [tituli.fonts](_autosummary/tituli.fonts.html.md): Font discovery with no bundled fonts.
 - [tituli.frame](_autosummary/tituli.frame.html.md): The frame: what the layout engine is allowed to know about the picture.
 - [tituli.geometry](_autosummary/tituli.geometry.html.md): Boxes, anchors, safe areas and parametric paths — the coordinate vocabulary.
@@ -24,7 +25,7 @@
 - [tituli.tools](_autosummary/tituli.tools.html.md): The SSOT of dispatchable operations: flat, JSON-able in, JSON-able out.
 - [tituli.video](_autosummary/tituli.video.html.md): Video output through ffmpeg: stills to clips, overlays onto footage, crawls.
 - [For AI agents](ai-agents.html.md): &#96;tituli&#96; ships artifacts for coding agents alongside its code. This page lists
-- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-09-30 01:19 UTC&#42;&#42; from commit &lt;a href="https://github.com/tho...
+- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-10-06 14:51 UTC&#42;&#42; from commit &lt;a href="https://github.com/tho...
 
 ## Optional
 

@@ -1,0 +1,21 @@
+tituli.features
+===============
+
+.. automodule:: tituli.features
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      font_features
+      applied_features
+      featured_glyphs
+      featured_length
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+   
+      FeatureError
+   

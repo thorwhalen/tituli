@@ -1,34 +1,34 @@
 {
   "schema_version": 1,
-  "built_at": "2026-09-30T01:19:46Z",
+  "built_at": "2026-10-06T14:51:44Z",
   "package": {
     "name": "tituli",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "display_name": "tituli",
     "source": "pyproject.toml"
   },
   "git": {
     "available": true,
-    "commit": "bc9b52369e54e89f643ebaefcb3f7914cdcf9d04",
-    "short_commit": "bc9b523",
+    "commit": "532e80215bcc0be06671cc488408c9764c513353",
+    "short_commit": "532e802",
     "branch": "main",
     "tags": [
-      "0.0.7"
+      "0.0.8"
     ],
     "dirty": false,
     "remote_url": "https://github.com/thorwhalen/tituli",
-    "commit_url": "https://github.com/thorwhalen/tituli/commit/bc9b52369e54e89f643ebaefcb3f7914cdcf9d04",
+    "commit_url": "https://github.com/thorwhalen/tituli/commit/532e80215bcc0be06671cc488408c9764c513353",
     "error": null
   },
   "ci": {
     "provider": "github",
     "repository": "thorwhalen/tituli",
-    "sha": "65b59a18c76e5ad084669a52c6c2b5bb63622507",
+    "sha": "07ab54c85c8ee8c680add60e3b0a7d9456a4902c",
     "sha_in_history": true,
     "ref": "refs/heads/main",
     "ref_name": "main",
-    "run_id": "36654390712",
-    "run_url": "https://github.com/thorwhalen/tituli/actions/runs/36654390712",
+    "run_id": "37481524037",
+    "run_url": "https://github.com/thorwhalen/tituli/actions/runs/37481524037",
     "server_url": "https://github.com"
   },
   "tools": {
@@ -57,16 +57,16 @@
     "docs_dir": "docsrc"
   },
   "site": {
-    "modules_documented": 16,
-    "objects_documented": 234
+    "modules_documented": 17,
+    "objects_documented": 245
   },
   "pypi": {
     "checked": true,
-    "latest": "0.0.7",
+    "latest": "0.0.8",
     "relation": "same",
     "error": null
   },
-  "reproduce": "git clone https://github.com/thorwhalen/tituli && cd tituli\ngit checkout bc9b52369e54e89f643ebaefcb3f7914cdcf9d04\npip install \"epythet==0.2.12\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "reproduce": "git clone https://github.com/thorwhalen/tituli && cd tituli\ngit checkout 532e80215bcc0be06671cc488408c9764c513353\npip install \"epythet==0.2.12\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
   "warnings": [],
   "alignment": {
     "aligned": true,

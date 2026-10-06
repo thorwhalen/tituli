@@ -5,7 +5,7 @@ orphan: true
 
 # About this build
 
-This documentation was built on **2026-09-30 01:19 UTC** from commit <a href="https://github.com/thorwhalen/tituli/commit/bc9b52369e54e89f643ebaefcb3f7914cdcf9d04"><code>bc9b523</code></a> on branch <code>main</code>, for **tituli 0.0.7** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-10-06 14:51 UTC** from commit <a href="https://github.com/thorwhalen/tituli/commit/532e80215bcc0be06671cc488408c9764c513353"><code>532e802</code></a> on branch <code>main</code>, for **tituli 0.0.8** (from <code>pyproject.toml</code>).
 
 :::{note}
 Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
@@ -15,9 +15,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 | | |
 |---|---|
-| Commit | <a href="https://github.com/thorwhalen/tituli/commit/bc9b52369e54e89f643ebaefcb3f7914cdcf9d04"><code>bc9b52369e54e89f643ebaefcb3f7914cdcf9d04</code></a> |
+| Commit | <a href="https://github.com/thorwhalen/tituli/commit/532e80215bcc0be06671cc488408c9764c513353"><code>532e80215bcc0be06671cc488408c9764c513353</code></a> |
 | Branch | <code>main</code> |
-| Tags at this commit | <code>0.0.7</code> |
+| Tags at this commit | <code>0.0.8</code> |
 | Working tree | clean |
 | Remote | <code>https://github.com/thorwhalen/tituli</code> |
 
@@ -26,9 +26,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 | | |
 |---|---|
 | Repository | <code>thorwhalen/tituli</code> |
-| Run | <a href="https://github.com/thorwhalen/tituli/actions/runs/36654390712">36654390712</a> |
+| Run | <a href="https://github.com/thorwhalen/tituli/actions/runs/37481524037">37481524037</a> |
 | Ref | <code>refs/heads/main</code> |
-| Event commit | <code>65b59a18c76e5ad084669a52c6c2b5bb63622507</code> (in the history of the built commit) |
+| Event commit | <code>07ab54c85c8ee8c680add60e3b0a7d9456a4902c</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -53,13 +53,13 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/tituli/0.0.7/">0.0.7</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/tituli/0.0.8/">0.0.8</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/tituli && cd tituli
-git checkout bc9b52369e54e89f643ebaefcb3f7914cdcf9d04
+git checkout 532e80215bcc0be06671cc488408c9764c513353
 pip install "epythet==0.2.12"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
