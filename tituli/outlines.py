@@ -89,6 +89,17 @@ def _number_formatter(precision: int):
     return ntos
 
 
+def _glyph_names(face, text: str, font) -> list:
+    """The glyph each character draws: the cmap's, or with the face's applied
+    OpenType features the substituted one (the glyph its length measured)."""
+    if face.applied_features:
+        from tituli.features import featured_glyphs
+
+        return featured_glyphs(face, text)
+    cmap = font.getBestCmap() or {}
+    return [cmap.get(ord(ch)) for ch in text]
+
+
 def run_outline(run: Run, *, precision: int = DFLT_PRECISION) -> Outline:
     """The contours of ``run`` as one SVG path, placed where the run is drawn.
 
@@ -104,15 +115,14 @@ def run_outline(run: Run, *, precision: int = DFLT_PRECISION) -> Outline:
 
     face = run.face
     font = _font(face.path, face.index)
-    cmap = font.getBestCmap() or {}
     glyphs = font.getGlyphSet()
+    names = _glyph_names(face, run.text, font)
     scale = face.size / font["head"].unitsPerEm
     a = math.radians(run.angle)
     cos, sin = math.cos(a), math.sin(a)
 
     recording = DecomposingRecordingPen(glyphs)
-    for i, ch in enumerate(run.text):
-        name = cmap.get(ord(ch))
+    for i, (ch, name) in enumerate(zip(run.text, names)):
         if name is None:
             raise MissingGlyphError(
                 f"{face.family!r} {face.style} has no glyph for {ch!r} "

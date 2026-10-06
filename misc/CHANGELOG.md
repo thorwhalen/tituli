@@ -11,3 +11,7 @@ Credits: a wrapped role/name row now advances by its measured height (was one li
 ## 2026-09-14 — 0.0.4
 
 Packaging: the shipped skill now actually ships. hatchling's followlinks walk marked the real `tituli/data/skills/tituli` as already seen via the `.claude/skills` symlink, so the published 0.0.2/0.0.3 wheels had no `tituli/data/` at all. `skip-excluded-dirs` + excluding `.claude` from the sdist fixes it; `tests/test_packaging.py` builds sdist → wheel to keep it fixed.
+
+## 2026-10-06
+
+OpenType features on a style (tituli#4): `TextStyle(features=("tnum",))` (or `{"tnum": True}`) reaches the `Face`, which records the ones its font has (`applied_features`). Single-substitution features are applied by `Face.length` and `run_outline` from the font's GSUB and hmtx (`tituli.features`, needs `tituli[outlines]`), `HarfBuzzEngine` passes them to HarfBuzz, and `PillowEngine` raises `FeatureError` for a run they change instead of drawing other glyphs than were measured.

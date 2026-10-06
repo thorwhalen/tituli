@@ -21,6 +21,9 @@ from tituli.layout import Run
 
 _HB_SCALE = 64  # 26.6 fixed point
 _FT_MATRIX_ONE = 0x10000  # 16.16 fixed point
+#: What HarfBuzz is asked for when nothing else is; a style's own features
+#: (``TextStyle.features``) are added to these.
+_DEFAULT_FEATURES: dict = {"kern": True, "liga": True}
 
 
 def _require():
@@ -63,7 +66,7 @@ def shape(
     buf = hb.Buffer()
     buf.add_str(text)
     buf.guess_segment_properties()
-    hb.shape(font, buf, features or {"kern": True, "liga": True})
+    hb.shape(font, buf, features or _DEFAULT_FEATURES)
     out = []
     for info, pos in zip(buf.glyph_infos, buf.glyph_positions):
         out.append(
@@ -108,7 +111,10 @@ class HarfBuzzEngine:
             int(cos * _FT_MATRIX_ONE),
         )
         pen_x, pen_y = 0.0, 0.0  # along the (rotated) baseline, in unrotated px
-        for gid, xa, ya, xo, yo in shape(run.text, face.path, face.index, face.size):
+        features = {**_DEFAULT_FEATURES, **{tag: True for tag in face.features}}
+        for gid, xa, ya, xo, yo in shape(
+            run.text, face.path, face.index, face.size, features=features
+        ):
             ft.set_transform(matrix, freetype.Vector(0, 0))
             ft.load_glyph(gid, freetype.FT_LOAD_RENDER | freetype.FT_LOAD_TARGET_NORMAL)
             bmp = ft.glyph.bitmap

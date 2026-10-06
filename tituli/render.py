@@ -24,6 +24,7 @@ when the frame carries a colour or a picture.
 from __future__ import annotations
 
 import math
+from dataclasses import replace
 from typing import Callable, Iterator, Protocol
 
 from PIL import Image, ImageChops, ImageDraw
@@ -65,6 +66,7 @@ class PillowEngine:
         color = _scaled_alpha(run.color, run.opacity * opacity)
         if color[3] == 0 or not run.text:
             return
+        _refuse_unapplied_substitutions(run)
         font = run.face.pil
         if run.angle == 0.0 and run.tracking == 0.0:
             draw = ImageDraw.Draw(canvas)
@@ -81,6 +83,26 @@ class PillowEngine:
         px = int(round(run.x - origin[0]))
         py = int(round(run.y - origin[1]))
         canvas.alpha_composite(tile, (px, py))
+
+
+def _refuse_unapplied_substitutions(run: Run) -> None:
+    """Pillow draws a character's default glyph; refuse a run whose style's
+    OpenType features substitute another one, rather than draw glyphs other
+    than the ones its layout measured (tituli#4)."""
+    face = run.face
+    if not face.applied_features:
+        return
+    from tituli.features import FeatureError, featured_glyphs
+
+    plain = replace(face, features=())
+    if featured_glyphs(face, run.text) != featured_glyphs(plain, run.text):
+        raise FeatureError(
+            f"the Pillow engine cannot draw the glyphs that features "
+            f"{list(face.applied_features)} substitute in {run.text!r}: render "
+            "with `engine=tituli.shaping.HarfBuzzEngine()` "
+            "(`pip install tituli[shaping]`), take the contours from "
+            "`tituli.run_outline`, or drop the feature from the style"
+        )
 
 
 def _scaled_alpha(color: RGBA, factor: float) -> RGBA:
