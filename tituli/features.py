@@ -84,7 +84,9 @@ def applied_features(face: "Face") -> tuple[str, ...]:
 
 
 @lru_cache(maxsize=64)
-def _substitutions(path: str | None, index: int, tags: tuple[str, ...]) -> dict[str, str]:
+def _substitutions(
+    path: str | None, index: int, tags: tuple[str, ...]
+) -> dict[str, str]:
     font = _ttfont(path, index)
     table = font["GSUB"].table
     lookups = sorted(
@@ -120,7 +122,10 @@ def featured_glyphs(face: "Face", text: str) -> list[str | None]:
     font = _ttfont(face.path, face.index)
     cmap = font.getBestCmap() or {}
     subs = _substitutions(face.path, face.index, applied_features(face))
-    return [subs.get(name, name) if name else None for name in (cmap.get(ord(c)) for c in text)]
+    return [
+        subs.get(name, name) if name else None
+        for name in (cmap.get(ord(c)) for c in text)
+    ]
 
 
 def featured_length(face: "Face", text: str) -> float:
