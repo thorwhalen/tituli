@@ -113,6 +113,8 @@ Rules built in: label on first appearance, again only after 150 s, truncated (no
 
 `python -m tituli title_card "Title" "sub" --background "#101014" --out t.png` · `python -m tituli caption still.jpg "text" "source" --out c.png` · `python -m tituli credits spec.json --mode crawl --out credits.mp4` · `python -m tituli calligram "text" --shape circle --out c.png` · `python -m tituli overlay_video film.mp4 overlays.json --out out.mp4` · `python -m tituli fonts Helvetica`.
 
+**A number that changes (a counter, a clock) asks for tabular figures:** `TextStyle(features=("tnum",))`, so "11" is as wide as "88" and the text does not jitter. Check `style.face(h).applied_features`: a font without `tnum` measures as before (the embedded face's digits are already one width). Measure and outline with it (`run_outline`), or draw with `HarfBuzzEngine`; the Pillow engine refuses a run whose glyphs a feature changes.
+
 ## Your words are set complete, or not at all
 
 `caption`, `lower_third` and `note` never truncate text you wrote. They shrink the

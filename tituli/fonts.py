@@ -131,6 +131,9 @@ class Face:
     size: int
     path: str | None
     index: int = 0
+    #: OpenType feature tags the style asked for (tituli#4); which of them the
+    #: font has is :attr:`applied_features`.
+    features: tuple[str, ...] = ()
 
     @property
     def pil(self) -> ImageFont.FreeTypeFont:
@@ -139,10 +142,35 @@ class Face:
 
     def with_size(self, size: int) -> "Face":
         """Same face at another pixel size."""
-        return Face(self.family, self.style, int(size), self.path, self.index)
+        return Face(
+            self.family, self.style, int(size), self.path, self.index, self.features
+        )
+
+    @property
+    def applied_features(self) -> tuple[str, ...]:
+        """The requested :attr:`features` this font has, so the ones measured and
+        outlined with; a requested tag missing here was not applied.
+
+        >>> resolve_face(EMBEDDED, size=12).applied_features
+        ()
+        """
+        if not self.features:
+            return ()
+        from tituli.features import applied_features
+
+        return applied_features(self)
 
     def length(self, text: str) -> float:
-        """Advance width of ``text`` in pixels."""
+        """Advance width of ``text`` in pixels.
+
+        With :attr:`applied_features`, the advances of the substituted glyphs
+        (:func:`tituli.features.featured_length`): the font's design advances,
+        without hinting or kerning, which is what tabular figures are for.
+        """
+        if self.applied_features:
+            from tituli.features import featured_length
+
+            return featured_length(self, text)
         return self.pil.getlength(text)
 
     @property
@@ -301,8 +329,12 @@ def resolve_face(
     weight: int = REGULAR_WEIGHT,
     italic: bool = False,
     condensed: bool = False,
+    features: Iterable[str] = (),
 ) -> Face:
     """Resolve a typeface request to a sized ``Face``; never fails.
+
+    ``features`` are OpenType feature tags to apply (``("tnum",)``), carried by
+    the face; see :attr:`Face.applied_features` for which the font has.
 
     Falls back to Pillow's embedded Aileron when nothing in the list is installed,
     so a render on a fontless CI box still produces a real (if plainer) result.
@@ -322,8 +354,8 @@ def resolve_face(
         else None
     )
     if ff is None:
-        return Face(FALLBACK_FAMILY, "Regular", int(size), None, 0)
-    return Face(ff.family, ff.style, int(size), ff.path, ff.index)
+        return Face(FALLBACK_FAMILY, "Regular", int(size), None, 0, tuple(features))
+    return Face(ff.family, ff.style, int(size), ff.path, ff.index, tuple(features))
 
 
 def face_bytes(face: Face) -> bytes:

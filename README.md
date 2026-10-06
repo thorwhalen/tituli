@@ -67,6 +67,7 @@ Every use case fills a `Layout` — placed `Run`s (a string, a baseline origin, 
 | `in_shape(text, mask)` | prose poured into a silhouette |
 | `schedule_labels(spans, label_for, suppressed_by=cards)` | one label per shot with first-appearance, repeat-gap and suppression rules **inside** the loop |
 | `run_outline(run)` | a placed run's glyph contours as one SVG `d` string in frame pixels (`pip install tituli[outlines]`) — text drawn with no font engine; a missing glyph raises `MissingGlyphError` |
+| `TextStyle(features=("tnum",))` | OpenType features by tag; `face.applied_features` says which the font has. One-for-one substitutions (`tnum`, `lnum`, `zero`, `smcp` …) are applied by measurement and `run_outline` from the font's tables (`tituli[outlines]`); the Pillow engine refuses a run they change (it would draw other glyphs), `HarfBuzzEngine` draws them |
 | `tituli.video.still / overlay / crawl / frames_to_video` | ffmpeg output; only `overlay`/`fade`/`crop` needed — never `drawtext`/`libass` |
 
 All sizes are fractions of frame height, so a style reads the same at 720p and 4K. The presets (`tituli.style`) are one type ramp shared by overlays and the end card, so a film is one design.

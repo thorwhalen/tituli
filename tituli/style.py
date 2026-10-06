@@ -19,7 +19,7 @@ title-safe margins, tracked small caps for labels, generous leading.
 from __future__ import annotations
 
 from dataclasses import dataclass, replace
-from typing import Any, Literal, Sequence
+from typing import Any, Literal, Mapping, Sequence
 
 from tituli import fonts
 from tituli.color import NEAR_BLACK, WHITE, Color
@@ -57,6 +57,13 @@ class TextStyle:
     case: Case = "as-is"
     align: Align = "center"
     opacity: float = 1.0
+    #: OpenType features to apply, by tag: ``("tnum",)`` or ``{"tnum": True}``
+    #: (tituli#4). Kept as a tuple of tags; :attr:`fonts.Face.applied_features`
+    #: says which ones the resolved font has.
+    features: Sequence[str] | Mapping[str, bool] = ()
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "features", _feature_tags(self.features))
 
     def with_(self, **changes: Any) -> "TextStyle":
         """A copy with some fields replaced.
@@ -78,6 +85,7 @@ class TextStyle:
             weight=self.weight,
             italic=self.italic,
             condensed=self.condensed,
+            features=self.features,
         )
 
     def apply_case(self, text: str) -> str:
@@ -88,6 +96,27 @@ class TextStyle:
         if self.case == "title":
             return text.title()
         return text
+
+
+def _feature_tags(features: Sequence[str] | Mapping[str, bool]) -> tuple[str, ...]:
+    """Normalize a feature request to the tuple of tags to turn on.
+
+    >>> _feature_tags({"tnum": True})
+    ('tnum',)
+    >>> _feature_tags("tnum")
+    ('tnum',)
+    """
+    if isinstance(features, str):
+        return (features,)
+    if isinstance(features, Mapping):
+        off = [tag for tag, on in features.items() if not on]
+        if off:
+            raise ValueError(
+                f"features {off} are turned off; a style can only turn features on "
+                "(to change a shaper's defaults, call `tituli.shaping.shape` directly)"
+            )
+        return tuple(features)
+    return tuple(features)
 
 
 # --- Presets --------------------------------------------------------------------
