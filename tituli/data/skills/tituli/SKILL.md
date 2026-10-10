@@ -107,6 +107,34 @@ overlay("film.mp4", resolve([*cards, *labels]), "film_captioned.mp4")   # render
 ```
 Rules built in: label on first appearance, again only after 150 s, truncated (not dropped) against a heavier card, and a suppressed label is not counted as shown. Returning `None` from `label_for` raises — say `UNLABELLED` when a still is deliberately unlabelled.
 
+**A page of several blocks** (headline, glossed glyph row, a wrapped `a · b` list, a footnote) is one `Layout` — never measure-and-translate by hand, never composite one PNG per block:
+```python
+from tituli import Frame, TextStyle, block, glossed, render, stack
+
+f = Frame.blank((1920, 1080), color="#14161f")
+page = stack(
+    [
+        block("Sing along to learn 7 katakana", TextStyle(size=0.05, weight=700), f),
+        glossed(
+            [("カ", "ka"), ("ス", "su"), ("ン", "n")], frame=f, anchor=None
+        ),  # glyph over reading, one pitch
+        block(
+            "バス bus · スープ soup · …",
+            TextStyle(size=0.027),
+            f,
+            max_width=0.86 * f.width,
+            break_at=" · ",
+        ),
+    ],
+    frame=f,
+    gap=[0.06, 0.05],
+)  # fractions of frame height, one per seam; placed centred in title-safe
+render(page, f).save("title.png")
+```
+`grid(blocks, columns=3, frame=f)` for cells on one pitch. Nested combinators take `anchor=None`. `break_at` wraps a list only between items; U+00A0 keeps two words together anywhere.
+
+**Title over the intro** (no hand ffmpeg): `overlay("film.mp4", [TimedOverlay(None, 0, 3, image="title.png", fade_in=0, fade_out=0.25)], "out.mp4", pad_start=0.8)` — the head is padded (first frame held; `pad_mode="black"` for black), audio delayed to match, and overlay times are on the padded timeline. An image must be the video's size (it raises otherwise).
+
 **Calligram**: `on_path(text, shape="circle"|"wave"|"arc"|"M 0 0 C ..."|Path, frame=f, upright=False)`; `rain(lines, frame=Frame.blank((1080, 1920), color="#f4f1e8"))` (portrait); `in_shape(text, mask_image, frame=f)`. A glyph-by-glyph reveal: `lay.staggered(step=0.05, ramp=0.2)` → `tituli.video.frames_to_video(frames(lay, f, duration=6), "out.mp4", size=f.size)`.
 
 ## CLI
