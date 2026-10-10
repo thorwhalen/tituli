@@ -285,10 +285,14 @@ def overlay(
         )
         current = nxt
     audio: list[str] = ["-map", "0:a?", "-c:a", "copy"]
-    if pad_start and has_audio(video):
+    n_audio = audio_streams(video) if pad_start else 0
+    if n_audio:
         delay_ms = round(pad_start * 1000)
-        steps.append(f"[0:a]adelay=delays={delay_ms}:all=1[a]")
-        audio = ["-map", "[a]", "-c:a", "aac", "-b:a", _AUDIO_BITRATE]
+        audio = []
+        for k in range(n_audio):  # every track, not only the first
+            steps.append(f"[0:a:{k}]adelay=delays={delay_ms}:all=1[a{k}]")
+            audio += ["-map", f"[a{k}]"]
+        audio += ["-c:a", "aac", "-b:a", _AUDIO_BITRATE]
     args += [
         "-filter_complex",
         ";".join(steps),
@@ -331,6 +335,11 @@ def _check_image_sizes(items: Sequence[TimedOverlay], size: tuple[int, int]) -> 
 
 def has_audio(video: str | Path) -> bool:
     """Whether ``video`` has an audio stream, via ffprobe."""
+    return audio_streams(video) > 0
+
+
+def audio_streams(video: str | Path) -> int:
+    """How many audio streams ``video`` has, via ffprobe."""
     out = subprocess.run(
         [
             _ffprobe_path(),
@@ -348,7 +357,7 @@ def has_audio(video: str | Path) -> bool:
         text=True,
         check=True,
     ).stdout.strip()
-    return bool(out)
+    return len(out.splitlines())
 
 
 def _ffprobe_path() -> str:
@@ -377,6 +386,26 @@ def materialize(overlays: Sequence[TimedOverlay], *, frame) -> list[TimedOverlay
     out: list[TimedOverlay] = []
     unrenderable: list[str] = []
     for i, o in enumerate(overlays):
+        if o.layout is not None and o.image is not None:
+            unrenderable.append(
+                f"#{i} [{o.start:.2f}, {o.end:.2f}] has both a layout and an image; "
+                "give one (render the layout onto the image to have both)"
+            )
+            continue
+        bad_fades = [
+            f"{k}={v}"
+            for k, v in (
+                ("fade", o.fade),
+                ("fade_in", o.fade_in),
+                ("fade_out", o.fade_out),
+            )
+            if v is not None and v < 0
+        ]
+        if bad_fades:
+            unrenderable.append(
+                f"#{i} [{o.start:.2f}, {o.end:.2f}] negative {bad_fades}"
+            )
+            continue
         if o.layout is not None or o.image is not None:
             out.append(o)
             continue
@@ -410,9 +439,10 @@ def materialize(overlays: Sequence[TimedOverlay], *, frame) -> list[TimedOverlay
             out.append(o.with_layout(lay))
     if unrenderable:
         raise ValueError(
-            "overlay(): these overlays have no layout, no image and no renderable payload "
-            "(a Label, or a dict with 'text'); render them first or they would be "
-            "silently missing from the film:\n  " + "\n  ".join(unrenderable)
+            "overlay(): these overlays cannot be rendered as given (each needs exactly "
+            "one of a layout, an image, or a renderable payload — a Label, or a dict "
+            "with 'text' — and no negative fade); fix them or they would be silently "
+            "missing from the film:\n  " + "\n  ".join(unrenderable)
         )
     return out
 
@@ -561,4 +591,5 @@ __all__ = [
     "frames_to_video",
     "probe_size",
     "has_audio",
+    "audio_streams",
 ]

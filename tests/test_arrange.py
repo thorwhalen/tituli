@@ -275,3 +275,111 @@ def test_render_of_a_composed_page_is_one_image():
     )
     img = render(page, F)
     assert img.size == F.size
+
+
+# --- review findings (each was a reproduced defect) ---------------------------------
+
+
+@pytest.mark.parametrize(
+    "text, width", [("supercalifragilistic · b", 100), ("ab · c", 5)]
+)
+def test_a_too_wide_last_word_with_its_mark_terminates(text, width):
+    lines = wrap(text, S, 1080, max_width=width, break_at=" · ")
+    assert " ".join(lines).split() == text.split()
+
+
+def test_break_at_adds_no_spaces_and_drops_no_marks():
+    assert (
+        "".join(wrap("カ、ス、ン", S, 1080, max_width=1e4, break_at="、"))
+        == "カ、ス、ン"
+    )
+    assert (
+        wrap(" · a ·  · b", S, 1080, max_width=1e4, break_at=" · ")[0].count("·") == 3
+    )
+    with pytest.raises(ValueError, match="visible mark"):
+        wrap("a b", S, 1080, max_width=100, break_at="  ")
+
+
+def test_combining_keeps_loss_reports_and_drops_stale_placement():
+    a = Layout(block("a", S, F).runs, meta={"unplaced": ["lost"], "anchor": "center"})
+    b = Layout(block("b", S, F).runs, meta={"unplaced": []})
+    page = stack([a, b], frame=F, anchor=None)
+    assert page.meta["unplaced"] == ["lost"]
+    assert "anchor" not in page.meta and len(page.meta["parts"]) == 2
+
+
+def test_a_page_larger_than_title_safe_raises():
+    with pytest.raises(ValueError, match="title-safe"):
+        stack([block("W" * 200, TextStyle(size=0.1), F)], frame=F)
+
+
+def test_frame_anchored_scrims_are_refused():
+    from tituli import caption
+
+    cap = caption("A caption", "src", frame=Frame.blank((1920, 1080)))
+    with pytest.raises(ValueError, match="frame-anchored"):
+        stack([cap, block("b", S, F)], frame=F)
+
+
+def test_grid_gap_shape_is_checked():
+    with pytest.raises(ValueError, match="column_gap, row_gap"):
+        grid([block("a", S, F)], frame=F, gap=(0.1, 0.1, 0.1))
+
+
+def test_overlay_with_both_layout_and_image_or_negative_fade_raises():
+    from tituli.video import materialize
+
+    lay = block("a", S, F)
+    with pytest.raises(ValueError, match="both a layout and an image"):
+        materialize([TimedOverlay(lay, 0, 1, image=Image.new("RGB", (4, 4)))], frame=F)
+    with pytest.raises(ValueError, match="negative"):
+        materialize([TimedOverlay(lay, 0, 1, fade_in=-1)], frame=F)
+
+
+@ffmpeg
+def test_padding_keeps_every_audio_track(tmp_path):
+    from tituli import video
+
+    src = tmp_path / "two.mp4"
+    subprocess.run(
+        [
+            "ffmpeg",
+            "-v",
+            "error",
+            "-y",
+            "-f",
+            "lavfi",
+            "-i",
+            "color=c=blue:s=64x36:r=10:d=1",
+            "-f",
+            "lavfi",
+            "-i",
+            "sine=frequency=440:duration=1",
+            "-f",
+            "lavfi",
+            "-i",
+            "sine=frequency=660:duration=1",
+            "-map",
+            "0",
+            "-map",
+            "1",
+            "-map",
+            "2",
+            "-c:v",
+            "libx264",
+            "-pix_fmt",
+            "yuv420p",
+            "-c:a",
+            "aac",
+            str(src),
+        ],
+        check=True,
+    )
+    out = video.overlay(
+        src,
+        [TimedOverlay(None, 0, 0.5, image=Image.new("RGB", (64, 36)))],
+        tmp_path / "o.mp4",
+        pad_start=0.3,
+        workdir=tmp_path / "w",
+    )
+    assert video.audio_streams(out) == 2

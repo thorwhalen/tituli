@@ -112,11 +112,23 @@ Rules built in: label on first appearance, again only after 150 s, truncated (no
 from tituli import Frame, TextStyle, block, glossed, render, stack
 
 f = Frame.blank((1920, 1080), color="#14161f")
-page = stack([
-    block("Sing along to learn 7 katakana", TextStyle(size=0.05, weight=700), f),
-    glossed([("カ", "ka"), ("ス", "su"), ("ン", "n")], frame=f, anchor=None),   # glyph over reading, one pitch
-    block("バス bus · スープ soup · …", TextStyle(size=0.027), f, max_width=0.86 * f.width, break_at=" · "),
-], frame=f, gap=[0.06, 0.05])   # fractions of frame height, one per seam; placed centred in title-safe
+page = stack(
+    [
+        block("Sing along to learn 7 katakana", TextStyle(size=0.05, weight=700), f),
+        glossed(
+            [("カ", "ka"), ("ス", "su"), ("ン", "n")], frame=f, anchor=None
+        ),  # glyph over reading, one pitch
+        block(
+            "バス bus · スープ soup · …",
+            TextStyle(size=0.027),
+            f,
+            max_width=0.86 * f.width,
+            break_at=" · ",
+        ),
+    ],
+    frame=f,
+    gap=[0.06, 0.05],
+)  # fractions of frame height, one per seam; placed centred in title-safe
 render(page, f).save("title.png")
 ```
 `grid(blocks, columns=3, frame=f)` for cells on one pitch. Nested combinators take `anchor=None`. `break_at` wraps a list only between items; U+00A0 keeps two words together anywhere.

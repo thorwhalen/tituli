@@ -316,7 +316,8 @@ def overlay_video(
     ``overlays`` is a JSON file/string: a list of ``{"start", "end", "text",
     "attribution"?, "kind"?: "caption"|"lower_third", "role"?, "anchor"?}``
     or ``{"start", "end", "image", "fade_in"?, "fade_out"?}`` (a frame-sized
-    PNG, e.g. a title page). Text is laid out against the video's frame size;
+    PNG, e.g. a title page; it occupies its own slot and suppresses no
+    caption — time captions after it). Text is laid out against the video's frame size;
     the picture under each overlay is not sampled (pass a still through
     ``caption`` for that). ``pad_start`` seconds are added at the head (first
     frame held, audio delayed); overlay times are on the padded timeline.
@@ -342,8 +343,8 @@ def overlay_video(
                     slot=it.get("slot", "full"),
                     weight=int(it.get("weight", 3)),
                     image=it["image"],
-                    fade_in=it.get("fade_in"),
-                    fade_out=it.get("fade_out"),
+                    fade_in=_opt_float(it.get("fade_in")),
+                    fade_out=_opt_float(it.get("fade_out")),
                 )
             )
             continue
@@ -376,6 +377,10 @@ def overlay_video(
     kept = resolve(timed)
     _overlay(video, kept, out, size=size, pad_start=pad_start)
     return {"out": out, "overlays": len(kept), "dropped": len(timed) - len(kept)}
+
+
+def _opt_float(v) -> float | None:
+    return None if v is None else float(v)
 
 
 def fonts(query: str = "") -> dict:

@@ -198,19 +198,29 @@ def _break_atoms(para: str, break_at: str | None) -> tuple[list[str], str]:
 
     >>> _break_atoms("a 1 · b 2", " · ")
     (['a 1 ·', 'b 2'], ' ')
+    >>> _break_atoms("カ、ス、ン", "、")         # no space in the separator, none added
+    (['カ、', 'ス、', 'ン'], '')
+    >>> _break_atoms(" · a ·  · b", " · ")      # empty items keep their marks
+    (['·', 'a ·', '·', 'b'], ' ')
     >>> _break_atoms("a b", None)
     (['a', 'b'], ' ')
     """
     if not break_at:
         return _words(para), _WORD_SEP
-    mark = break_at.rstrip()
-    joiner = break_at[len(mark) :] or _WORD_SEP
-    mark = mark.lstrip()
-    lead = break_at[: len(break_at.rstrip()) - len(mark)]
-    items = [" ".join(_words(c)) for c in para.split(break_at)]
-    items = [c for c in items if c]
+    mark = break_at.strip()
+    if not mark:
+        raise ValueError(
+            f"break_at={break_at!r} is only whitespace; a list separator needs a "
+            "visible mark (' · ', ', ', '、')"
+        )
+    lead = break_at[: break_at.index(mark)]
+    joiner = break_at[break_at.index(mark) + len(mark) :]
+    chunks = [" ".join(_words(c)) for c in para.split(break_at)]
+    if chunks and not chunks[-1]:
+        chunks.pop()  # a trailing separator: its mark closes the item before it
     atoms = [
-        f"{c}{lead}{mark}" if i < len(items) - 1 else c for i, c in enumerate(items)
+        (f"{c}{lead}{mark}" if c else mark) if i < len(chunks) - 1 else c
+        for i, c in enumerate(chunks)
     ]
     return atoms, joiner
 
@@ -241,20 +251,21 @@ def wrap(
 
     mark = break_at.strip() if break_at else ""
 
-    def greedy(atoms: list[str], joiner: str) -> list[str]:
+    def greedy(atoms: list[str], joiner: str, *, split_wide: bool) -> list[str]:
         lines: list[str] = []
         line = ""
         for atom in atoms:
-            if break_at and not fits(atom) and len(_words(atom)) > 1:
-                # an item too wide for any line: word-wrap inside it
+            words = _words(atom)
+            if split_wide and len(words) > 1 and not fits(atom):
+                # an item too wide for any line: word-wrap inside it (once —
+                # a single word wider than the line takes a line of its own)
                 if line:
                     lines.append(line)
-                words = _words(atom)
                 if words[-1] == mark:  # keep the separator with the word it follows
                     words[-2:] = [f"{words[-2]} {mark}"]
-                inner = greedy(words, _WORD_SEP)
+                inner = greedy(words, _WORD_SEP, split_wide=False)
                 lines.extend(inner[:-1])
-                line = inner[-1] if inner else ""
+                line = inner[-1]
                 continue
             trial = f"{line}{joiner}{atom}" if line else atom
             if not line or fits(trial):
@@ -269,7 +280,7 @@ def wrap(
     out: list[str] = []
     for para in text.split("\n"):
         atoms, joiner = _break_atoms(para, break_at)
-        out.extend(greedy(atoms, joiner) if atoms else [""])
+        out.extend(greedy(atoms, joiner, split_wide=bool(break_at)) if atoms else [""])
     return out
 
 

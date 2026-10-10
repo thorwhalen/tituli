@@ -54,8 +54,17 @@ def _height(frame: Frame | float) -> float:
     return frame.height if isinstance(frame, Frame) else float(frame)
 
 
+_LOSS_KEYS = ("overflow", "unplaced")  # what a part reports it could not set
+
+
 def _measurable(items: Sequence[Layout]) -> None:
-    """Refuse a layout that has plates but no runs: it has no size to place by."""
+    """Refuse items a combinator cannot move honestly.
+
+    A layout with plates but no runs has no size to place by; a frame-anchored
+    scrim (``corner-*``/``gradient-*``, as ``caption`` makes) is cut to the
+    frame edge its block hugs, so moving it with the block would leave it
+    hanging off nothing. Compose the text, then add the scrim to the page.
+    """
     bad = [i for i, lay in enumerate(items) if lay.plates and not lay.runs]
     if bad:
         raise ValueError(
@@ -63,6 +72,34 @@ def _measurable(items: Sequence[Layout]) -> None:
             "and would be left off the page; add the plate to a block with text "
             "(Layout.with_plates) instead"
         )
+    anchored = [
+        i for i, lay in enumerate(items) if any(p.kind != "box" for p in lay.plates)
+    ]
+    if anchored:
+        raise ValueError(
+            f"items {anchored} carry frame-anchored scrims (corner/gradient "
+            "plates, e.g. from caption()); they belong to the frame edge, not "
+            "the block. Stack the text (block/glossed), then add a scrim to the page"
+        )
+
+
+def _combined(parts: Sequence[Layout], runs, plates, **own) -> Layout:
+    """One layout from ``parts``: their loss reports summed, never overwritten.
+
+    (``Layout.__add__`` merges meta last-wins, which would let a later part's
+    empty ``unplaced`` erase an earlier part's report, and would carry an
+    inner card's ``anchor`` onto a page placed somewhere else.)
+    """
+    meta: dict = {"parts": tuple(dict(p.meta) for p in parts), **own}
+    for key in _LOSS_KEYS:
+        found = [p.meta[key] for p in parts if key in p.meta]
+        if found:
+            meta[key] = (
+                [x for f in found for x in f]
+                if all(isinstance(f, (list, tuple)) for f in found)
+                else sum(float(f) for f in found)
+            )
+    return Layout(tuple(runs), tuple(plates), meta)
 
 
 def _gaps(gap: float | Sequence[float], n: int) -> list[float]:
@@ -95,6 +132,14 @@ def _placed(
     if anchor is None or not isinstance(frame, Frame) or not lay.runs:
         return lay
     bb = lay.bbox()
+    region = frame.safe
+    if bb.width > region.width + 0.5 or bb.height > region.height + 0.5:
+        raise ValueError(
+            f"the composed page is {bb.width:.0f}x{bb.height:.0f} px but the "
+            f"title-safe area is {region.width:.0f}x{region.height:.0f} px; it "
+            "would run off the frame. Give long blocks a max_width, use smaller "
+            "styles or gaps, or split it over two pages"
+        )
     where, box = frame.place((bb.width, bb.height), anchor=anchor)
     out = lay.moved_to(box)
     return replace(out, meta={**out.meta, "anchor": where, "box": box})
@@ -118,7 +163,11 @@ def stack(
     ``gap`` is a fraction of frame height: one number for every seam, or one
     per seam (``len(items) - 1`` values) when the page needs a rhythm. A block
     with no runs is kept as a zero-height item, so per-seam gaps still line up.
-    Plates travel with their block.
+    Box plates travel with their block; a frame-anchored scrim raises (see
+    ``_measurable``). A page larger than the title-safe area raises rather
+    than run off the frame. Parts' loss reports (``overflow``/``unplaced``)
+    are summed into the result's meta, and each part's meta is kept under
+    ``meta["parts"]``.
 
     >>> from tituli.layout import block
     >>> from tituli.style import TextStyle
@@ -132,17 +181,18 @@ def stack(
     fh = _height(frame)
     gaps = _gaps(gap, len(items))
     width = max((lay.bbox().width for lay in items if lay.runs), default=0.0)
-    out = Layout()
+    runs, plates = [], []
     y = 0.0
     for i, lay in enumerate(items):
         if lay.runs:
             bb = lay.bbox()
-            x = _x_in(width, bb.width, align)
-            out = out + _at_origin(lay).translated(x, y)
+            moved = _at_origin(lay).translated(_x_in(width, bb.width, align), y)
+            runs += moved.runs
+            plates += moved.plates
             y += bb.height
         if i < len(gaps):
             y += gaps[i] * fh
-    out = replace(out, meta={**out.meta, "block_width": width})
+    out = _combined(items, runs, plates, block_width=width)
     return _placed(out, frame, anchor)
 
 
@@ -171,18 +221,25 @@ def grid(
     True
     """
     fh = _height(frame)
+    _measurable(items)
     n = len(items)
     if n == 0:
         return Layout()
-    _measurable(items)
     cols = n if columns is None else int(columns)
     if cols < 1:
         raise ValueError(f"columns must be >= 1, got {columns!r}")
-    col_gap, row_gap = (gap, gap) if isinstance(gap, (int, float)) else gap
+    if isinstance(gap, (int, float)):
+        col_gap = row_gap = float(gap)
+    elif len(gap) == 2:
+        col_gap, row_gap = (float(g) for g in gap)
+    else:
+        raise ValueError(
+            f"grid gap is one number or (column_gap, row_gap), got {gap!r}"
+        )
     boxes = [lay.bbox() if lay.runs else Box(0, 0, 0, 0) for lay in items]
     cell_w = max(b.width for b in boxes)
     rows = [list(range(r, min(r + cols, n))) for r in range(0, n, cols)]
-    out = Layout()
+    runs, plates = [], []
     y = 0.0
     for row in rows:
         row_h = max(boxes[i].height for i in row)
@@ -190,10 +247,12 @@ def grid(
             if not items[i].runs:
                 continue
             x = c * (cell_w + col_gap * fh) + _x_in(cell_w, boxes[i].width, align)
-            out = out + _at_origin(items[i]).translated(x, y)
+            moved = _at_origin(items[i]).translated(x, y)
+            runs += moved.runs
+            plates += moved.plates
         y += row_h + row_gap * fh
-    out = replace(
-        out, meta={**out.meta, "cell_width": cell_w, "columns": cols, "rows": len(rows)}
+    out = _combined(
+        items, runs, plates, cell_width=cell_w, columns=cols, rows=len(rows)
     )
     return _placed(out, frame, anchor)
 
