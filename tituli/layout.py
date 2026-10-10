@@ -21,6 +21,7 @@ True
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field, replace
 from typing import Iterable, Literal, Sequence
 
@@ -42,6 +43,8 @@ PlateKind = Literal[
 ]
 
 _WORD_SEP = " "
+# Breaking spaces only: the no-break spaces (U+00A0, U+2007, U+202F) are not in this set.
+_BREAKING_SPACE = re.compile(r"[ \t\r\f\v\u2000-\u200b\u3000]+")
 
 
 @dataclass(frozen=True)
@@ -174,31 +177,99 @@ def measure(text: str, style: TextStyle, frame_height: float) -> float:
     return face.length(text) + _tracking_px(style, face) * max(0, len(text) - 1)
 
 
+def _words(text: str) -> list[str]:
+    """Split on breaking spaces only: a no-break space (U+00A0) binds its words.
+
+    (``str.split()`` treats U+00A0 as whitespace, which silently undid the one
+    tool a caller had to keep a pair together.)
+
+    >>> _words("バス\u00a0bus  soup")
+    ['バス\xa0bus', 'soup']
+    """
+    return [w for w in _BREAKING_SPACE.split(text) if w]
+
+
+def _break_atoms(para: str, break_at: str | None) -> tuple[list[str], str]:
+    """The unbreakable atoms of a paragraph, and the string that rejoins them.
+
+    With ``break_at=" · "`` the paragraph ``"a 1 · b 2"`` gives atoms
+    ``["a 1 ·", "b 2"]`` joined by ``" "``: the separator's visible part stays
+    at the end of the line it closes, and nothing breaks inside an item.
+
+    >>> _break_atoms("a 1 · b 2", " · ")
+    (['a 1 ·', 'b 2'], ' ')
+    >>> _break_atoms("a b", None)
+    (['a', 'b'], ' ')
+    """
+    if not break_at:
+        return _words(para), _WORD_SEP
+    mark = break_at.rstrip()
+    joiner = break_at[len(mark) :] or _WORD_SEP
+    mark = mark.lstrip()
+    lead = break_at[: len(break_at.rstrip()) - len(mark)]
+    items = [" ".join(_words(c)) for c in para.split(break_at)]
+    items = [c for c in items if c]
+    atoms = [
+        f"{c}{lead}{mark}" if i < len(items) - 1 else c for i, c in enumerate(items)
+    ]
+    return atoms, joiner
+
+
 def wrap(
-    text: str, style: TextStyle, frame_height: float, *, max_width: float
+    text: str,
+    style: TextStyle,
+    frame_height: float,
+    *,
+    max_width: float,
+    break_at: str | None = None,
 ) -> list[str]:
     """Greedy word wrap on measured widths. Explicit newlines are honoured.
+
+    ``break_at`` makes a list wrap only *between* its items: with ``" · "``,
+    ``"バス bus · スープ soup"`` never ends a line on ``バス``. An item wider
+    than the whole line falls back to word wrapping inside that item (it is
+    never cut). A no-break space (U+00A0) binds two words in any mode.
 
     >>> from tituli.style import CAPTION
     >>> lines = wrap("one two three four five six", CAPTION, 1080, max_width=300)
     >>> len(lines) >= 2 and all(measure(l, CAPTION, 1080) <= 300 for l in lines)
     True
     """
-    out: list[str] = []
-    for para in text.split("\n"):
-        words = para.split()
-        if not words:
-            out.append("")
-            continue
-        line = words[0]
-        for w in words[1:]:
-            trial = f"{line}{_WORD_SEP}{w}"
-            if measure(trial, style, frame_height) <= max_width:
+
+    def fits(s: str) -> bool:
+        return measure(s, style, frame_height) <= max_width
+
+    mark = break_at.strip() if break_at else ""
+
+    def greedy(atoms: list[str], joiner: str) -> list[str]:
+        lines: list[str] = []
+        line = ""
+        for atom in atoms:
+            if break_at and not fits(atom) and len(_words(atom)) > 1:
+                # an item too wide for any line: word-wrap inside it
+                if line:
+                    lines.append(line)
+                words = _words(atom)
+                if words[-1] == mark:  # keep the separator with the word it follows
+                    words[-2:] = [f"{words[-2]} {mark}"]
+                inner = greedy(words, _WORD_SEP)
+                lines.extend(inner[:-1])
+                line = inner[-1] if inner else ""
+                continue
+            trial = f"{line}{joiner}{atom}" if line else atom
+            if not line or fits(trial):
                 line = trial
             else:
-                out.append(line)
-                line = w
-        out.append(line)
+                lines.append(line)
+                line = atom
+        if line:
+            lines.append(line)
+        return lines
+
+    out: list[str] = []
+    for para in text.split("\n"):
+        atoms, joiner = _break_atoms(para, break_at)
+        out.extend(greedy(atoms, joiner) if atoms else [""])
     return out
 
 
@@ -211,6 +282,7 @@ def fit_size(
     max_height: float | None = None,
     min_size: float = 0.012,
     step: float = 0.9,
+    break_at: str | None = None,
 ) -> TextStyle:
     """Shrink ``style.size`` until ``text`` wraps within the given bounds.
 
@@ -219,7 +291,7 @@ def fit_size(
     """
     s = style
     while s.size > min_size:
-        lines = wrap(text, s, frame_height, max_width=max_width)
+        lines = wrap(text, s, frame_height, max_width=max_width, break_at=break_at)
         widest = max((measure(l, s, frame_height) for l in lines), default=0)
         face = s.face(frame_height)
         height = len(lines) * face.size * s.leading
@@ -278,13 +350,15 @@ def block(
     color: RGBA | None = None,
     unit: Unit = "line",
     tags: tuple[str, ...] = (),
+    break_at: str | None = None,
 ) -> Layout:
     """Lay out prose as lines from the top-left corner ``(x, y)``.
 
     ``text`` is a string (wrapped to ``max_width`` when given) or pre-broken
     lines. Alignment follows ``style.align`` within ``max_width`` (or the widest
     line when no width is given). ``unit="glyph"`` emits one run per character
-    (needed for tracking and for per-glyph reveals).
+    (needed for tracking and for per-glyph reveals). ``break_at`` (e.g.
+    ``" · "``) wraps a list only between its items — see :func:`wrap`.
     """
     fh = frame.height if isinstance(frame, Frame) else float(frame)
     face = style.face(fh)
@@ -293,7 +367,7 @@ def block(
     )
     if isinstance(text, str):
         lines = (
-            wrap(text, style, fh, max_width=max_width)
+            wrap(text, style, fh, max_width=max_width, break_at=break_at)
             if max_width
             else text.split("\n")
         )

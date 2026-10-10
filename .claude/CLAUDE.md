@@ -21,6 +21,7 @@ Surfaces built: CLI (`python -m tituli` over `tituli.tools._dispatch_funcs`), sh
 - Sizes are fractions of frame height; time is seconds; boxes crossing a boundary are normalised `(x, y, w, h)`.
 - Never burn text into stills a camera move will pan; composite onto the finished motion video.
 - A **tracked** style (`tracking != 0`) lays out one run per glyph (Pillow cannot track) — tests that count runs must use an untracked style.
+- A page of several blocks is one `Layout` (`tituli.arrange.stack/grid/glossed`), measured by runs' bbox; a plates-only item raises rather than vanish. `overlay(pad_start=)` puts overlay times on the padded timeline.
 - No fonts ship in the package. Discovery + Pillow's embedded Aileron fallback.
 
 ## Reviewing

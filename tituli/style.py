@@ -153,6 +153,11 @@ CREDITS_NAME = TextStyle(size=0.032, weight=SEMIBOLD, align="left")
 CREDITS_TITLE = TextStyle(size=0.06, weight=BOLD, tracking=-0.005)
 CREDITS_LINE = TextStyle(size=0.03, weight=REGULAR, leading=1.4)
 
+# A glossed glyph row (tituli.arrange.glossed): the glyph is the subject, the
+# reading under it is read second. 140 px / 49 px at 1080p.
+GLOSS_GLYPH = TextStyle(size=0.13, weight=BOLD, leading=1.0)
+GLOSS = TextStyle(size=0.045, weight=SEMIBOLD, leading=1.1)
+
 CALLIGRAM = TextStyle(
     family=fonts.SERIF_STACK, size=0.035, weight=REGULAR, color=NEAR_BLACK, align="left"
 )

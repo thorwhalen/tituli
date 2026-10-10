@@ -29,7 +29,7 @@ implicit claim about what it is, so "no caption" must be said, never defaulted.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Any, Callable, Iterable, Sequence
 
 from tituli.layout import Layout
@@ -85,6 +85,11 @@ class TimedOverlay:
     contend for a slot — the heavier suppresses the lighter, never stacks.
     ``payload`` is whatever the caller wants to carry to rendering (a
     :class:`Label`, a dict, ...); ``layout`` is filled in once rendered.
+
+    ``image`` is the other way in: an already-rendered frame-sized picture (a
+    PIL image or a path) — a title page made elsewhere, a logo plate — timed
+    like any layout. ``fade_in`` / ``fade_out`` override ``fade`` for one end
+    (``fade_in=0`` for a title that must be up on the first frame).
     """
 
     layout: Layout | None
@@ -95,6 +100,9 @@ class TimedOverlay:
     fade: float = DEFAULT_FADE_S
     payload: Any = None
     meta: dict = field(default_factory=dict, compare=False)
+    image: Any = None
+    fade_in: float | None = None
+    fade_out: float | None = None
 
     @property
     def duration(self) -> float:
@@ -104,16 +112,7 @@ class TimedOverlay:
         return self.start < other.end and other.start < self.end
 
     def with_layout(self, layout: Layout) -> "TimedOverlay":
-        return TimedOverlay(
-            layout,
-            self.start,
-            self.end,
-            self.slot,
-            self.weight,
-            self.fade,
-            self.payload,
-            dict(self.meta),
-        )
+        return replace(self, layout=layout, meta=dict(self.meta))
 
 
 def schedule_labels(
@@ -181,9 +180,7 @@ def _yield_to(o: TimedOverlay, heavier: Iterable[TimedOverlay]) -> TimedOverlay 
             end = min(end, h.start)
     if end == o.end:
         return o
-    return TimedOverlay(
-        o.layout, o.start, end, o.slot, o.weight, o.fade, o.payload, dict(o.meta)
-    )
+    return replace(o, end=end, meta=dict(o.meta))
 
 
 def resolve(

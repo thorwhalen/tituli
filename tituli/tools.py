@@ -309,13 +309,17 @@ def overlay_video(
     *,
     out: str = "overlaid.mp4",
     delivery: str | None = "youtube",
+    pad_start: float = 0.0,
 ) -> dict:
-    """Composite captions/lower thirds onto a finished video in one ffmpeg pass.
+    """Composite captions/lower thirds/images onto a finished video in one ffmpeg pass.
 
     ``overlays`` is a JSON file/string: a list of ``{"start", "end", "text",
-    "attribution"?, "kind"?: "caption"|"lower_third", "role"?, "anchor"?}``.
-    Text is laid out against the video's frame size; the picture under each
-    overlay is not sampled (pass a still through ``caption`` for that).
+    "attribution"?, "kind"?: "caption"|"lower_third", "role"?, "anchor"?}``
+    or ``{"start", "end", "image", "fade_in"?, "fade_out"?}`` (a frame-sized
+    PNG, e.g. a title page). Text is laid out against the video's frame size;
+    the picture under each overlay is not sampled (pass a still through
+    ``caption`` for that). ``pad_start`` seconds are added at the head (first
+    frame held, audio delayed); overlay times are on the padded timeline.
     """
     from tituli.compose import caption as _caption
     from tituli.compose import lower_third as _lt
@@ -329,6 +333,20 @@ def overlay_video(
     frame = Frame.blank(size).with_delivery(delivery)
     timed = []
     for it in items:
+        if "image" in it:
+            timed.append(
+                TimedOverlay(
+                    None,
+                    float(it["start"]),
+                    float(it["end"]),
+                    slot=it.get("slot", "full"),
+                    weight=int(it.get("weight", 3)),
+                    image=it["image"],
+                    fade_in=it.get("fade_in"),
+                    fade_out=it.get("fade_out"),
+                )
+            )
+            continue
         kind = it.get("kind", "caption")
         if kind == "lower_third":
             lay = _lt(
@@ -356,7 +374,7 @@ def overlay_video(
             )
         )
     kept = resolve(timed)
-    _overlay(video, kept, out, size=size)
+    _overlay(video, kept, out, size=size, pad_start=pad_start)
     return {"out": out, "overlays": len(kept), "dropped": len(timed) - len(kept)}
 
 

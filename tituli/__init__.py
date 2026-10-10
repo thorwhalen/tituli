@@ -20,6 +20,7 @@ Optional layers, none imported here: ``tituli[outlines]`` (fontTools, for
 text-overlay body schema), ``tituli[cli]`` (``python -m tituli``).
 """
 
+from tituli.arrange import glossed, grid, stack
 from tituli.calligram import in_shape, on_path, rain, resolve_shape
 from tituli.color import contrast_ratio, ink_for, parse_color
 from tituli.compose import (
@@ -62,6 +63,8 @@ from tituli.style import (
     CALLIGRAM,
     CAPTION,
     CREDITS_NAME,
+    GLOSS,
+    GLOSS_GLYPH,
     KICKER,
     SUBTITLE,
     TITLE,
@@ -99,6 +102,9 @@ __all__ = [
     "in_shape",
     "resolve_shape",
     "block",
+    "stack",
+    "grid",
+    "glossed",
     "along_path",
     "wrap",
     "measure",
@@ -137,4 +143,6 @@ __all__ = [
     "ATTRIBUTION",
     "CREDITS_NAME",
     "CALLIGRAM",
+    "GLOSS",
+    "GLOSS_GLYPH",
 ]
