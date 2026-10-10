@@ -42,6 +42,9 @@ text-overlay body schema), `tituli[cli]` (`python -m tituli`).
 | [`in_shape`](#tituli.in_shape)(text, mask, \*, frame[, style, box, ...]) | Pour prose into a silhouette (light = inside).                                                                                                 |
 | [`resolve_shape`](#tituli.resolve_shape)(shape, box)                          | Turn a name, an SVG `d` string or a Path into a Path fitted to `box`.                                                                          |
 | [`block`](#tituli.block)(text, style, frame, \*[, max_width, x, ...]) | Lay out prose as lines from the top-left corner `(x, y)`.                                                                                      |
+| [`stack`](#tituli.stack)(items, \*, frame[, gap, align, anchor])      | Blocks top to bottom, `gap` apart, aligned within the widest.                                                                                  |
+| [`grid`](#tituli.grid)(items, \*, frame[, columns, gap, align, ...]) | Blocks in uniform cells, row-major; one row when `columns` is None.                                                                            |
+| [`glossed`](#tituli.glossed)(pairs, \*, frame[, glyph, gloss, ...])     | A row of big glyphs, each with a small reading centred under it.                                                                               |
 | [`along_path`](#tituli.along_path)(text, path, style, frame, \*[, ...])    | Set `text` glyph by glyph along `path` (the path is the baseline).                                                                             |
 | [`wrap`](#tituli.wrap)(text, style, frame_height, \*, max_width)     | Greedy word wrap on measured widths.                                                                                                           |
 | [`measure`](#tituli.measure)(text, style, frame_height)                 | Width in pixels of `text` set in `style` on a frame of that height.                                                                            |
@@ -595,7 +598,7 @@ A copy with some fields replaced.
 700
 ```
 
-### *class* tituli.TimedOverlay(layout, start, end, slot='top-left', weight=1, fade=0.45, payload=None, meta=<factory>)
+### *class* tituli.TimedOverlay(layout, start, end, slot='top-left', weight=1, fade=0.45, payload=None, meta=<factory>, image=None, fade_in=None, fade_out=None)
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -605,6 +608,11 @@ A layout (or a thing to lay out) on screen from `start` to `end`.
 contend for a slot — the heavier suppresses the lighter, never stacks.
 `payload` is whatever the caller wants to carry to rendering (a
 [`Label`](#tituli.Label), a dict, …); `layout` is filled in once rendered.
+
+`image` is the other way in: an already-rendered frame-sized picture (a
+PIL image or a path) — a title page made elsewhere, a logo plate — timed
+like any layout. `fade_in` / `fade_out` override `fade` for one end
+(`fade_in=0` for a title that must be up on the first frame).
 
 ### tituli.along_path(text, path, style, frame, , start=0.0, align='start', offset=0.0, upright=False, color=None, tags=())
 
@@ -622,14 +630,15 @@ reported in `meta["overflow"]` rather than silently squeezed.
 * **Return type:**
   [`Layout`](tituli.layout.html.md#tituli.layout.Layout)
 
-### tituli.block(text, style, frame, , max_width=None, x=0.0, y=0.0, color=None, unit='line', tags=())
+### tituli.block(text, style, frame, , max_width=None, x=0.0, y=0.0, color=None, unit='line', tags=(), break_at=None)
 
 Lay out prose as lines from the top-left corner `(x, y)`.
 
 `text` is a string (wrapped to `max_width` when given) or pre-broken
 lines. Alignment follows `style.align` within `max_width` (or the widest
 line when no width is given). `unit="glyph"` emits one run per character
-(needed for tracking and for per-glyph reveals).
+(needed for tracking and for per-glyph reveals). `break_at` (e.g.
+`" · "`) wraps a list only between its items — see [`wrap()`](#tituli.wrap).
 
 * **Return type:**
   [`Layout`](tituli.layout.html.md#tituli.layout.Layout)
@@ -785,7 +794,7 @@ nothing. Only when shrinking would make the text unreadable does this raise
 ('short', True)
 ```
 
-### tituli.fit_size(text, style, frame_height, , max_width, max_height=None, min_size=0.012, step=0.9)
+### tituli.fit_size(text, style, frame_height, , max_width, max_height=None, min_size=0.012, step=0.9, break_at=None)
 
 Shrink `style.size` until `text` wraps within the given bounds.
 
@@ -805,6 +814,48 @@ lazily so a long clip never sits in memory at once.
 
 * **Return type:**
   [`Iterator`](https://docs.python.org/3/library/typing.html#typing.Iterator)[`Image`]
+
+### tituli.glossed(pairs, , frame, glyph=TextStyle(family=('Helvetica Neue', 'Inter', 'Helvetica', 'Avenir Next', 'Roboto', 'Univers', 'Liberation Sans', 'DejaVu Sans', 'Arial'), size=0.13, weight=700, italic=False, condensed=False, color=(255, 255, 255), tracking=0.0, leading=1.0, case='as-is', align='center', opacity=1.0, features=()), gloss=TextStyle(family=('Helvetica Neue', 'Inter', 'Helvetica', 'Avenir Next', 'Roboto', 'Univers', 'Liberation Sans', 'DejaVu Sans', 'Arial'), size=0.045, weight=600, italic=False, condensed=False, color=(255, 255, 255), tracking=0.0, leading=1.1, case='as-is', align='center', opacity=1.0, features=()), gap=0.012, column_gap=0.08, columns=None, anchor='center')
+
+A row of big glyphs, each with a small reading centred under it.
+
+`pairs` is `[(glyph, gloss), ...]` — `[("カ", "ka"), ("ス", "su")]`.
+Columns share one pitch (the widest column), so readings line up under
+their glyphs and the row reads as a row. `columns` wraps a long row into
+several. Runs are tagged `glyph:i` / `gloss:i` (for staggered reveals).
+
+* **Return type:**
+  [`Layout`](tituli.layout.html.md#tituli.layout.Layout)
+
+```pycon
+>>> lay = glossed([("カ", "ka"), ("ス", "su")], frame=1080)
+>>> [r.text for r in lay.runs]
+['カ', 'ka', 'ス', 'su']
+>>> [r.tags for r in lay.runs][:2]
+[('glyph:0',), ('gloss:0',)]
+```
+
+### tituli.grid(items, , frame, columns=None, gap=0.03, align='center', anchor='center')
+
+Blocks in uniform cells, row-major; one row when `columns` is None.
+
+Every cell is as wide as the widest item (so a row of glyphs keeps one
+pitch whatever each glyph’s advance), each row as tall as its tallest
+item; items are aligned `align` within their cell and to its top.
+`gap` is a fraction of frame height, or `(column_gap, row_gap)`.
+
+* **Return type:**
+  [`Layout`](tituli.layout.html.md#tituli.layout.Layout)
+
+```pycon
+>>> from tituli.layout import block
+>>> from tituli.style import TextStyle
+>>> cells = [block(t, TextStyle(size=0.05), 1080) for t in "a b c d".split()]
+>>> g = grid(cells, frame=1080, columns=2)
+>>> tops = [round(r.bbox().y0) for r in g.runs]
+>>> tops[0] == tops[1] < tops[2] == tops[3]      # two rows of two
+True
+```
 
 ### tituli.in_shape(text, mask, , frame, style=TextStyle(family=('Georgia', 'Palatino', 'Baskerville', 'Liberation Serif', 'DejaVu Serif', 'Times New Roman'), size=0.035, weight=400, italic=False, condensed=False, color=(17, 17, 17), tracking=0.0, leading=1.2, case='as-is', align='left', opacity=1.0, features=()), box=None, repeat=True)
 
@@ -1019,6 +1070,32 @@ One label per span, held `hold_s`, with the three rules built in.
 * **Return type:**
   [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`TimedOverlay`](tituli.schedule.html.md#tituli.schedule.TimedOverlay)]
 
+### tituli.stack(items, , frame, gap=0.02, align='center', anchor='center')
+
+Blocks top to bottom, `gap` apart, aligned within the widest.
+
+`gap` is a fraction of frame height: one number for every seam, or one
+per seam (`len(items) - 1` values) when the page needs a rhythm. A block
+with no runs is kept as a zero-height item, so per-seam gaps still line up.
+Box plates travel with their block; a frame-anchored scrim raises (see
+`_measurable`). A page larger than the title-safe area raises rather
+than run off the frame. Parts’ loss reports (`overflow`/`unplaced`)
+are summed into the result’s meta, and each part’s meta is kept under
+`meta["parts"]`.
+
+* **Return type:**
+  [`Layout`](tituli.layout.html.md#tituli.layout.Layout)
+
+```pycon
+>>> from tituli.layout import block
+>>> from tituli.style import TextStyle
+>>> a = block("wide line of text", TextStyle(size=0.05), 1080)
+>>> b = block("x", TextStyle(size=0.05), 1080)
+>>> s = stack([a, b], frame=1080, align="left")
+>>> s.runs[0].bbox().x0 == s.runs[1].bbox().x0
+True
+```
+
 ### tituli.title_card(title, subtitle='', , frame, kicker='', anchor='center', title_style=TextStyle(family=('Helvetica Neue', 'Inter', 'Helvetica', 'Avenir Next', 'Roboto', 'Univers', 'Liberation Sans', 'DejaVu Sans', 'Arial'), size=0.075, weight=700, italic=False, condensed=False, color=(255, 255, 255), tracking=-0.01, leading=1.1, case='as-is', align='center', opacity=1.0, features=()), subtitle_style=TextStyle(family=('Helvetica Neue', 'Inter', 'Helvetica', 'Avenir Next', 'Roboto', 'Univers', 'Liberation Sans', 'DejaVu Sans', 'Arial'), size=0.032, weight=400, italic=False, condensed=False, color=(255, 255, 255), tracking=0.02, leading=1.3, case='as-is', align='center', opacity=1.0, features=()), kicker_style=TextStyle(family=('Helvetica Neue', 'Inter', 'Helvetica', 'Avenir Next', 'Roboto', 'Univers', 'Liberation Sans', 'DejaVu Sans', 'Arial'), size=0.022, weight=500, italic=False, condensed=False, color=(255, 255, 255), tracking=0.18, leading=1.2, case='upper', align='center', opacity=1.0, features=()), ink=None, scrim=None)
 
 An opening card: optional kicker, title, optional subtitle.
@@ -1041,9 +1118,14 @@ into an artist field). The result always fits.
 * **Return type:**
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
-### tituli.wrap(text, style, frame_height, , max_width)
+### tituli.wrap(text, style, frame_height, , max_width, break_at=None)
 
 Greedy word wrap on measured widths. Explicit newlines are honoured.
+
+`break_at` makes a list wrap only *between* its items: with `" · "`,
+`"バス bus · スープ soup"` never ends a line on `バス`. An item wider
+than the whole line falls back to word wrapping inside that item (it is
+never cut). A no-break space (U+00A0) binds two words in any mode.
 
 * **Return type:**
   [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
@@ -1057,8 +1139,9 @@ True
 
 ### Modules
 
-| [`bodies`](tituli.bodies.html.md#module-tituli.bodies)       | A lacing body schema for a rendered caption (`pip install tituli[lacing]`).                                         |
+| [`arrange`](tituli.arrange.html.md#module-tituli.arrange)     | Layout combinators: several blocks composed into one [`Layout`](#tituli.Layout).       |
 |------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
+| [`bodies`](tituli.bodies.html.md#module-tituli.bodies)       | A lacing body schema for a rendered caption (`pip install tituli[lacing]`).                                         |
 | [`calligram`](tituli.calligram.html.md#module-tituli.calligram) | Calligrams and concrete poems: text whose shape is part of the meaning.                                             |
 | [`color`](tituli.color.html.md#module-tituli.color)         | Colours, WCAG contrast, and the ink-for-this-background decision.                                                   |
 | [`compose`](tituli.compose.html.md#module-tituli.compose)     | The composed pieces: title cards, captions with attribution, lower thirds.                                          |

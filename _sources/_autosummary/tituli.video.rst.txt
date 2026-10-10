@@ -17,6 +17,8 @@ tituli.video
       crawl
       frames_to_video
       probe_size
+      has_audio
+      audio_streams
    
    .. rubric:: Exceptions
 

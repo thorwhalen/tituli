@@ -113,6 +113,7 @@
   <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html">API reference</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../_autosummary/tituli.html">tituli</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/tituli.arrange.html">tituli.arrange</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../_autosummary/tituli.bodies.html">tituli.bodies</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../_autosummary/tituli.calligram.html">tituli.calligram</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../_autosummary/tituli.color.html">tituli.color</a></li>
@@ -343,9 +344,14 @@
 </span><span id="line-153"><span class="n">CREDITS_TITLE</span> <span class="o">=</span> <span class="n">TextStyle</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">BOLD</span><span class="p">,</span> <span class="n">tracking</span><span class="o">=-</span><span class="mf">0.005</span><span class="p">)</span>
 </span><span id="line-154"><span class="n">CREDITS_LINE</span> <span class="o">=</span> <span class="n">TextStyle</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mf">0.03</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">REGULAR</span><span class="p">,</span> <span class="n">leading</span><span class="o">=</span><span class="mf">1.4</span><span class="p">)</span>
 </span><span id="line-155">
-</span><span id="line-156"><span class="n">CALLIGRAM</span> <span class="o">=</span> <span class="n">TextStyle</span><span class="p">(</span>
-</span><span id="line-157">    <span class="n">family</span><span class="o">=</span><span class="n">fonts</span><span class="o">.</span><span class="n">SERIF_STACK</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mf">0.035</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">REGULAR</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">NEAR_BLACK</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">"left"</span>
-</span><span id="line-158"><span class="p">)</span>
+</span><span id="line-156"><span class="c1"># A glossed glyph row (tituli.arrange.glossed): the glyph is the subject, the</span>
+</span><span id="line-157"><span class="c1"># reading under it is read second. 140 px / 49 px at 1080p.</span>
+</span><span id="line-158"><span class="n">GLOSS_GLYPH</span> <span class="o">=</span> <span class="n">TextStyle</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mf">0.13</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">BOLD</span><span class="p">,</span> <span class="n">leading</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+</span><span id="line-159"><span class="n">GLOSS</span> <span class="o">=</span> <span class="n">TextStyle</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mf">0.045</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">SEMIBOLD</span><span class="p">,</span> <span class="n">leading</span><span class="o">=</span><span class="mf">1.1</span><span class="p">)</span>
+</span><span id="line-160">
+</span><span id="line-161"><span class="n">CALLIGRAM</span> <span class="o">=</span> <span class="n">TextStyle</span><span class="p">(</span>
+</span><span id="line-162">    <span class="n">family</span><span class="o">=</span><span class="n">fonts</span><span class="o">.</span><span class="n">SERIF_STACK</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mf">0.035</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">REGULAR</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">NEAR_BLACK</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">"left"</span>
+</span><span id="line-163"><span class="p">)</span>
 </span></code></pre></div>
     </div></div>
           </main>
@@ -359,7 +365,7 @@
 </footer>
     </div>
     
-    <script src="../../_static/documentation_options.js?v=53b53b71"></script>
+    <script src="../../_static/documentation_options.js?v=f7cdbf68"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>

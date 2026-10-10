@@ -24,6 +24,9 @@
       in_shape
       resolve_shape
       block
+      stack
+      grid
+      glossed
       along_path
       wrap
       measure
@@ -80,6 +83,7 @@
    :toctree:
    :recursive:
 
+   arrange
    bodies
    calligram
    color

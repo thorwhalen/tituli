@@ -1,0 +1,14 @@
+tituli.arrange
+==============
+
+.. automodule:: tituli.arrange
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      stack
+      grid
+      glossed
+   

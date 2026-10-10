@@ -2,29 +2,29 @@
 
 # About this build
 
-This documentation was built on **2026-10-06 14:51 UTC** from commit <a href="https://github.com/thorwhalen/tituli/commit/532e80215bcc0be06671cc488408c9764c513353"><code>532e802</code></a> on branch <code>main</code>, for **tituli 0.0.8** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-10-10 14:47 UTC** from commit <a href="https://github.com/reeleehq/tituli/commit/23c59af40473fd8928fdad032cc2c0622f68a951"><code>23c59af</code></a> on branch <code>main</code>, for **tituli 0.0.9** (from <code>pyproject.toml</code>).
 
 #### NOTE
 Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
 
 ## Source
 
-|                     |                                                                                                                                                          |
-|---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/tituli/commit/532e80215bcc0be06671cc488408c9764c513353"><code>532e80215bcc0be06671cc488408c9764c513353</code></a> |
-| Branch              | <code>main</code>                                                                                                                                        |
-| Tags at this commit | <code>0.0.8</code>                                                                                                                                       |
-| Working tree        | clean                                                                                                                                                    |
-| Remote              | <code>https://github.com/thorwhalen/tituli</code>                                                                                                        |
+|                     |                                                                                                                                                        |
+|---------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Commit              | <a href="https://github.com/reeleehq/tituli/commit/23c59af40473fd8928fdad032cc2c0622f68a951"><code>23c59af40473fd8928fdad032cc2c0622f68a951</code></a> |
+| Branch              | <code>main</code>                                                                                                                                      |
+| Tags at this commit | <code>0.0.9</code>                                                                                                                                     |
+| Working tree        | clean                                                                                                                                                  |
+| Remote              | <code>https://github.com/reeleehq/tituli</code>                                                                                                        |
 
 ## Continuous integration
 
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
-| Repository   | <code>thorwhalen/tituli</code>                                                             |
-| Run          | <a href="https://github.com/thorwhalen/tituli/actions/runs/37481524037">37481524037</a>    |
+| Repository   | <code>reeleehq/tituli</code>                                                               |
+| Run          | <a href="https://github.com/reeleehq/tituli/actions/runs/38060863621">38060863621</a>      |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>07ab54c85c8ee8c680add60e3b0a7d9456a4902c</code> (in the history of the built commit) |
+| Event commit | <code>6035cd7c2949659fba8fbf36b91aceb0a54c3233</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -33,7 +33,7 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 | epythet  | 0.2.12  |
 | Sphinx   | 9.1.0   |
 | docutils | 0.22.4  |
-| Python   | 3.12.14 |
+| Python   | 3.12.15 |
 
 ## Configuration as resolved
 
@@ -49,13 +49,13 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/tituli/0.0.8/">0.0.8</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/tituli/0.0.9/">0.0.9</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
-git clone https://github.com/thorwhalen/tituli && cd tituli
-git checkout 532e80215bcc0be06671cc488408c9764c513353
+git clone https://github.com/reeleehq/tituli && cd tituli
+git checkout 23c59af40473fd8928fdad032cc2c0622f68a951
 pip install "epythet==0.2.12"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

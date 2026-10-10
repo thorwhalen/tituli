@@ -114,14 +114,15 @@ reported in `meta["overflow"]` rather than silently squeezed.
 * **Return type:**
   [`Layout`](#tituli.layout.Layout)
 
-### tituli.layout.block(text, style, frame, , max_width=None, x=0.0, y=0.0, color=None, unit='line', tags=())
+### tituli.layout.block(text, style, frame, , max_width=None, x=0.0, y=0.0, color=None, unit='line', tags=(), break_at=None)
 
 Lay out prose as lines from the top-left corner `(x, y)`.
 
 `text` is a string (wrapped to `max_width` when given) or pre-broken
 lines. Alignment follows `style.align` within `max_width` (or the widest
 line when no width is given). `unit="glyph"` emits one run per character
-(needed for tracking and for per-glyph reveals).
+(needed for tracking and for per-glyph reveals). `break_at` (e.g.
+`" · "`) wraps a list only between its items — see [`wrap()`](#tituli.layout.wrap).
 
 * **Return type:**
   [`Layout`](#tituli.layout.Layout)
@@ -140,7 +141,7 @@ spans stay empty and leftover words are reported in `meta["unplaced"]`.
 * **Return type:**
   Layout
 
-### tituli.layout.fit_size(text, style, frame_height, , max_width, max_height=None, min_size=0.012, step=0.9)
+### tituli.layout.fit_size(text, style, frame_height, , max_width, max_height=None, min_size=0.012, step=0.9, break_at=None)
 
 Shrink `style.size` until `text` wraps within the given bounds.
 
@@ -187,9 +188,14 @@ Concatenate layouts.
 * **Return type:**
   [`Layout`](#tituli.layout.Layout)
 
-### tituli.layout.wrap(text, style, frame_height, , max_width)
+### tituli.layout.wrap(text, style, frame_height, , max_width, break_at=None)
 
 Greedy word wrap on measured widths. Explicit newlines are honoured.
+
+`break_at` makes a list wrap only *between* its items: with `" · "`,
+`"バス bus · スープ soup"` never ends a line on `バス`. An item wider
+than the whole line falls back to word wrapping inside that item (it is
+never cut). A no-break space (U+00A0) binds two words in any mode.
 
 * **Return type:**
   [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]

@@ -1,4 +1,4 @@
-> built 2026-10-06 14:51 UTC from 532e802 (main) · tituli 0.0.8. Details: build_info.json
+> built 2026-10-10 14:47 UTC from 23c59af (main) · tituli 0.0.9. Details: build_info.json
 
 # index.html.md
 
@@ -60,21 +60,24 @@ Every use case fills a `Layout` — placed `Run`s (a string, a baseline origin, 
 
 ## What you get
 
-| call                                                       | what it makes                                                                                                                                                                                                                                                                                                                           |
-|------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `title_card(title, subtitle, kicker=…, frame=…)`           | opening card; title fitted (shrunk, never clipped) to 80 % of the safe width                                                                                                                                                                                                                                                            |
-| `caption(text, attribution, frame=…)`                      | museum label: what’s on screen + a small credit line; subject-avoiding; corner-falloff scrim                                                                                                                                                                                                                                            |
-| `lower_third(name, role, frame=…)`                         | who is speaking                                                                                                                                                                                                                                                                                                                         |
-| `note(lines, headline=…, frame=…)`                         | editorial context: a headline over equal-weight lines (“what *Hamilton* is”)                                                                                                                                                                                                                                                            |
-| `intertitle(text, frame=…)`                                | silent-film card, serif italic                                                                                                                                                                                                                                                                                                          |
-| `Credits.from_dict(…)` → `credits_cards` / `credits_crawl` | structured roll: sections, role/name pairs on a gutter, tracked small-cap headings; **never truncates** (paginates, or raises if you cap the cards)                                                                                                                                                                                     |
-| `on_path(text, shape="circle"|"wave"|SVG d|Path)`          | glyphs riding any path, rotated to the tangent or kept upright                                                                                                                                                                                                                                                                          |
-| `rain(lines)`                                              | Apollinaire’s *Il pleut*: upright letters stepping down fanning streaks (the 1918 measurements as defaults)                                                                                                                                                                                                                             |
-| `in_shape(text, mask)`                                     | prose poured into a silhouette                                                                                                                                                                                                                                                                                                          |
-| `schedule_labels(spans, label_for, suppressed_by=cards)`   | one label per shot with first-appearance, repeat-gap and suppression rules **inside** the loop                                                                                                                                                                                                                                          |
-| `run_outline(run)`                                         | a placed run’s glyph contours as one SVG `d` string in frame pixels (`pip install tituli[outlines]`) — text drawn with no font engine; a missing glyph raises `MissingGlyphError`                                                                                                                                                       |
-| `TextStyle(features=("tnum",))`                            | OpenType features by tag; `face.applied_features` says which the font has. One-for-one substitutions (`tnum`, `lnum`, `zero`, `smcp` …) are applied by measurement and `run_outline` from the font’s tables (`tituli[outlines]`); the Pillow engine refuses a run they change (it would draw other glyphs), `HarfBuzzEngine` draws them |
-| `tituli.video.still / overlay / crawl / frames_to_video`   | ffmpeg output; only `overlay`/`fade`/`crop` needed — never `drawtext`/`libass`                                                                                                                                                                                                                                                          |
+| call                                                        | what it makes                                                                                                                                                                                                                                                                                                                           |
+|-------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `title_card(title, subtitle, kicker=…, frame=…)`            | opening card; title fitted (shrunk, never clipped) to 80 % of the safe width                                                                                                                                                                                                                                                            |
+| `caption(text, attribution, frame=…)`                       | museum label: what’s on screen + a small credit line; subject-avoiding; corner-falloff scrim                                                                                                                                                                                                                                            |
+| `lower_third(name, role, frame=…)`                          | who is speaking                                                                                                                                                                                                                                                                                                                         |
+| `note(lines, headline=…, frame=…)`                          | editorial context: a headline over equal-weight lines (“what *Hamilton* is”)                                                                                                                                                                                                                                                            |
+| `intertitle(text, frame=…)`                                 | silent-film card, serif italic                                                                                                                                                                                                                                                                                                          |
+| `Credits.from_dict(…)` → `credits_cards` / `credits_crawl`  | structured roll: sections, role/name pairs on a gutter, tracked small-cap headings; **never truncates** (paginates, or raises if you cap the cards)                                                                                                                                                                                     |
+| `on_path(text, shape="circle"|"wave"|SVG d|Path)`           | glyphs riding any path, rotated to the tangent or kept upright                                                                                                                                                                                                                                                                          |
+| `rain(lines)`                                               | Apollinaire’s *Il pleut*: upright letters stepping down fanning streaks (the 1918 measurements as defaults)                                                                                                                                                                                                                             |
+| `in_shape(text, mask)`                                      | prose poured into a silhouette                                                                                                                                                                                                                                                                                                          |
+| `schedule_labels(spans, label_for, suppressed_by=cards)`    | one label per shot with first-appearance, repeat-gap and suppression rules **inside** the loop                                                                                                                                                                                                                                          |
+| `run_outline(run)`                                          | a placed run’s glyph contours as one SVG `d` string in frame pixels (`pip install tituli[outlines]`) — text drawn with no font engine; a missing glyph raises `MissingGlyphError`                                                                                                                                                       |
+| `TextStyle(features=("tnum",))`                             | OpenType features by tag; `face.applied_features` says which the font has. One-for-one substitutions (`tnum`, `lnum`, `zero`, `smcp` …) are applied by measurement and `run_outline` from the font’s tables (`tituli[outlines]`); the Pillow engine refuses a run they change (it would draw other glyphs), `HarfBuzzEngine` draws them |
+| `stack(blocks, frame=…, gap=…)` / `grid(blocks, columns=…)` | several blocks composed into **one** `Layout` — a page that renders once and times like any overlay; gaps are fractions of frame height (one per seam if the page needs a rhythm)                                                                                                                                                       |
+| `glossed([("カ", "ka"), …], frame=…)`                        | a row of big glyphs, each with its reading centred under it, on one pitch                                                                                                                                                                                                                                                               |
+| `block(text, …, break_at=" · ")`                            | a `a · b · c` list that wraps only between items (never `バス` / `bus` across a line); U+00A0 binds two words in any wrap                                                                                                                                                                                                                 |
+| `tituli.video.still / overlay / crawl / frames_to_video`    | ffmpeg output; only `overlay`/`fade`/`crop` needed (plus `tpad`/`adelay` for `overlay(pad_start=…)`) — never `drawtext`/`libass`. `overlay` takes layouts, payloads, or a frame-sized `image` (`TimedOverlay(None, 0, 3, image="title.png", fade_in=0)`)                                                                                |
 
 All sizes are fractions of frame height, so a style reads the same at 720p and 4K. The presets (`tituli.style`) are one type ramp shared by overlays and the end card, so a film is one design.
 
@@ -129,6 +132,121 @@ Title-safe 90 % (SMPTE ST 2046-1); WCAG 4.5:1 aimed for, 3:1 floor; sans working
 `gh skill install thorwhalen/tituli tituli` — or, after `pip install`, link `tituli/data/skills/tituli` into your agent’s skills directory.
 
 <p class="epythet-aggregates">This documentation as a single file: <a href="tituli.md">tituli.md</a> (Markdown, for agents).</p>
+
+
+# _autosummary/tituli.arrange.html.md
+
+# tituli.arrange
+
+Layout combinators: several blocks composed into one `Layout`.
+
+`title_card` and `note` each set one block. A page with a headline, a row of
+glossed glyphs, a wrapped list and a footnote is several blocks — and composing
+them by hand means measuring each `bbox()`, translating, and compositing one
+rendered image per block. These combinators take `Layout`s and return
+one `Layout`, so the page renders once and `tituli.video.overlay` can time
+it like any other overlay.
+
+* [`stack()`](_autosummary/tituli.arrange.html.md#tituli.arrange.stack) — blocks top to bottom, aligned left/centre/right;
+* [`grid()`](_autosummary/tituli.arrange.html.md#tituli.arrange.grid) — blocks in uniform cells, row-major (one row by default);
+* [`glossed()`](_autosummary/tituli.arrange.html.md#tituli.arrange.glossed) — the glossed-glyph row: big glyph over a small reading,
+  centred per column (a grid of two-block stacks).
+
+Gaps are fractions of frame **height**, like every size in tituli. A combinator
+given a [`Frame`](_autosummary/tituli.frame.html.md#tituli.frame.Frame) places its result with `frame.place` (so
+the title-safe area and any delivery reservation bind); given a bare height, or
+`anchor=None`, it leaves the result at the origin for an outer combinator to
+place — nesting is the point.
+
+```pycon
+>>> from tituli.frame import Frame
+>>> from tituli.layout import block
+>>> from tituli.style import TextStyle
+>>> f = Frame.blank((1920, 1080))
+>>> head = block("Heading", TextStyle(size=0.06), f)
+>>> body = block("body text", TextStyle(size=0.03), f)
+>>> page = stack([head, body], frame=f, gap=0.02)
+>>> [r.text for r in page.runs]
+['Heading', 'body text']
+>>> b0, b1 = (r.bbox() for r in page.runs)
+>>> round(b1.y0 - b0.y1) == round(0.02 * 1080)      # the gap, in frame height
+True
+```
+
+### Functions
+
+| [`stack`](_autosummary/tituli.arrange.html.md#tituli.arrange.stack)(items, \*, frame[, gap, align, anchor])      | Blocks top to bottom, `gap` apart, aligned within the widest.       |
+|-----------------------------------------------------------------------------------------------------|---------------------------------------------------------------------|
+| [`grid`](_autosummary/tituli.arrange.html.md#tituli.arrange.grid)(items, \*, frame[, columns, gap, align, ...]) | Blocks in uniform cells, row-major; one row when `columns` is None. |
+| [`glossed`](_autosummary/tituli.arrange.html.md#tituli.arrange.glossed)(pairs, \*, frame[, glyph, gloss, ...])     | A row of big glyphs, each with a small reading centred under it.    |
+
+### tituli.arrange.glossed(pairs, , frame, glyph=TextStyle(family=('Helvetica Neue', 'Inter', 'Helvetica', 'Avenir Next', 'Roboto', 'Univers', 'Liberation Sans', 'DejaVu Sans', 'Arial'), size=0.13, weight=700, italic=False, condensed=False, color=(255, 255, 255), tracking=0.0, leading=1.0, case='as-is', align='center', opacity=1.0, features=()), gloss=TextStyle(family=('Helvetica Neue', 'Inter', 'Helvetica', 'Avenir Next', 'Roboto', 'Univers', 'Liberation Sans', 'DejaVu Sans', 'Arial'), size=0.045, weight=600, italic=False, condensed=False, color=(255, 255, 255), tracking=0.0, leading=1.1, case='as-is', align='center', opacity=1.0, features=()), gap=0.012, column_gap=0.08, columns=None, anchor='center')
+
+A row of big glyphs, each with a small reading centred under it.
+
+`pairs` is `[(glyph, gloss), ...]` — `[("カ", "ka"), ("ス", "su")]`.
+Columns share one pitch (the widest column), so readings line up under
+their glyphs and the row reads as a row. `columns` wraps a long row into
+several. Runs are tagged `glyph:i` / `gloss:i` (for staggered reveals).
+
+* **Return type:**
+  [`Layout`](_autosummary/tituli.layout.html.md#tituli.layout.Layout)
+
+```pycon
+>>> lay = glossed([("カ", "ka"), ("ス", "su")], frame=1080)
+>>> [r.text for r in lay.runs]
+['カ', 'ka', 'ス', 'su']
+>>> [r.tags for r in lay.runs][:2]
+[('glyph:0',), ('gloss:0',)]
+```
+
+### tituli.arrange.grid(items, , frame, columns=None, gap=0.03, align='center', anchor='center')
+
+Blocks in uniform cells, row-major; one row when `columns` is None.
+
+Every cell is as wide as the widest item (so a row of glyphs keeps one
+pitch whatever each glyph’s advance), each row as tall as its tallest
+item; items are aligned `align` within their cell and to its top.
+`gap` is a fraction of frame height, or `(column_gap, row_gap)`.
+
+* **Return type:**
+  [`Layout`](_autosummary/tituli.layout.html.md#tituli.layout.Layout)
+
+```pycon
+>>> from tituli.layout import block
+>>> from tituli.style import TextStyle
+>>> cells = [block(t, TextStyle(size=0.05), 1080) for t in "a b c d".split()]
+>>> g = grid(cells, frame=1080, columns=2)
+>>> tops = [round(r.bbox().y0) for r in g.runs]
+>>> tops[0] == tops[1] < tops[2] == tops[3]      # two rows of two
+True
+```
+
+### tituli.arrange.stack(items, , frame, gap=0.02, align='center', anchor='center')
+
+Blocks top to bottom, `gap` apart, aligned within the widest.
+
+`gap` is a fraction of frame height: one number for every seam, or one
+per seam (`len(items) - 1` values) when the page needs a rhythm. A block
+with no runs is kept as a zero-height item, so per-seam gaps still line up.
+Box plates travel with their block; a frame-anchored scrim raises (see
+`_measurable`). A page larger than the title-safe area raises rather
+than run off the frame. Parts’ loss reports (`overflow`/`unplaced`)
+are summed into the result’s meta, and each part’s meta is kept under
+`meta["parts"]`.
+
+* **Return type:**
+  [`Layout`](_autosummary/tituli.layout.html.md#tituli.layout.Layout)
+
+```pycon
+>>> from tituli.layout import block
+>>> from tituli.style import TextStyle
+>>> a = block("wide line of text", TextStyle(size=0.05), 1080)
+>>> b = block("x", TextStyle(size=0.05), 1080)
+>>> s = stack([a, b], frame=1080, align="left")
+>>> s.runs[0].bbox().x0 == s.runs[1].bbox().x0
+True
+```
 
 
 # _autosummary/tituli.bodies.html.md
@@ -1355,6 +1473,9 @@ text-overlay body schema), `tituli[cli]` (`python -m tituli`).
 | [`in_shape`](_autosummary/tituli.html.md#tituli.in_shape)(text, mask, \*, frame[, style, box, ...]) | Pour prose into a silhouette (light = inside).                                                                                                 |
 | [`resolve_shape`](_autosummary/tituli.html.md#tituli.resolve_shape)(shape, box)                          | Turn a name, an SVG `d` string or a Path into a Path fitted to `box`.                                                                          |
 | [`block`](_autosummary/tituli.html.md#tituli.block)(text, style, frame, \*[, max_width, x, ...]) | Lay out prose as lines from the top-left corner `(x, y)`.                                                                                      |
+| [`stack`](_autosummary/tituli.html.md#tituli.stack)(items, \*, frame[, gap, align, anchor])      | Blocks top to bottom, `gap` apart, aligned within the widest.                                                                                  |
+| [`grid`](_autosummary/tituli.html.md#tituli.grid)(items, \*, frame[, columns, gap, align, ...]) | Blocks in uniform cells, row-major; one row when `columns` is None.                                                                            |
+| [`glossed`](_autosummary/tituli.html.md#tituli.glossed)(pairs, \*, frame[, glyph, gloss, ...])     | A row of big glyphs, each with a small reading centred under it.                                                                               |
 | [`along_path`](_autosummary/tituli.html.md#tituli.along_path)(text, path, style, frame, \*[, ...])    | Set `text` glyph by glyph along `path` (the path is the baseline).                                                                             |
 | [`wrap`](_autosummary/tituli.html.md#tituli.wrap)(text, style, frame_height, \*, max_width)     | Greedy word wrap on measured widths.                                                                                                           |
 | [`measure`](_autosummary/tituli.html.md#tituli.measure)(text, style, frame_height)                 | Width in pixels of `text` set in `style` on a frame of that height.                                                                            |
@@ -1908,7 +2029,7 @@ A copy with some fields replaced.
 700
 ```
 
-### *class* tituli.TimedOverlay(layout, start, end, slot='top-left', weight=1, fade=0.45, payload=None, meta=<factory>)
+### *class* tituli.TimedOverlay(layout, start, end, slot='top-left', weight=1, fade=0.45, payload=None, meta=<factory>, image=None, fade_in=None, fade_out=None)
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -1918,6 +2039,11 @@ A layout (or a thing to lay out) on screen from `start` to `end`.
 contend for a slot — the heavier suppresses the lighter, never stacks.
 `payload` is whatever the caller wants to carry to rendering (a
 [`Label`](_autosummary/tituli.html.md#tituli.Label), a dict, …); `layout` is filled in once rendered.
+
+`image` is the other way in: an already-rendered frame-sized picture (a
+PIL image or a path) — a title page made elsewhere, a logo plate — timed
+like any layout. `fade_in` / `fade_out` override `fade` for one end
+(`fade_in=0` for a title that must be up on the first frame).
 
 ### tituli.along_path(text, path, style, frame, , start=0.0, align='start', offset=0.0, upright=False, color=None, tags=())
 
@@ -1935,14 +2061,15 @@ reported in `meta["overflow"]` rather than silently squeezed.
 * **Return type:**
   [`Layout`](_autosummary/tituli.layout.html.md#tituli.layout.Layout)
 
-### tituli.block(text, style, frame, , max_width=None, x=0.0, y=0.0, color=None, unit='line', tags=())
+### tituli.block(text, style, frame, , max_width=None, x=0.0, y=0.0, color=None, unit='line', tags=(), break_at=None)
 
 Lay out prose as lines from the top-left corner `(x, y)`.
 
 `text` is a string (wrapped to `max_width` when given) or pre-broken
 lines. Alignment follows `style.align` within `max_width` (or the widest
 line when no width is given). `unit="glyph"` emits one run per character
-(needed for tracking and for per-glyph reveals).
+(needed for tracking and for per-glyph reveals). `break_at` (e.g.
+`" · "`) wraps a list only between its items — see [`wrap()`](_autosummary/tituli.html.md#tituli.wrap).
 
 * **Return type:**
   [`Layout`](_autosummary/tituli.layout.html.md#tituli.layout.Layout)
@@ -2098,7 +2225,7 @@ nothing. Only when shrinking would make the text unreadable does this raise
 ('short', True)
 ```
 
-### tituli.fit_size(text, style, frame_height, , max_width, max_height=None, min_size=0.012, step=0.9)
+### tituli.fit_size(text, style, frame_height, , max_width, max_height=None, min_size=0.012, step=0.9, break_at=None)
 
 Shrink `style.size` until `text` wraps within the given bounds.
 
@@ -2118,6 +2245,48 @@ lazily so a long clip never sits in memory at once.
 
 * **Return type:**
   [`Iterator`](https://docs.python.org/3/library/typing.html#typing.Iterator)[`Image`]
+
+### tituli.glossed(pairs, , frame, glyph=TextStyle(family=('Helvetica Neue', 'Inter', 'Helvetica', 'Avenir Next', 'Roboto', 'Univers', 'Liberation Sans', 'DejaVu Sans', 'Arial'), size=0.13, weight=700, italic=False, condensed=False, color=(255, 255, 255), tracking=0.0, leading=1.0, case='as-is', align='center', opacity=1.0, features=()), gloss=TextStyle(family=('Helvetica Neue', 'Inter', 'Helvetica', 'Avenir Next', 'Roboto', 'Univers', 'Liberation Sans', 'DejaVu Sans', 'Arial'), size=0.045, weight=600, italic=False, condensed=False, color=(255, 255, 255), tracking=0.0, leading=1.1, case='as-is', align='center', opacity=1.0, features=()), gap=0.012, column_gap=0.08, columns=None, anchor='center')
+
+A row of big glyphs, each with a small reading centred under it.
+
+`pairs` is `[(glyph, gloss), ...]` — `[("カ", "ka"), ("ス", "su")]`.
+Columns share one pitch (the widest column), so readings line up under
+their glyphs and the row reads as a row. `columns` wraps a long row into
+several. Runs are tagged `glyph:i` / `gloss:i` (for staggered reveals).
+
+* **Return type:**
+  [`Layout`](_autosummary/tituli.layout.html.md#tituli.layout.Layout)
+
+```pycon
+>>> lay = glossed([("カ", "ka"), ("ス", "su")], frame=1080)
+>>> [r.text for r in lay.runs]
+['カ', 'ka', 'ス', 'su']
+>>> [r.tags for r in lay.runs][:2]
+[('glyph:0',), ('gloss:0',)]
+```
+
+### tituli.grid(items, , frame, columns=None, gap=0.03, align='center', anchor='center')
+
+Blocks in uniform cells, row-major; one row when `columns` is None.
+
+Every cell is as wide as the widest item (so a row of glyphs keeps one
+pitch whatever each glyph’s advance), each row as tall as its tallest
+item; items are aligned `align` within their cell and to its top.
+`gap` is a fraction of frame height, or `(column_gap, row_gap)`.
+
+* **Return type:**
+  [`Layout`](_autosummary/tituli.layout.html.md#tituli.layout.Layout)
+
+```pycon
+>>> from tituli.layout import block
+>>> from tituli.style import TextStyle
+>>> cells = [block(t, TextStyle(size=0.05), 1080) for t in "a b c d".split()]
+>>> g = grid(cells, frame=1080, columns=2)
+>>> tops = [round(r.bbox().y0) for r in g.runs]
+>>> tops[0] == tops[1] < tops[2] == tops[3]      # two rows of two
+True
+```
 
 ### tituli.in_shape(text, mask, , frame, style=TextStyle(family=('Georgia', 'Palatino', 'Baskerville', 'Liberation Serif', 'DejaVu Serif', 'Times New Roman'), size=0.035, weight=400, italic=False, condensed=False, color=(17, 17, 17), tracking=0.0, leading=1.2, case='as-is', align='left', opacity=1.0, features=()), box=None, repeat=True)
 
@@ -2332,6 +2501,32 @@ One label per span, held `hold_s`, with the three rules built in.
 * **Return type:**
   [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`TimedOverlay`](_autosummary/tituli.schedule.html.md#tituli.schedule.TimedOverlay)]
 
+### tituli.stack(items, , frame, gap=0.02, align='center', anchor='center')
+
+Blocks top to bottom, `gap` apart, aligned within the widest.
+
+`gap` is a fraction of frame height: one number for every seam, or one
+per seam (`len(items) - 1` values) when the page needs a rhythm. A block
+with no runs is kept as a zero-height item, so per-seam gaps still line up.
+Box plates travel with their block; a frame-anchored scrim raises (see
+`_measurable`). A page larger than the title-safe area raises rather
+than run off the frame. Parts’ loss reports (`overflow`/`unplaced`)
+are summed into the result’s meta, and each part’s meta is kept under
+`meta["parts"]`.
+
+* **Return type:**
+  [`Layout`](_autosummary/tituli.layout.html.md#tituli.layout.Layout)
+
+```pycon
+>>> from tituli.layout import block
+>>> from tituli.style import TextStyle
+>>> a = block("wide line of text", TextStyle(size=0.05), 1080)
+>>> b = block("x", TextStyle(size=0.05), 1080)
+>>> s = stack([a, b], frame=1080, align="left")
+>>> s.runs[0].bbox().x0 == s.runs[1].bbox().x0
+True
+```
+
 ### tituli.title_card(title, subtitle='', , frame, kicker='', anchor='center', title_style=TextStyle(family=('Helvetica Neue', 'Inter', 'Helvetica', 'Avenir Next', 'Roboto', 'Univers', 'Liberation Sans', 'DejaVu Sans', 'Arial'), size=0.075, weight=700, italic=False, condensed=False, color=(255, 255, 255), tracking=-0.01, leading=1.1, case='as-is', align='center', opacity=1.0, features=()), subtitle_style=TextStyle(family=('Helvetica Neue', 'Inter', 'Helvetica', 'Avenir Next', 'Roboto', 'Univers', 'Liberation Sans', 'DejaVu Sans', 'Arial'), size=0.032, weight=400, italic=False, condensed=False, color=(255, 255, 255), tracking=0.02, leading=1.3, case='as-is', align='center', opacity=1.0, features=()), kicker_style=TextStyle(family=('Helvetica Neue', 'Inter', 'Helvetica', 'Avenir Next', 'Roboto', 'Univers', 'Liberation Sans', 'DejaVu Sans', 'Arial'), size=0.022, weight=500, italic=False, condensed=False, color=(255, 255, 255), tracking=0.18, leading=1.2, case='upper', align='center', opacity=1.0, features=()), ink=None, scrim=None)
 
 An opening card: optional kicker, title, optional subtitle.
@@ -2354,9 +2549,14 @@ into an artist field). The result always fits.
 * **Return type:**
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
-### tituli.wrap(text, style, frame_height, , max_width)
+### tituli.wrap(text, style, frame_height, , max_width, break_at=None)
 
 Greedy word wrap on measured widths. Explicit newlines are honoured.
+
+`break_at` makes a list wrap only *between* its items: with `" · "`,
+`"バス bus · スープ soup"` never ends a line on `バス`. An item wider
+than the whole line falls back to word wrapping inside that item (it is
+never cut). A no-break space (U+00A0) binds two words in any mode.
 
 * **Return type:**
   [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
@@ -2370,8 +2570,9 @@ True
 
 ### Modules
 
-| [`bodies`](_autosummary/tituli.bodies.html.md#module-tituli.bodies)       | A lacing body schema for a rendered caption (`pip install tituli[lacing]`).                                         |
+| [`arrange`](_autosummary/tituli.arrange.html.md#module-tituli.arrange)     | Layout combinators: several blocks composed into one [`Layout`](_autosummary/tituli.html.md#tituli.Layout).       |
 |------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
+| [`bodies`](_autosummary/tituli.bodies.html.md#module-tituli.bodies)       | A lacing body schema for a rendered caption (`pip install tituli[lacing]`).                                         |
 | [`calligram`](_autosummary/tituli.calligram.html.md#module-tituli.calligram) | Calligrams and concrete poems: text whose shape is part of the meaning.                                             |
 | [`color`](_autosummary/tituli.color.html.md#module-tituli.color)         | Colours, WCAG contrast, and the ink-for-this-background decision.                                                   |
 | [`compose`](_autosummary/tituli.compose.html.md#module-tituli.compose)     | The composed pieces: title cards, captions with attribution, lower thirds.                                          |
@@ -2507,14 +2708,15 @@ reported in `meta["overflow"]` rather than silently squeezed.
 * **Return type:**
   [`Layout`](_autosummary/tituli.layout.html.md#tituli.layout.Layout)
 
-### tituli.layout.block(text, style, frame, , max_width=None, x=0.0, y=0.0, color=None, unit='line', tags=())
+### tituli.layout.block(text, style, frame, , max_width=None, x=0.0, y=0.0, color=None, unit='line', tags=(), break_at=None)
 
 Lay out prose as lines from the top-left corner `(x, y)`.
 
 `text` is a string (wrapped to `max_width` when given) or pre-broken
 lines. Alignment follows `style.align` within `max_width` (or the widest
 line when no width is given). `unit="glyph"` emits one run per character
-(needed for tracking and for per-glyph reveals).
+(needed for tracking and for per-glyph reveals). `break_at` (e.g.
+`" · "`) wraps a list only between its items — see [`wrap()`](_autosummary/tituli.layout.html.md#tituli.layout.wrap).
 
 * **Return type:**
   [`Layout`](_autosummary/tituli.layout.html.md#tituli.layout.Layout)
@@ -2533,7 +2735,7 @@ spans stay empty and leftover words are reported in `meta["unplaced"]`.
 * **Return type:**
   Layout
 
-### tituli.layout.fit_size(text, style, frame_height, , max_width, max_height=None, min_size=0.012, step=0.9)
+### tituli.layout.fit_size(text, style, frame_height, , max_width, max_height=None, min_size=0.012, step=0.9, break_at=None)
 
 Shrink `style.size` until `text` wraps within the given bounds.
 
@@ -2580,9 +2782,14 @@ Concatenate layouts.
 * **Return type:**
   [`Layout`](_autosummary/tituli.layout.html.md#tituli.layout.Layout)
 
-### tituli.layout.wrap(text, style, frame_height, , max_width)
+### tituli.layout.wrap(text, style, frame_height, , max_width, break_at=None)
 
 Greedy word wrap on measured widths. Explicit newlines are honoured.
+
+`break_at` makes a list wrap only *between* its items: with `" · "`,
+`"バス bus · スープ soup"` never ends a line on `バス`. An item wider
+than the whole line falls back to word wrapping inside that item (it is
+never cut). A no-break space (U+00A0) binds two words in any mode.
 
 * **Return type:**
   [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
@@ -2748,7 +2955,7 @@ A time range of the cut showing one picture. `key` identifies the picture.
 (Named `Span` rather than `Panel` so it never collides with
 `braidio.video.Panel`, which callers of both will import alongside it.)
 
-### *class* tituli.schedule.TimedOverlay(layout, start, end, slot='top-left', weight=1, fade=0.45, payload=None, meta=<factory>)
+### *class* tituli.schedule.TimedOverlay(layout, start, end, slot='top-left', weight=1, fade=0.45, payload=None, meta=<factory>, image=None, fade_in=None, fade_out=None)
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -2758,6 +2965,11 @@ A layout (or a thing to lay out) on screen from `start` to `end`.
 contend for a slot — the heavier suppresses the lighter, never stacks.
 `payload` is whatever the caller wants to carry to rendering (a
 [`Label`](_autosummary/tituli.schedule.html.md#tituli.schedule.Label), a dict, …); `layout` is filled in once rendered.
+
+`image` is the other way in: an already-rendered frame-sized picture (a
+PIL image or a path) — a title page made elsewhere, a logo plate — timed
+like any layout. `fade_in` / `fade_out` override `fade` for one end
+(`fade_in=0` for a title that must be up on the first frame).
 
 ### tituli.schedule.resolve(overlays, , min_readable_s=1.5)
 
@@ -2916,14 +3128,14 @@ a file, and returns a dict describing what it wrote.
 
 ### Functions
 
-| [`calligram`](_autosummary/tituli.tools.html.md#tituli.tools.calligram)(text, \*[, out, shape, size, ...])     | Lay `text` along a shape (`circle`, `wave`, `arc`, an SVG path, `rain`).      |
-|---------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
-| [`caption`](_autosummary/tituli.tools.html.md#tituli.tools.caption)(image, text[, attribution, out, ...])    | Put a museum-label caption and a tiny attribution on `image`.                 |
-| [`credits`](_autosummary/tituli.tools.html.md#tituli.tools.credits)(spec, \*[, out, mode, size, speed, ...]) | Render credits from a JSON spec file (or JSON string) to `out`.               |
-| [`fonts`](_autosummary/tituli.tools.html.md#tituli.tools.fonts)([query])                                   | List installed font families (optionally filtered by substring).              |
-| [`lower_third`](_autosummary/tituli.tools.html.md#tituli.tools.lower_third)(name[, role, out, background, ...])  | A name + role block, bottom-left, as a transparent overlay (or on a picture). |
-| [`overlay_video`](_autosummary/tituli.tools.html.md#tituli.tools.overlay_video)(video, overlays, \*[, out, ...])   | Composite captions/lower thirds onto a finished video in one ffmpeg pass.     |
-| [`title_card`](_autosummary/tituli.tools.html.md#tituli.tools.title_card)(title[, subtitle, out, ...])          | Render a title card to `out` (PNG, or MP4 when `duration` is given).          |
+| [`calligram`](_autosummary/tituli.tools.html.md#tituli.tools.calligram)(text, \*[, out, shape, size, ...])     | Lay `text` along a shape (`circle`, `wave`, `arc`, an SVG path, `rain`).         |
+|---------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
+| [`caption`](_autosummary/tituli.tools.html.md#tituli.tools.caption)(image, text[, attribution, out, ...])    | Put a museum-label caption and a tiny attribution on `image`.                    |
+| [`credits`](_autosummary/tituli.tools.html.md#tituli.tools.credits)(spec, \*[, out, mode, size, speed, ...]) | Render credits from a JSON spec file (or JSON string) to `out`.                  |
+| [`fonts`](_autosummary/tituli.tools.html.md#tituli.tools.fonts)([query])                                   | List installed font families (optionally filtered by substring).                 |
+| [`lower_third`](_autosummary/tituli.tools.html.md#tituli.tools.lower_third)(name[, role, out, background, ...])  | A name + role block, bottom-left, as a transparent overlay (or on a picture).    |
+| [`overlay_video`](_autosummary/tituli.tools.html.md#tituli.tools.overlay_video)(video, overlays, \*[, out, ...])   | Composite captions/lower thirds/images onto a finished video in one ffmpeg pass. |
+| [`title_card`](_autosummary/tituli.tools.html.md#tituli.tools.title_card)(title[, subtitle, out, ...])          | Render a title card to `out` (PNG, or MP4 when `duration` is given).             |
 
 ### tituli.tools.calligram(text, , out='calligram.png', shape='wave', size=None, background='#f4f1e8', upright=False, mask=None, reveal=None)
 
@@ -2975,14 +3187,18 @@ A name + role block, bottom-left, as a transparent overlay (or on a picture).
 * **Return type:**
   [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
 
-### tituli.tools.overlay_video(video, overlays, , out='overlaid.mp4', delivery='youtube')
+### tituli.tools.overlay_video(video, overlays, , out='overlaid.mp4', delivery='youtube', pad_start=0.0)
 
-Composite captions/lower thirds onto a finished video in one ffmpeg pass.
+Composite captions/lower thirds/images onto a finished video in one ffmpeg pass.
 
 `overlays` is a JSON file/string: a list of `{"start", "end", "text",
-"attribution"?, "kind"?: "caption"|"lower_third", "role"?, "anchor"?}`.
-Text is laid out against the video’s frame size; the picture under each
-overlay is not sampled (pass a still through `caption` for that).
+"attribution"?, "kind"?: "caption"|"lower_third", "role"?, "anchor"?}`
+or `{"start", "end", "image", "fade_in"?, "fade_out"?}` (a frame-sized
+PNG, e.g. a title page; it occupies its own slot and suppresses no
+caption — time captions after it). Text is laid out against the video’s frame size;
+the picture under each overlay is not sampled (pass a still through
+`caption` for that). `pad_start` seconds are added at the head (first
+frame held, audio delayed); overlay times are on the padded timeline.
 
 * **Return type:**
   [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
@@ -3033,6 +3249,8 @@ onto the finished motion video, which is what [`overlay()`](_autosummary/tituli.
 | [`crawl`](_autosummary/tituli.video.html.md#tituli.video.crawl)(tall, dst, \*, size, speed_px_s[, fps, ...]) | Scroll a tall image up through a `size` window at `speed_px_s`.                               |
 | [`frames_to_video`](_autosummary/tituli.video.html.md#tituli.video.frames_to_video)(frames, dst, \*, size[, fps, ...]) | Encode a lazy stream of RGB frames (the kinetic path: per-glyph reveals).                     |
 | [`probe_size`](_autosummary/tituli.video.html.md#tituli.video.probe_size)(video)                                  | `(width, height)` of the first video stream, via ffprobe.                                     |
+| [`has_audio`](_autosummary/tituli.video.html.md#tituli.video.has_audio)(video)                                   | Whether `video` has an audio stream, via ffprobe.                                             |
+| [`audio_streams`](_autosummary/tituli.video.html.md#tituli.video.audio_streams)(video)                               | How many audio streams `video` has, via ffprobe.                                              |
 
 ### Exceptions
 
@@ -3044,6 +3262,13 @@ onto the finished motion video, which is what [`overlay()`](_autosummary/tituli.
 Bases: [`RuntimeError`](https://docs.python.org/3/builtins/exceptions.html#RuntimeError)
 
 ffmpeg is missing, or lacks a filter tituli needs.
+
+### tituli.video.audio_streams(video)
+
+How many audio streams `video` has, via ffprobe.
+
+* **Return type:**
+  [`int`](https://docs.python.org/3/builtins/functions.html#int)
 
 ### tituli.video.available_filters(binary=None)
 
@@ -3077,6 +3302,13 @@ Encode a lazy stream of RGB frames (the kinetic path: per-glyph reveals).
 * **Return type:**
   [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path)
 
+### tituli.video.has_audio(video)
+
+Whether `video` has an audio stream, via ffprobe.
+
+* **Return type:**
+  [`bool`](https://docs.python.org/3/builtins/functions.html#bool)
+
 ### tituli.video.materialize(overlays, , frame)
 
 Give every overlay a layout, rendering payloads; raise naming any that can’t be.
@@ -3093,16 +3325,25 @@ Give every overlay a layout, rendering payloads; raise naming any that can’t b
 True
 ```
 
-### tituli.video.overlay(video, overlays, dst, , size=None, frame=None, delivery='youtube', workdir=None, crf=18, preset='medium', engine=None)
+### tituli.video.overlay(video, overlays, dst, , size=None, frame=None, delivery='youtube', workdir=None, crf=18, preset='medium', engine=None, pad_start=0.0, pad_mode='clone')
 
 Composite timed overlays onto `video` in one ffmpeg pass; audio copied.
 
-Every overlay is rendered: one with a `layout` as it is; one with only a
-`payload` (a [`Label`](_autosummary/tituli.schedule.html.md#tituli.schedule.Label) from `schedule_labels`, or
-a dict with `text`/`attribution`/`kind`) is laid out here against
-`frame` (default: a blank frame of the video’s size with `delivery`’s
-reserved zones) at its `slot`. Anything that cannot be rendered makes
-the call **raise, naming it** — nothing is ever silently left off the film.
+Every overlay is rendered: one with a `layout` as it is; one with an
+`image` (a frame-sized PIL image or path, e.g. a title page) as that
+picture; one with only a `payload` (a [`Label`](_autosummary/tituli.schedule.html.md#tituli.schedule.Label)
+from `schedule_labels`, or a dict with `text`/`attribution`/`kind`)
+is laid out here against `frame` (default: a blank frame of the video’s
+size with `delivery`’s reserved zones) at its `slot`. Anything that
+cannot be rendered makes the call **raise, naming it** — nothing is ever
+silently left off the film.
+
+`pad_start` (seconds) lengthens the film at the head before compositing:
+the first frame is held (`pad_mode="clone"`) or the head is black
+(`"black"`), and the audio is delayed to match (and so re-encoded, AAC).
+Overlay times are on the **padded** timeline — `TimedOverlay(None, 0, 3,
+image="title.png", fade_in=0)` with `pad_start=0.8` is “the title over
+the intro, the song starting under it 0.8 s in”.
 
 * **Return type:**
   Path
@@ -3137,29 +3378,29 @@ Transparent PNGs are flattened onto black.
 
 # About this build
 
-This documentation was built on **2026-10-06 14:51 UTC** from commit <a href="https://github.com/thorwhalen/tituli/commit/532e80215bcc0be06671cc488408c9764c513353"><code>532e802</code></a> on branch <code>main</code>, for **tituli 0.0.8** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-10-10 14:47 UTC** from commit <a href="https://github.com/reeleehq/tituli/commit/23c59af40473fd8928fdad032cc2c0622f68a951"><code>23c59af</code></a> on branch <code>main</code>, for **tituli 0.0.9** (from <code>pyproject.toml</code>).
 
 #### NOTE
 Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
 
 ## Source
 
-|                     |                                                                                                                                                          |
-|---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/tituli/commit/532e80215bcc0be06671cc488408c9764c513353"><code>532e80215bcc0be06671cc488408c9764c513353</code></a> |
-| Branch              | <code>main</code>                                                                                                                                        |
-| Tags at this commit | <code>0.0.8</code>                                                                                                                                       |
-| Working tree        | clean                                                                                                                                                    |
-| Remote              | <code>https://github.com/thorwhalen/tituli</code>                                                                                                        |
+|                     |                                                                                                                                                        |
+|---------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Commit              | <a href="https://github.com/reeleehq/tituli/commit/23c59af40473fd8928fdad032cc2c0622f68a951"><code>23c59af40473fd8928fdad032cc2c0622f68a951</code></a> |
+| Branch              | <code>main</code>                                                                                                                                      |
+| Tags at this commit | <code>0.0.9</code>                                                                                                                                     |
+| Working tree        | clean                                                                                                                                                  |
+| Remote              | <code>https://github.com/reeleehq/tituli</code>                                                                                                        |
 
 ## Continuous integration
 
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
-| Repository   | <code>thorwhalen/tituli</code>                                                             |
-| Run          | <a href="https://github.com/thorwhalen/tituli/actions/runs/37481524037">37481524037</a>    |
+| Repository   | <code>reeleehq/tituli</code>                                                               |
+| Run          | <a href="https://github.com/reeleehq/tituli/actions/runs/38060863621">38060863621</a>      |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>07ab54c85c8ee8c680add60e3b0a7d9456a4902c</code> (in the history of the built commit) |
+| Event commit | <code>6035cd7c2949659fba8fbf36b91aceb0a54c3233</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -3168,7 +3409,7 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 | epythet  | 0.2.12  |
 | Sphinx   | 9.1.0   |
 | docutils | 0.22.4  |
-| Python   | 3.12.14 |
+| Python   | 3.12.15 |
 
 ## Configuration as resolved
 
@@ -3184,13 +3425,13 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/tituli/0.0.8/">0.0.8</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/tituli/0.0.9/">0.0.9</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
-git clone https://github.com/thorwhalen/tituli && cd tituli
-git checkout 532e80215bcc0be06671cc488408c9764c513353
+git clone https://github.com/reeleehq/tituli && cd tituli
+git checkout 23c59af40473fd8928fdad032cc2c0622f68a951
 pip install "epythet==0.2.12"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

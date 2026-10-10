@@ -113,6 +113,7 @@
   <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html">API reference</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../_autosummary/tituli.html">tituli</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/tituli.arrange.html">tituli.arrange</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../_autosummary/tituli.bodies.html">tituli.bodies</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../_autosummary/tituli.calligram.html">tituli.calligram</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../_autosummary/tituli.color.html">tituli.color</a></li>
@@ -504,78 +505,101 @@
 </span><span id="line-309">    <span class="o">*</span><span class="p">,</span>
 </span><span id="line-310">    <span class="n">out</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"overlaid.mp4"</span><span class="p">,</span>
 </span><span id="line-311">    <span class="n">delivery</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="s2">"youtube"</span><span class="p">,</span>
-</span><span id="line-312"><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-</span><span id="line-313"><span class="w">    </span><span class="sd">"""Composite captions/lower thirds onto a finished video in one ffmpeg pass.</span>
-</span><span id="line-314">
-</span><span id="line-315"><span class="sd">    ``overlays`` is a JSON file/string: a list of ``{"start", "end", "text",</span>
-</span><span id="line-316"><span class="sd">    "attribution"?, "kind"?: "caption"|"lower_third", "role"?, "anchor"?}``.</span>
-</span><span id="line-317"><span class="sd">    Text is laid out against the video's frame size; the picture under each</span>
-</span><span id="line-318"><span class="sd">    overlay is not sampled (pass a still through ``caption`` for that).</span>
-</span><span id="line-319"><span class="sd">    """</span>
-</span><span id="line-320">    <span class="kn">from</span><span class="w"> </span><span class="nn">tituli.compose</span><span class="w"> </span><span class="kn">import</span> <span class="n">caption</span> <span class="k">as</span> <span class="n">_caption</span>
-</span><span id="line-321">    <span class="kn">from</span><span class="w"> </span><span class="nn">tituli.compose</span><span class="w"> </span><span class="kn">import</span> <span class="n">lower_third</span> <span class="k">as</span> <span class="n">_lt</span>
-</span><span id="line-322">    <span class="kn">from</span><span class="w"> </span><span class="nn">tituli.schedule</span><span class="w"> </span><span class="kn">import</span> <span class="n">TimedOverlay</span><span class="p">,</span> <span class="n">resolve</span>
-</span><span id="line-323">    <span class="kn">from</span><span class="w"> </span><span class="nn">tituli.video</span><span class="w"> </span><span class="kn">import</span> <span class="n">overlay</span> <span class="k">as</span> <span class="n">_overlay</span>
-</span><span id="line-324">    <span class="kn">from</span><span class="w"> </span><span class="nn">tituli.video</span><span class="w"> </span><span class="kn">import</span> <span class="n">probe_size</span>
-</span><span id="line-325">
-</span><span id="line-326">    <span class="n">raw</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">overlays</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span> <span class="k">if</span> <span class="n">Path</span><span class="p">(</span><span class="n">overlays</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="k">else</span> <span class="n">overlays</span>
-</span><span id="line-327">    <span class="n">items</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
-</span><span id="line-328">    <span class="n">size</span> <span class="o">=</span> <span class="n">probe_size</span><span class="p">(</span><span class="n">video</span><span class="p">)</span>
-</span><span id="line-329">    <span class="n">frame</span> <span class="o">=</span> <span class="n">Frame</span><span class="o">.</span><span class="n">blank</span><span class="p">(</span><span class="n">size</span><span class="p">)</span><span class="o">.</span><span class="n">with_delivery</span><span class="p">(</span><span class="n">delivery</span><span class="p">)</span>
-</span><span id="line-330">    <span class="n">timed</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="line-331">    <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
-</span><span id="line-332">        <span class="n">kind</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"kind"</span><span class="p">,</span> <span class="s2">"caption"</span><span class="p">)</span>
-</span><span id="line-333">        <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">"lower_third"</span><span class="p">:</span>
-</span><span id="line-334">            <span class="n">lay</span> <span class="o">=</span> <span class="n">_lt</span><span class="p">(</span>
-</span><span id="line-335">                <span class="n">it</span><span class="p">[</span><span class="s2">"text"</span><span class="p">],</span>
-</span><span id="line-336">                <span class="n">it</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"role"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span>
-</span><span id="line-337">                <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span>
-</span><span id="line-338">                <span class="n">anchor</span><span class="o">=</span><span class="n">it</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"anchor"</span><span class="p">,</span> <span class="s2">"bottom-left"</span><span class="p">),</span>
-</span><span id="line-339">            <span class="p">)</span>
-</span><span id="line-340">            <span class="n">weight</span> <span class="o">=</span> <span class="mi">2</span>
-</span><span id="line-341">        <span class="k">else</span><span class="p">:</span>
-</span><span id="line-342">            <span class="n">lay</span> <span class="o">=</span> <span class="n">_caption</span><span class="p">(</span>
-</span><span id="line-343">                <span class="n">it</span><span class="p">[</span><span class="s2">"text"</span><span class="p">],</span>
-</span><span id="line-344">                <span class="n">it</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"attribution"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span>
-</span><span id="line-345">                <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span>
-</span><span id="line-346">                <span class="n">anchor</span><span class="o">=</span><span class="n">it</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"anchor"</span><span class="p">,</span> <span class="s2">"top-left"</span><span class="p">),</span>
-</span><span id="line-347">            <span class="p">)</span>
-</span><span id="line-348">            <span class="n">weight</span> <span class="o">=</span> <span class="mi">1</span>
-</span><span id="line-349">        <span class="n">timed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-</span><span id="line-350">            <span class="n">TimedOverlay</span><span class="p">(</span>
-</span><span id="line-351">                <span class="n">lay</span><span class="p">,</span>
-</span><span id="line-352">                <span class="nb">float</span><span class="p">(</span><span class="n">it</span><span class="p">[</span><span class="s2">"start"</span><span class="p">]),</span>
-</span><span id="line-353">                <span class="nb">float</span><span class="p">(</span><span class="n">it</span><span class="p">[</span><span class="s2">"end"</span><span class="p">]),</span>
-</span><span id="line-354">                <span class="n">slot</span><span class="o">=</span><span class="n">lay</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"anchor"</span><span class="p">,</span> <span class="s2">"top-left"</span><span class="p">),</span>
-</span><span id="line-355">                <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span>
-</span><span id="line-356">            <span class="p">)</span>
-</span><span id="line-357">        <span class="p">)</span>
-</span><span id="line-358">    <span class="n">kept</span> <span class="o">=</span> <span class="n">resolve</span><span class="p">(</span><span class="n">timed</span><span class="p">)</span>
-</span><span id="line-359">    <span class="n">_overlay</span><span class="p">(</span><span class="n">video</span><span class="p">,</span> <span class="n">kept</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
-</span><span id="line-360">    <span class="k">return</span> <span class="p">{</span><span class="s2">"out"</span><span class="p">:</span> <span class="n">out</span><span class="p">,</span> <span class="s2">"overlays"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">kept</span><span class="p">),</span> <span class="s2">"dropped"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">timed</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">kept</span><span class="p">)}</span></div>
+</span><span id="line-312">    <span class="n">pad_start</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+</span><span id="line-313"><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+</span><span id="line-314"><span class="w">    </span><span class="sd">"""Composite captions/lower thirds/images onto a finished video in one ffmpeg pass.</span>
+</span><span id="line-315">
+</span><span id="line-316"><span class="sd">    ``overlays`` is a JSON file/string: a list of ``{"start", "end", "text",</span>
+</span><span id="line-317"><span class="sd">    "attribution"?, "kind"?: "caption"|"lower_third", "role"?, "anchor"?}``</span>
+</span><span id="line-318"><span class="sd">    or ``{"start", "end", "image", "fade_in"?, "fade_out"?}`` (a frame-sized</span>
+</span><span id="line-319"><span class="sd">    PNG, e.g. a title page; it occupies its own slot and suppresses no</span>
+</span><span id="line-320"><span class="sd">    caption — time captions after it). Text is laid out against the video's frame size;</span>
+</span><span id="line-321"><span class="sd">    the picture under each overlay is not sampled (pass a still through</span>
+</span><span id="line-322"><span class="sd">    ``caption`` for that). ``pad_start`` seconds are added at the head (first</span>
+</span><span id="line-323"><span class="sd">    frame held, audio delayed); overlay times are on the padded timeline.</span>
+</span><span id="line-324"><span class="sd">    """</span>
+</span><span id="line-325">    <span class="kn">from</span><span class="w"> </span><span class="nn">tituli.compose</span><span class="w"> </span><span class="kn">import</span> <span class="n">caption</span> <span class="k">as</span> <span class="n">_caption</span>
+</span><span id="line-326">    <span class="kn">from</span><span class="w"> </span><span class="nn">tituli.compose</span><span class="w"> </span><span class="kn">import</span> <span class="n">lower_third</span> <span class="k">as</span> <span class="n">_lt</span>
+</span><span id="line-327">    <span class="kn">from</span><span class="w"> </span><span class="nn">tituli.schedule</span><span class="w"> </span><span class="kn">import</span> <span class="n">TimedOverlay</span><span class="p">,</span> <span class="n">resolve</span>
+</span><span id="line-328">    <span class="kn">from</span><span class="w"> </span><span class="nn">tituli.video</span><span class="w"> </span><span class="kn">import</span> <span class="n">overlay</span> <span class="k">as</span> <span class="n">_overlay</span>
+</span><span id="line-329">    <span class="kn">from</span><span class="w"> </span><span class="nn">tituli.video</span><span class="w"> </span><span class="kn">import</span> <span class="n">probe_size</span>
+</span><span id="line-330">
+</span><span id="line-331">    <span class="n">raw</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">overlays</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span> <span class="k">if</span> <span class="n">Path</span><span class="p">(</span><span class="n">overlays</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="k">else</span> <span class="n">overlays</span>
+</span><span id="line-332">    <span class="n">items</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
+</span><span id="line-333">    <span class="n">size</span> <span class="o">=</span> <span class="n">probe_size</span><span class="p">(</span><span class="n">video</span><span class="p">)</span>
+</span><span id="line-334">    <span class="n">frame</span> <span class="o">=</span> <span class="n">Frame</span><span class="o">.</span><span class="n">blank</span><span class="p">(</span><span class="n">size</span><span class="p">)</span><span class="o">.</span><span class="n">with_delivery</span><span class="p">(</span><span class="n">delivery</span><span class="p">)</span>
+</span><span id="line-335">    <span class="n">timed</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="line-336">    <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+</span><span id="line-337">        <span class="k">if</span> <span class="s2">"image"</span> <span class="ow">in</span> <span class="n">it</span><span class="p">:</span>
+</span><span id="line-338">            <span class="n">timed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+</span><span id="line-339">                <span class="n">TimedOverlay</span><span class="p">(</span>
+</span><span id="line-340">                    <span class="kc">None</span><span class="p">,</span>
+</span><span id="line-341">                    <span class="nb">float</span><span class="p">(</span><span class="n">it</span><span class="p">[</span><span class="s2">"start"</span><span class="p">]),</span>
+</span><span id="line-342">                    <span class="nb">float</span><span class="p">(</span><span class="n">it</span><span class="p">[</span><span class="s2">"end"</span><span class="p">]),</span>
+</span><span id="line-343">                    <span class="n">slot</span><span class="o">=</span><span class="n">it</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"slot"</span><span class="p">,</span> <span class="s2">"full"</span><span class="p">),</span>
+</span><span id="line-344">                    <span class="n">weight</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">it</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"weight"</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span>
+</span><span id="line-345">                    <span class="n">image</span><span class="o">=</span><span class="n">it</span><span class="p">[</span><span class="s2">"image"</span><span class="p">],</span>
+</span><span id="line-346">                    <span class="n">fade_in</span><span class="o">=</span><span class="n">_opt_float</span><span class="p">(</span><span class="n">it</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"fade_in"</span><span class="p">)),</span>
+</span><span id="line-347">                    <span class="n">fade_out</span><span class="o">=</span><span class="n">_opt_float</span><span class="p">(</span><span class="n">it</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"fade_out"</span><span class="p">)),</span>
+</span><span id="line-348">                <span class="p">)</span>
+</span><span id="line-349">            <span class="p">)</span>
+</span><span id="line-350">            <span class="k">continue</span>
+</span><span id="line-351">        <span class="n">kind</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"kind"</span><span class="p">,</span> <span class="s2">"caption"</span><span class="p">)</span>
+</span><span id="line-352">        <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">"lower_third"</span><span class="p">:</span>
+</span><span id="line-353">            <span class="n">lay</span> <span class="o">=</span> <span class="n">_lt</span><span class="p">(</span>
+</span><span id="line-354">                <span class="n">it</span><span class="p">[</span><span class="s2">"text"</span><span class="p">],</span>
+</span><span id="line-355">                <span class="n">it</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"role"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span>
+</span><span id="line-356">                <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span>
+</span><span id="line-357">                <span class="n">anchor</span><span class="o">=</span><span class="n">it</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"anchor"</span><span class="p">,</span> <span class="s2">"bottom-left"</span><span class="p">),</span>
+</span><span id="line-358">            <span class="p">)</span>
+</span><span id="line-359">            <span class="n">weight</span> <span class="o">=</span> <span class="mi">2</span>
+</span><span id="line-360">        <span class="k">else</span><span class="p">:</span>
+</span><span id="line-361">            <span class="n">lay</span> <span class="o">=</span> <span class="n">_caption</span><span class="p">(</span>
+</span><span id="line-362">                <span class="n">it</span><span class="p">[</span><span class="s2">"text"</span><span class="p">],</span>
+</span><span id="line-363">                <span class="n">it</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"attribution"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span>
+</span><span id="line-364">                <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span>
+</span><span id="line-365">                <span class="n">anchor</span><span class="o">=</span><span class="n">it</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"anchor"</span><span class="p">,</span> <span class="s2">"top-left"</span><span class="p">),</span>
+</span><span id="line-366">            <span class="p">)</span>
+</span><span id="line-367">            <span class="n">weight</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span id="line-368">        <span class="n">timed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+</span><span id="line-369">            <span class="n">TimedOverlay</span><span class="p">(</span>
+</span><span id="line-370">                <span class="n">lay</span><span class="p">,</span>
+</span><span id="line-371">                <span class="nb">float</span><span class="p">(</span><span class="n">it</span><span class="p">[</span><span class="s2">"start"</span><span class="p">]),</span>
+</span><span id="line-372">                <span class="nb">float</span><span class="p">(</span><span class="n">it</span><span class="p">[</span><span class="s2">"end"</span><span class="p">]),</span>
+</span><span id="line-373">                <span class="n">slot</span><span class="o">=</span><span class="n">lay</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"anchor"</span><span class="p">,</span> <span class="s2">"top-left"</span><span class="p">),</span>
+</span><span id="line-374">                <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span>
+</span><span id="line-375">            <span class="p">)</span>
+</span><span id="line-376">        <span class="p">)</span>
+</span><span id="line-377">    <span class="n">kept</span> <span class="o">=</span> <span class="n">resolve</span><span class="p">(</span><span class="n">timed</span><span class="p">)</span>
+</span><span id="line-378">    <span class="n">_overlay</span><span class="p">(</span><span class="n">video</span><span class="p">,</span> <span class="n">kept</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">pad_start</span><span class="o">=</span><span class="n">pad_start</span><span class="p">)</span>
+</span><span id="line-379">    <span class="k">return</span> <span class="p">{</span><span class="s2">"out"</span><span class="p">:</span> <span class="n">out</span><span class="p">,</span> <span class="s2">"overlays"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">kept</span><span class="p">),</span> <span class="s2">"dropped"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">timed</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">kept</span><span class="p">)}</span></div>
 
-</span><span id="line-361">
-</span><span id="line-362">
+</span><span id="line-380">
+</span><span id="line-381">
+</span><span id="line-382"><span class="k">def</span><span class="w"> </span><span class="nf">_opt_float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="line-383">    <span class="k">return</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+</span><span id="line-384">
+</span><span id="line-385">
 <div class="viewcode-block" id="fonts">
 <a class="viewcode-back" href="../../_autosummary/tituli.tools.html#tituli.tools.fonts">[docs]</a>
-</span><span id="line-363"><span class="k">def</span><span class="w"> </span><span class="nf">fonts</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-</span><span id="line-364"><span class="w">    </span><span class="sd">"""List installed font families (optionally filtered by substring)."""</span>
-</span><span id="line-365">    <span class="kn">from</span><span class="w"> </span><span class="nn">tituli.fonts</span><span class="w"> </span><span class="kn">import</span> <span class="n">families</span>
-</span><span id="line-366">
-</span><span id="line-367">    <span class="n">fams</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">families</span><span class="p">()</span> <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
-</span><span id="line-368">    <span class="k">return</span> <span class="p">{</span><span class="s2">"count"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">fams</span><span class="p">),</span> <span class="s2">"families"</span><span class="p">:</span> <span class="n">fams</span><span class="p">}</span></div>
+</span><span id="line-386"><span class="k">def</span><span class="w"> </span><span class="nf">fonts</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+</span><span id="line-387"><span class="w">    </span><span class="sd">"""List installed font families (optionally filtered by substring)."""</span>
+</span><span id="line-388">    <span class="kn">from</span><span class="w"> </span><span class="nn">tituli.fonts</span><span class="w"> </span><span class="kn">import</span> <span class="n">families</span>
+</span><span id="line-389">
+</span><span id="line-390">    <span class="n">fams</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">families</span><span class="p">()</span> <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+</span><span id="line-391">    <span class="k">return</span> <span class="p">{</span><span class="s2">"count"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">fams</span><span class="p">),</span> <span class="s2">"families"</span><span class="p">:</span> <span class="n">fams</span><span class="p">}</span></div>
 
-</span><span id="line-369">
-</span><span id="line-370">
-</span><span id="line-371"><span class="n">_dispatch_funcs</span> <span class="o">=</span> <span class="p">[</span>
-</span><span id="line-372">    <span class="n">title_card</span><span class="p">,</span>
-</span><span id="line-373">    <span class="n">caption</span><span class="p">,</span>
-</span><span id="line-374">    <span class="n">lower_third</span><span class="p">,</span>
-</span><span id="line-375">    <span class="n">credits</span><span class="p">,</span>
-</span><span id="line-376">    <span class="n">calligram</span><span class="p">,</span>
-</span><span id="line-377">    <span class="n">overlay_video</span><span class="p">,</span>
-</span><span id="line-378">    <span class="n">fonts</span><span class="p">,</span>
-</span><span id="line-379"><span class="p">]</span>
+</span><span id="line-392">
+</span><span id="line-393">
+</span><span id="line-394"><span class="n">_dispatch_funcs</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="line-395">    <span class="n">title_card</span><span class="p">,</span>
+</span><span id="line-396">    <span class="n">caption</span><span class="p">,</span>
+</span><span id="line-397">    <span class="n">lower_third</span><span class="p">,</span>
+</span><span id="line-398">    <span class="n">credits</span><span class="p">,</span>
+</span><span id="line-399">    <span class="n">calligram</span><span class="p">,</span>
+</span><span id="line-400">    <span class="n">overlay_video</span><span class="p">,</span>
+</span><span id="line-401">    <span class="n">fonts</span><span class="p">,</span>
+</span><span id="line-402"><span class="p">]</span>
 </span></code></pre></div>
     </div></div>
           </main>
@@ -589,7 +613,7 @@
 </footer>
     </div>
     
-    <script src="../../_static/documentation_options.js?v=53b53b71"></script>
+    <script src="../../_static/documentation_options.js?v=f7cdbf68"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>

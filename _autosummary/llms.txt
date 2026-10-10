@@ -6,6 +6,7 @@
 ## Pages in this subsection
 
 - [tituli](tituli.html.md): tituli — text in video: title cards, credits, captions and calligrams.
+- [tituli.arrange](tituli.arrange.html.md): Layout combinators: several blocks composed into one &#96;Layout&#96;.
 - [tituli.bodies](tituli.bodies.html.md): A lacing body schema for a rendered caption (&#96;pip install tituli&#91;lacing&#93;&#96;).
 - [tituli.calligram](tituli.calligram.html.md): Calligrams and concrete poems: text whose shape is part of the meaning.
 - [tituli.color](tituli.color.html.md): Colours, WCAG contrast, and the ink-for-this-background decision.

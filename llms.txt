@@ -8,6 +8,7 @@
 - [tituli](index.html.md): Text in video, with tasteful defaults: &#42;&#42;title cards&#42;&#42;, &#42;&#42;credits&#42;&#42;, &#42;&#42;captions with a tiny attribut...
 - [API reference](api.html.md): | &#96;tituli&#96;   | tituli — text in video: title cards, credits, captions and calligrams.   |
 - [tituli](_autosummary/tituli.html.md): tituli — text in video: title cards, credits, captions and calligrams.
+- [tituli.arrange](_autosummary/tituli.arrange.html.md): Layout combinators: several blocks composed into one &#96;Layout&#96;.
 - [tituli.bodies](_autosummary/tituli.bodies.html.md): A lacing body schema for a rendered caption (&#96;pip install tituli&#91;lacing&#93;&#96;).
 - [tituli.calligram](_autosummary/tituli.calligram.html.md): Calligrams and concrete poems: text whose shape is part of the meaning.
 - [tituli.color](_autosummary/tituli.color.html.md): Colours, WCAG contrast, and the ink-for-this-background decision.
@@ -25,7 +26,7 @@
 - [tituli.tools](_autosummary/tituli.tools.html.md): The SSOT of dispatchable operations: flat, JSON-able in, JSON-able out.
 - [tituli.video](_autosummary/tituli.video.html.md): Video output through ffmpeg: stills to clips, overlays onto footage, crawls.
 - [For AI agents](ai-agents.html.md): &#96;tituli&#96; ships artifacts for coding agents alongside its code. This page lists
-- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-10-06 14:51 UTC&#42;&#42; from commit &lt;a href="https://github.com/tho...
+- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-10-10 14:47 UTC&#42;&#42; from commit &lt;a href="https://github.com/ree...
 
 ## Optional
 

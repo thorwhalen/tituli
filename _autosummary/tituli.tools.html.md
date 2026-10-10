@@ -14,14 +14,14 @@ a file, and returns a dict describing what it wrote.
 
 ### Functions
 
-| [`calligram`](#tituli.tools.calligram)(text, \*[, out, shape, size, ...])     | Lay `text` along a shape (`circle`, `wave`, `arc`, an SVG path, `rain`).      |
-|---------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
-| [`caption`](#tituli.tools.caption)(image, text[, attribution, out, ...])    | Put a museum-label caption and a tiny attribution on `image`.                 |
-| [`credits`](#tituli.tools.credits)(spec, \*[, out, mode, size, speed, ...]) | Render credits from a JSON spec file (or JSON string) to `out`.               |
-| [`fonts`](#tituli.tools.fonts)([query])                                   | List installed font families (optionally filtered by substring).              |
-| [`lower_third`](#tituli.tools.lower_third)(name[, role, out, background, ...])  | A name + role block, bottom-left, as a transparent overlay (or on a picture). |
-| [`overlay_video`](#tituli.tools.overlay_video)(video, overlays, \*[, out, ...])   | Composite captions/lower thirds onto a finished video in one ffmpeg pass.     |
-| [`title_card`](#tituli.tools.title_card)(title[, subtitle, out, ...])          | Render a title card to `out` (PNG, or MP4 when `duration` is given).          |
+| [`calligram`](#tituli.tools.calligram)(text, \*[, out, shape, size, ...])     | Lay `text` along a shape (`circle`, `wave`, `arc`, an SVG path, `rain`).         |
+|---------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
+| [`caption`](#tituli.tools.caption)(image, text[, attribution, out, ...])    | Put a museum-label caption and a tiny attribution on `image`.                    |
+| [`credits`](#tituli.tools.credits)(spec, \*[, out, mode, size, speed, ...]) | Render credits from a JSON spec file (or JSON string) to `out`.                  |
+| [`fonts`](#tituli.tools.fonts)([query])                                   | List installed font families (optionally filtered by substring).                 |
+| [`lower_third`](#tituli.tools.lower_third)(name[, role, out, background, ...])  | A name + role block, bottom-left, as a transparent overlay (or on a picture).    |
+| [`overlay_video`](#tituli.tools.overlay_video)(video, overlays, \*[, out, ...])   | Composite captions/lower thirds/images onto a finished video in one ffmpeg pass. |
+| [`title_card`](#tituli.tools.title_card)(title[, subtitle, out, ...])          | Render a title card to `out` (PNG, or MP4 when `duration` is given).             |
 
 ### tituli.tools.calligram(text, , out='calligram.png', shape='wave', size=None, background='#f4f1e8', upright=False, mask=None, reveal=None)
 
@@ -73,14 +73,18 @@ A name + role block, bottom-left, as a transparent overlay (or on a picture).
 * **Return type:**
   [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
 
-### tituli.tools.overlay_video(video, overlays, , out='overlaid.mp4', delivery='youtube')
+### tituli.tools.overlay_video(video, overlays, , out='overlaid.mp4', delivery='youtube', pad_start=0.0)
 
-Composite captions/lower thirds onto a finished video in one ffmpeg pass.
+Composite captions/lower thirds/images onto a finished video in one ffmpeg pass.
 
 `overlays` is a JSON file/string: a list of `{"start", "end", "text",
-"attribution"?, "kind"?: "caption"|"lower_third", "role"?, "anchor"?}`.
-Text is laid out against the video’s frame size; the picture under each
-overlay is not sampled (pass a still through `caption` for that).
+"attribution"?, "kind"?: "caption"|"lower_third", "role"?, "anchor"?}`
+or `{"start", "end", "image", "fade_in"?, "fade_out"?}` (a frame-sized
+PNG, e.g. a title page; it occupies its own slot and suppresses no
+caption — time captions after it). Text is laid out against the video’s frame size;
+the picture under each overlay is not sampled (pass a still through
+`caption` for that). `pad_start` seconds are added at the head (first
+frame held, audio delayed); overlay times are on the padded timeline.
 
 * **Return type:**
   [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)

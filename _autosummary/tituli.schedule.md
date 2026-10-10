@@ -58,7 +58,7 @@ A time range of the cut showing one picture. `key` identifies the picture.
 (Named `Span` rather than `Panel` so it never collides with
 `braidio.video.Panel`, which callers of both will import alongside it.)
 
-### *class* tituli.schedule.TimedOverlay(layout, start, end, slot='top-left', weight=1, fade=0.45, payload=None, meta=<factory>)
+### *class* tituli.schedule.TimedOverlay(layout, start, end, slot='top-left', weight=1, fade=0.45, payload=None, meta=<factory>, image=None, fade_in=None, fade_out=None)
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -68,6 +68,11 @@ A layout (or a thing to lay out) on screen from `start` to `end`.
 contend for a slot — the heavier suppresses the lighter, never stacks.
 `payload` is whatever the caller wants to carry to rendering (a
 [`Label`](#tituli.schedule.Label), a dict, …); `layout` is filled in once rendered.
+
+`image` is the other way in: an already-rendered frame-sized picture (a
+PIL image or a path) — a title page made elsewhere, a logo plate — timed
+like any layout. `fade_in` / `fade_out` override `fade` for one end
+(`fade_in=0` for a title that must be up on the first frame).
 
 ### tituli.schedule.resolve(overlays, , min_readable_s=1.5)
 
